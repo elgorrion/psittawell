@@ -7,6 +7,7 @@ import { SectionHeader } from '../../../components/SectionHeader';
 import { psittawelContentPack } from '../../../content/psittawel';
 import {
   completeAssessment,
+  createFollowUpAssessment,
   countAnsweredVisibleQuestions,
   getAnswers,
   getAssessment,
@@ -160,6 +161,22 @@ export default function AssessmentOverviewScreen() {
     );
   }
 
+  function handleStartFollowUpAssessment() {
+    try {
+      const followUpAssessmentId = createFollowUpAssessment(
+        assessmentId,
+        psittawelContentPack.sections,
+      );
+
+      router.push({
+        pathname: '/assessment/[id]',
+        params: { id: String(followUpAssessmentId) },
+      });
+    } catch {
+      setOverviewState({ status: 'unavailable' });
+    }
+  }
+
   return (
     <SafeAreaView style={styles.screen}>
       <ScrollView contentContainerStyle={styles.content}>
@@ -183,21 +200,33 @@ export default function AssessmentOverviewScreen() {
             <Text style={styles.completedTitle}>{t('assessment.overview.completedTitle')}</Text>
             <Text style={styles.completedText}>{t('assessment.overview.completedMessage')}</Text>
             <Text style={styles.consultNote}>{t('assessment.consultNote')}</Text>
-            <Pressable
-              accessibilityLabel={t('assessment.results.viewButton')}
-              accessibilityRole="button"
-              onPress={() =>
-                router.push({
-                  pathname: '/assessment/[id]/results',
-                  params: { id: String(assessment.id) },
-                })
-              }
-              style={styles.resultsButton}
-            >
-              <Text style={styles.resultsButtonText}>
-                {t('assessment.results.viewButton')}
-              </Text>
-            </Pressable>
+            <View style={styles.completedActions}>
+              <Pressable
+                accessibilityLabel={t('assessment.results.viewButton')}
+                accessibilityRole="button"
+                onPress={() =>
+                  router.push({
+                    pathname: '/assessment/[id]/results',
+                    params: { id: String(assessment.id) },
+                  })
+                }
+                style={styles.resultsButton}
+              >
+                <Text style={styles.resultsButtonText}>
+                  {t('assessment.results.viewButton')}
+                </Text>
+              </Pressable>
+              <Pressable
+                accessibilityLabel={t('assessment.overview.followUpAccessibilityLabel')}
+                accessibilityRole="button"
+                onPress={handleStartFollowUpAssessment}
+                style={styles.followUpButton}
+              >
+                <Text style={styles.followUpButtonText}>
+                  {t('assessment.overview.followUpButton')}
+                </Text>
+              </Pressable>
+            </View>
           </View>
         ) : null}
 
@@ -334,6 +363,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
+  completedActions: {
+    gap: 10,
+    paddingTop: 4,
+  },
   resultsButton: {
     alignItems: 'center',
     backgroundColor: colors.spruce,
@@ -344,6 +377,22 @@ const styles = StyleSheet.create({
   },
   resultsButtonText: {
     color: colors.paper,
+    fontSize: 16,
+    fontWeight: '800',
+    lineHeight: 22,
+  },
+  followUpButton: {
+    alignItems: 'center',
+    backgroundColor: colors.paper,
+    borderColor: colors.spruce,
+    borderRadius: 8,
+    borderWidth: 1,
+    justifyContent: 'center',
+    minHeight: 48,
+    paddingHorizontal: 18,
+  },
+  followUpButtonText: {
+    color: colors.spruceDark,
     fontSize: 16,
     fontWeight: '800',
     lineHeight: 22,

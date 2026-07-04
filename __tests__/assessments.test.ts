@@ -4,7 +4,9 @@ import { getDatabase } from '../lib/db';
 import {
   buildWelfareSnapshot,
   completeAssessment,
+  createFollowUpAssessment,
   countAnsweredVisibleQuestions,
+  getAnswers,
   getAssessment,
   getGridGroupAnswerQuestionId,
   getGridRowAnswerQuestionId,
@@ -171,6 +173,156 @@ describe('listAssessments', () => {
   });
 });
 
+describe('createFollowUpAssessment', () => {
+  it('creates a fresh current-version draft with only present demographic answers', () => {
+    fakeDatabase.assessments = [
+      assessmentRow({
+        id: 1,
+        instrument_version: 'legacy',
+        status: 'completed',
+        completed_at: '2026-07-04 11:00:00',
+      }),
+    ];
+    fakeDatabase.answers = [
+      answerRow({
+        id: 1,
+        assessment_id: 1,
+        question_id: 'q_s1_name',
+        free_text: 'Mango',
+        welfare_snapshot: '{}',
+      }),
+      answerRow({
+        id: 2,
+        assessment_id: 1,
+        question_id: 'q_s1_species',
+        free_text: 'African grey',
+        welfare_snapshot: '{}',
+      }),
+      answerRow({
+        id: 3,
+        assessment_id: 1,
+        question_id: 'q_s1_sex',
+        option_ids: '["opt_s1_sex_female"]',
+        welfare_snapshot: '{"opt_s1_sex_female":null}',
+      }),
+      answerRow({
+        id: 4,
+        assessment_id: 1,
+        question_id: 'q_s1_age',
+        free_text: '8 years',
+        welfare_snapshot: '{}',
+      }),
+      answerRow({
+        id: 5,
+        assessment_id: 1,
+        question_id: 'q_s1_duration',
+        free_text: '3 years',
+        welfare_snapshot: '{}',
+      }),
+      answerRow({
+        id: 6,
+        assessment_id: 1,
+        question_id: 'q_s1_rearing',
+        option_ids: '["opt_s1_rearing_parent"]',
+        welfare_snapshot: '{"opt_s1_rearing_parent":null}',
+      }),
+      answerRow({
+        id: 7,
+        assessment_id: 1,
+        question_id: 'q_s1_obtained_from',
+        option_ids: '["opt_s1_obtained_breeder"]',
+        welfare_snapshot: '{"opt_s1_obtained_breeder":null}',
+      }),
+      answerRow({
+        id: 8,
+        assessment_id: 1,
+        question_id: 'q_s2_plumage',
+        option_ids: '["opt_s2_plumage_intact"]',
+        welfare_snapshot: '{"opt_s2_plumage_intact":"optimal"}',
+      }),
+      answerRow({
+        id: 9,
+        assessment_id: 1,
+        question_id: 'q_s3_time_out_of_enclosure',
+        option_ids: '["opt_s3_time_out_daily_3h_or_less"]',
+        welfare_snapshot: '{"opt_s3_time_out_daily_3h_or_less":"moderate"}',
+      }),
+    ];
+
+    const followUpId = createFollowUpAssessment(1, psittawelContentPack.sections);
+    const followUpAssessment = getAssessment(followUpId);
+    const followUpAnswers = answersByQuestionId(getAnswers(followUpId));
+
+    expect(followUpId).not.toBe(1);
+    expect(followUpAssessment).toMatchObject({
+      id: followUpId,
+      instrumentVersion: psittawelContentPack.instrument_version,
+      status: 'draft',
+      completedAt: null,
+    });
+    expect(Object.keys(followUpAnswers).sort()).toEqual([
+      'q_s1_age',
+      'q_s1_duration',
+      'q_s1_name',
+      'q_s1_obtained_from',
+      'q_s1_rearing',
+      'q_s1_sex',
+      'q_s1_species',
+    ]);
+    expect(followUpAnswers.q_s1_name.freeText).toBe('Mango');
+    expect(followUpAnswers.q_s1_species.freeText).toBe('African grey');
+    expect(followUpAnswers.q_s1_sex.optionIds).toEqual(['opt_s1_sex_female']);
+    expect(followUpAnswers.q_s1_age.freeText).toBe('8 years');
+    expect(followUpAnswers.q_s1_duration.freeText).toBe('3 years');
+    expect(followUpAnswers.q_s1_rearing.optionIds).toEqual(['opt_s1_rearing_parent']);
+    expect(followUpAnswers.q_s1_obtained_from.optionIds).toEqual([
+      'opt_s1_obtained_breeder',
+    ]);
+    expect(followUpAnswers.q_s2_plumage).toBeUndefined();
+    expect(followUpAnswers.q_s3_time_out_of_enclosure).toBeUndefined();
+    expect(getAssessment(1)).toMatchObject({ id: 1, status: 'completed' });
+  });
+
+  it('copies only the demographic answers that exist on a partial source', () => {
+    fakeDatabase.assessments = [
+      assessmentRow({
+        id: 4,
+        status: 'draft',
+      }),
+    ];
+    fakeDatabase.answers = [
+      answerRow({
+        id: 1,
+        assessment_id: 4,
+        question_id: 'q_s1_name',
+        free_text: 'Kiwi',
+        welfare_snapshot: '{}',
+      }),
+      answerRow({
+        id: 2,
+        assessment_id: 4,
+        question_id: 'q_s1_age',
+        free_text: 'unknown',
+        welfare_snapshot: '{}',
+      }),
+      answerRow({
+        id: 3,
+        assessment_id: 4,
+        question_id: 'q_s2_plumage',
+        option_ids: '["opt_s2_plumage_intact"]',
+        welfare_snapshot: '{"opt_s2_plumage_intact":"optimal"}',
+      }),
+    ];
+
+    const followUpId = createFollowUpAssessment(4, psittawelContentPack.sections);
+
+    expect(Object.keys(answersByQuestionId(getAnswers(followUpId))).sort()).toEqual([
+      'q_s1_age',
+      'q_s1_name',
+    ]);
+  });
+});
+
 describe('countAnsweredVisibleQuestions', () => {
   it('counts only currently-visible questions', () => {
     const section = clonePack().sections[1];
@@ -297,6 +449,10 @@ function gridQuestion(question: ContentPack['sections'][number]['questions'][num
   return question;
 }
 
+function answersByQuestionId(answers: ReturnType<typeof getAnswers>) {
+  return Object.fromEntries(answers.map((answer) => [answer.questionId, answer]));
+}
+
 type AssessmentTableRow = {
   id: number;
   instrument_version: string;
@@ -329,6 +485,22 @@ class FakeAssessmentDatabase {
   answers: AnswerTableRow[] = [];
 
   runSync(sql: string, params: unknown[] = []) {
+    if (sql.includes('INSERT INTO assessment')) {
+      const [instrumentVersion, status] = params;
+      const nextId = Math.max(0, ...this.assessments.map((assessment) => assessment.id)) + 1;
+
+      this.assessments.push(
+        assessmentRow({
+          id: nextId,
+          instrument_version: String(instrumentVersion),
+          status: String(status),
+          started_at: '2026-07-04 12:00:00',
+        }),
+      );
+
+      return { lastInsertRowId: nextId };
+    }
+
     if (sql.includes('UPDATE assessment')) {
       const [nextStatus, id, currentStatus] = params;
       const assessment = this.assessments.find(
@@ -338,6 +510,37 @@ class FakeAssessmentDatabase {
       if (assessment) {
         assessment.status = String(nextStatus);
         assessment.completed_at = '2026-07-04 12:00:00';
+      }
+
+      return { lastInsertRowId: 0 };
+    }
+
+    if (sql.includes('INSERT INTO answer')) {
+      const [assessmentId, questionId, optionIds, freeText, welfareSnapshot] = params;
+      const existingAnswer = this.answers.find(
+        (answer) =>
+          answer.assessment_id === assessmentId && answer.question_id === questionId,
+      );
+
+      if (existingAnswer) {
+        existingAnswer.option_ids = nullableString(optionIds);
+        existingAnswer.free_text = nullableString(freeText);
+        existingAnswer.welfare_snapshot = nullableString(welfareSnapshot);
+        existingAnswer.answered_at = '2026-07-04 12:00:00';
+      } else {
+        const nextId = Math.max(0, ...this.answers.map((answer) => answer.id)) + 1;
+
+        this.answers.push(
+          answerRow({
+            id: nextId,
+            assessment_id: Number(assessmentId),
+            question_id: String(questionId),
+            option_ids: nullableString(optionIds),
+            free_text: nullableString(freeText),
+            welfare_snapshot: nullableString(welfareSnapshot),
+            answered_at: '2026-07-04 12:00:00',
+          }),
+        );
       }
 
       return { lastInsertRowId: 0 };
@@ -356,6 +559,14 @@ class FakeAssessmentDatabase {
   }
 
   getAllSync<TRow>(sql: string, params: unknown[] = []): TRow[] {
+    if (sql.includes('FROM answer') && sql.includes('WHERE assessment_id = ?')) {
+      const [assessmentId] = params;
+
+      return this.answers
+        .filter((answer) => answer.assessment_id === assessmentId)
+        .sort((left, right) => left.id - right.id) as TRow[];
+    }
+
     if (sql.includes('FROM assessment') && sql.includes('LEFT JOIN answer')) {
       const [nameQuestionId] = params;
 
@@ -379,6 +590,10 @@ class FakeAssessmentDatabase {
 
     throw new Error(`Unsupported getAllSync SQL: ${sql}`);
   }
+}
+
+function nullableString(value: unknown): string | null {
+  return value === null ? null : String(value);
 }
 
 function assessmentRow(input: AssessmentRowInput): AssessmentTableRow {

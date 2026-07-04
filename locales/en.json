@@ -33,6 +33,8 @@
       "readOnlyBadge": "Read-only",
       "completedTitle": "Assessment completed",
       "completedMessage": "This assessment is saved and frozen. You can review sections, but answers cannot be changed.",
+      "followUpButton": "Start a follow-up assessment",
+      "followUpAccessibilityLabel": "Start a follow-up assessment with stable details pre-filled",
       "sectionNumber": "Section %{number}",
       "sectionProgress": "%{answered} of %{total} answered",
       "sectionAccessibility": "Open Section %{number}: %{title}. %{status}. %{progress}.",

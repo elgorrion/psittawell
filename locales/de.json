@@ -33,6 +33,8 @@
       "readOnlyBadge": "Schreibgeschützt",
       "completedTitle": "Assessment abgeschlossen",
       "completedMessage": "Dieses Assessment ist gespeichert und eingefroren. Sie können Abschnitte prüfen, aber Antworten nicht ändern.",
+      "followUpButton": "Folge-Assessment starten",
+      "followUpAccessibilityLabel": "Folge-Assessment mit vorausgefüllten stabilen Angaben starten",
       "sectionNumber": "Abschnitt %{number}",
       "sectionProgress": "%{answered} von %{total} beantwortet",
       "sectionAccessibility": "Abschnitt %{number}: %{title} öffnen. %{status}. %{progress}.",

@@ -1,5 +1,6 @@
 import { getDatabase } from './db';
 import { isQuestionVisible } from './conditionals';
+import { psittawelContentPack } from '../content/psittawel';
 import type { GridQuestion, MatrixQuestion, Question, Section, WelfareLevel } from '../content/schema';
 
 export const parrotNameQuestionId = 'q_s1_name';
@@ -96,6 +97,34 @@ export function createDraftAssessment(instrumentVersion: string): number {
   );
 
   return Number(result.lastInsertRowId);
+}
+
+export function createFollowUpAssessment(
+  sourceAssessmentId: number,
+  sections: readonly Section[],
+): number {
+  const followUpAssessmentId = createDraftAssessment(psittawelContentPack.instrument_version);
+  const demographicQuestionIds = new Set(
+    sections.flatMap((section) =>
+      section.questions
+        .filter((question) => question.demographic)
+        .map((question) => question.id),
+    ),
+  );
+
+  for (const answer of getAnswers(sourceAssessmentId)) {
+    if (!demographicQuestionIds.has(answer.questionId)) {
+      continue;
+    }
+
+    upsertAnswer(followUpAssessmentId, answer.questionId, {
+      optionIds: answer.optionIds,
+      freeText: answer.freeText,
+      welfareSnapshot: answer.welfareSnapshot,
+    });
+  }
+
+  return followUpAssessmentId;
 }
 
 export function getAssessment(id: number): Assessment | null {
