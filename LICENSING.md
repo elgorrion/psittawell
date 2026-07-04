@@ -10,7 +10,7 @@ The application source code written for this project is released under a permiss
 
 The questionnaire content (questions, answer options, welfare gradients, section structure) is derived from:
 
-> Piseddu A, van Zeeland Y, Hemsworth L & Rault J-L (2026). **PsittaWel: A welfare assessment tool for companion parrots.** *Animal Welfare* **35**, e34. DOI [10.1017/awf.2026.10089](https://doi.org/10.1017/awf.2026.10089). Original tool: <https://www.vetmeduni.ac.at/psittawel>
+> Piseddu A, van Zeeland Y, Hemsworth L, Rault J-L (2026). PsittaWel: A welfare assessment tool for companion parrots. Animal Welfare 35, e34. DOI [10.1017/awf.2026.10089](https://doi.org/10.1017/awf.2026.10089). Original tool: <https://www.vetmeduni.ac.at/psittawel>
 
 - The **journal article** is Open Access under **CC BY 4.0** (Cambridge University Press on behalf of UFAW); its text may be reused with attribution.
 - The **standalone tool** carries a distinct notice: *"© Piseddu, van Zeeland & Rault 2026. All rights reserved. This document may be used for non-commercial purposes only. Any commercial use requires prior written permission."*

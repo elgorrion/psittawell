@@ -96,6 +96,14 @@ export default function HomeScreen() {
             ))}
           </View>
         ) : null}
+        <Pressable
+          accessibilityLabel={t('about.homeLinkAccessibility')}
+          accessibilityRole="button"
+          onPress={() => router.push('/about')}
+          style={styles.aboutLink}
+        >
+          <Text style={styles.aboutLinkText}>{t('about.linkLabel')}</Text>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );
@@ -245,6 +253,21 @@ const styles = StyleSheet.create({
   assessmentStatus: {
     color: colors.spruceDark,
     fontSize: 14,
+    fontWeight: '800',
+    lineHeight: 20,
+  },
+  aboutLink: {
+    alignSelf: 'center',
+    borderColor: colors.lineStrong,
+    borderRadius: 8,
+    borderWidth: 1,
+    marginTop: 2,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+  },
+  aboutLinkText: {
+    color: colors.spruceDark,
+    fontSize: 15,
     fontWeight: '800',
     lineHeight: 20,
   },

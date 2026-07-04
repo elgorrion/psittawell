@@ -166,5 +166,42 @@
     },
     "instrumentImageExpandHint": "Zum Vergrößern antippen",
     "instrumentImageCloseLabel": "Bild schließen"
+  },
+  "about": {
+    "linkLabel": "Über diese App & Credits",
+    "homeLinkAccessibility": "Über diese App und Credits öffnen",
+    "title": "Über diese App & Credits",
+    "description": "Zuschreibung, Genehmigung, Lizenzierung und Datenschutz.",
+    "backHome": "Zur Startseite",
+    "what": {
+      "title": "Was das ist",
+      "body": "Ein kostenloses Offline-Hilfswerkzeug, das das peer-reviewte PsittaWel-Assessment für das Wohlbefinden von Begleitpapageien digitalisiert. Es begleitet das Instrument, ersetzt aber keine professionelle Beratung.",
+      "notDiagnostic": "Kein Diagnosewerkzeug. %{consultNote}"
+    },
+    "instrument": {
+      "title": "Das Instrument & seine Autorinnen und Autoren",
+      "developedBy": "Entwickelt von Andrea Piseddu, Yvonne R. A. van Zeeland und Jean-Loup Rault, in Zusammenarbeit mit Ann Brooks, Pamela Clark, Sara Mainardi, Hildegard Niemann, Joanne Paul-Murphy und Valarie Tynes.",
+      "citationLabel": "Zitation",
+      "doiLabel": "DOI %{doi}",
+      "doiAccessibility": "DOI %{doi} öffnen",
+      "toolUrlAccessibility": "Website des PsittaWel-Tools öffnen"
+    },
+    "permission": {
+      "title": "Mit Genehmigung verwendet",
+      "releaseGate": "Der Instrumenteninhalt wird mit Genehmigung verwendet. Die öffentliche Veröffentlichung ist an die Zustimmung der Autorinnen und Autoren gebunden."
+    },
+    "imagery": {
+      "title": "Bildmaterial",
+      "body": "Fotos und Illustrationen des Instruments sind © ihrer jeweils genannten Rechteinhaberinnen und Rechteinhaber und werden nur aus einem lokalen, nicht verteilten Entwicklungs-Asset-Verzeichnis angezeigt. Eine frische Installation zeigt Platzhalter."
+    },
+    "app": {
+      "title": "Diese App",
+      "body": "Entwickelt von KarmaNova Animal Technologies. Der Anwendungscode ist Open Source (MIT/Apache-2.0).",
+      "notMonetised": "Nicht monetarisiert: keine Werbung, keine Abonnements und kein Datenverkauf."
+    },
+    "privacy": {
+      "title": "Datenschutz",
+      "body": "Alles bleibt auf diesem Gerät. Ihre Antworten werden ausschließlich im lokalen On-Device-Speicher gespeichert: kein Konto, keine Anmeldung, keine Analytics, keine Werbung, kein Tracking, nichts wird irgendwohin gesendet."
+    }
   }
 }

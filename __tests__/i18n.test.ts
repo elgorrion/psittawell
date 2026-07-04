@@ -31,6 +31,38 @@ describe('i18n', () => {
   it('keeps English and German UI catalogs on identical key sets', () => {
     expect(flattenKeys(de)).toEqual(flattenKeys(en));
   });
+
+  it('includes non-empty About copy in English and German', () => {
+    const aboutKeys = flattenKeys(en).filter((key) => key.startsWith('about.'));
+
+    expect(aboutKeys.length).toBeGreaterThan(0);
+
+    for (const key of aboutKeys) {
+      expect(readCatalogValue(en, key)).toEqual(expect.stringMatching(/\S/));
+      expect(readCatalogValue(de, key)).toEqual(expect.stringMatching(/\S/));
+    }
+  });
+
+  it('keeps About author and collaborator names identical across locales', () => {
+    const names = [
+      'Andrea Piseddu',
+      'Yvonne R. A. van Zeeland',
+      'Jean-Loup Rault',
+      'Ann Brooks',
+      'Pamela Clark',
+      'Sara Mainardi',
+      'Hildegard Niemann',
+      'Joanne Paul-Murphy',
+      'Valarie Tynes',
+    ];
+    const englishCredit = readCatalogValue(en, 'about.instrument.developedBy');
+    const germanCredit = readCatalogValue(de, 'about.instrument.developedBy');
+
+    for (const name of names) {
+      expect(englishCredit).toContain(name);
+      expect(germanCredit).toContain(name);
+    }
+  });
 });
 
 function flattenKeys(value: object, prefix = ''): string[] {
@@ -45,4 +77,22 @@ function flattenKeys(value: object, prefix = ''): string[] {
       return nextPrefix;
     })
     .sort();
+}
+
+function readCatalogValue(value: object, path: string): string {
+  const result = path
+    .split('.')
+    .reduce<unknown>((current, key) => {
+      if (current === null || typeof current !== 'object') {
+        return undefined;
+      }
+
+      return (current as Record<string, unknown>)[key];
+    }, value);
+
+  if (typeof result !== 'string') {
+    throw new Error(`${path} is not a string catalog value.`);
+  }
+
+  return result;
 }

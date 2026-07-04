@@ -166,5 +166,42 @@
     },
     "instrumentImageExpandHint": "Tap to enlarge",
     "instrumentImageCloseLabel": "Close image"
+  },
+  "about": {
+    "linkLabel": "About & credits",
+    "homeLinkAccessibility": "Open About and credits",
+    "title": "About & credits",
+    "description": "Attribution, permission, licensing, and privacy.",
+    "backHome": "Back to home",
+    "what": {
+      "title": "What this is",
+      "body": "A free, offline help tool that digitises the peer-reviewed PsittaWel companion-parrot welfare assessment. It is a companion to the instrument, not a replacement for professional advice.",
+      "notDiagnostic": "Not a diagnostic tool. %{consultNote}"
+    },
+    "instrument": {
+      "title": "The instrument & its authors",
+      "developedBy": "Developed by Andrea Piseddu, Yvonne R. A. van Zeeland and Jean-Loup Rault, in collaboration with Ann Brooks, Pamela Clark, Sara Mainardi, Hildegard Niemann, Joanne Paul-Murphy and Valarie Tynes.",
+      "citationLabel": "Citation",
+      "doiLabel": "DOI %{doi}",
+      "doiAccessibility": "Open DOI %{doi}",
+      "toolUrlAccessibility": "Open the PsittaWel tool website"
+    },
+    "permission": {
+      "title": "Used with permission",
+      "releaseGate": "The instrument content is used with permission. Public release is gated on the authors' approval."
+    },
+    "imagery": {
+      "title": "Imagery",
+      "body": "Instrument photographs and illustrations are © their credited owners and are shown only from a local, non-distributed development asset directory. A fresh install shows placeholders."
+    },
+    "app": {
+      "title": "This app",
+      "body": "Built by KarmaNova Animal Technologies. The application code is open source (MIT/Apache-2.0).",
+      "notMonetised": "Not monetised: no ads, subscriptions, or data sale."
+    },
+    "privacy": {
+      "title": "Privacy",
+      "body": "Everything stays on this device. Your answers are stored only in local on-device storage: no account, no sign-in, no analytics, no ads, no tracking, nothing is sent anywhere."
+    }
   }
 }
