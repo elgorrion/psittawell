@@ -1,0 +1,28 @@
+# Documentation & source material — not tracked
+docs/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies & build output
+node_modules/
+.expo/
+dist/
+web-build/
+build/
+*.log
+
+# Generated native projects (Expo prebuild)
+/ios/
+/android/
+*.ipa
+*.apk
+*.aab
+
+# OS & editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
