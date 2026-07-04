@@ -1,0 +1,6 @@
+# Project-scoped toolchain, managed by mise.
+# Everything lives inside this project — nothing is installed globally and the
+# system is never modified. Run `mise install` here to provision the toolchain.
+[tools]
+node = "24"      # current active LTS (not near-EOL); move to the next LTS once promoted
+pnpm = "latest"  # latest stable

@@ -1,5 +1,7 @@
 # Documentation & source material — not tracked
 docs/
+CLAUDE.md
+AGENTS.md
 
 # Environment & secrets
 .env
