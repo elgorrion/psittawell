@@ -1,9 +1,8 @@
-import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { SectionHeader } from '../../../components/SectionHeader';
 import { FlagBadge, FlagBadges, welfareLevelColors } from '../../../components/questions/Badges';
 import { psittawelContentPack } from '../../../content/psittawel';
 import type { WelfareLevel } from '../../../content/schema';
@@ -115,9 +114,12 @@ export default function AssessmentResultsScreen() {
 
   if (resultsState.status !== 'ready') {
     return (
-      <SafeAreaView style={styles.screen}>
+      <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
+        <Stack.Screen options={{ title: t('assessment.results.headerTitle') }} />
         <View style={styles.emptyState}>
-          <SectionHeader title={t('assessment.results.unavailableTitle')} />
+          <Text accessibilityRole="header" style={styles.emptyTitle}>
+            {t('assessment.results.unavailableTitle')}
+          </Text>
           <Text style={styles.statusText}>
             {resultsState.status === 'loading'
               ? t('assessment.results.loading')
@@ -166,9 +168,15 @@ export default function AssessmentResultsScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
+      <Stack.Screen options={{ title: t('assessment.results.headerTitle') }} />
       <ScrollView contentContainerStyle={styles.content}>
-        <SectionHeader description={t('assessment.results.disclaimer')} title={title} />
+        <View style={styles.introPanel}>
+          <Text accessibilityRole="header" style={styles.introTitle}>
+            {title}
+          </Text>
+          <Text style={styles.introText}>{t('assessment.results.disclaimer')}</Text>
+        </View>
 
         <ConsultPanel prominent={hasUrgentItems} />
 
@@ -469,6 +477,31 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     fontSize: 16,
     lineHeight: 22,
+  },
+  emptyTitle: {
+    color: colors.text,
+    fontSize: 20,
+    fontWeight: '800',
+    lineHeight: 26,
+  },
+  introPanel: {
+    backgroundColor: colors.paper,
+    borderColor: colors.line,
+    borderRadius: 8,
+    borderWidth: 1,
+    gap: 10,
+    padding: 16,
+  },
+  introTitle: {
+    color: colors.text,
+    fontSize: 20,
+    fontWeight: '800',
+    lineHeight: 26,
+  },
+  introText: {
+    color: colors.slate,
+    fontSize: 15,
+    lineHeight: 21,
   },
   panel: {
     backgroundColor: colors.paper,

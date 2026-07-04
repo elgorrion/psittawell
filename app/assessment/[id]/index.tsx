@@ -1,9 +1,8 @@
-import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { SectionHeader } from '../../../components/SectionHeader';
 import { psittawelContentPack } from '../../../content/psittawel';
 import {
   completeAssessment,
@@ -103,9 +102,9 @@ export default function AssessmentOverviewScreen() {
 
   if (overviewState.status !== 'ready') {
     return (
-      <SafeAreaView style={styles.screen}>
+      <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
+        <Stack.Screen options={{ title: t('assessment.overview.title') }} />
         <View style={styles.emptyState}>
-          <SectionHeader title={t('assessment.overview.title')} />
           <Text style={styles.statusText}>
             {overviewState.status === 'loading'
               ? t('assessment.overview.loading')
@@ -184,22 +183,18 @@ export default function AssessmentOverviewScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
+      <Stack.Screen options={{ title }} />
       <ScrollView contentContainerStyle={styles.content}>
-        <SectionHeader
-          description={t(
-            isCompleted
-              ? 'assessment.overview.descriptionCompleted'
-              : 'assessment.overview.description',
-          )}
-          title={title}
-        >
+        <View style={styles.introPanel}>
           {isCompleted ? (
             <View accessibilityRole="text" style={styles.readOnlyBadge}>
               <Text style={styles.readOnlyBadgeText}>{t('assessment.overview.readOnlyBadge')}</Text>
             </View>
-          ) : null}
-        </SectionHeader>
+          ) : (
+            <Text style={styles.introText}>{t('assessment.overview.description')}</Text>
+          )}
+        </View>
 
         {isCompleted ? (
           <View style={styles.completedPanel}>
@@ -361,6 +356,19 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     fontSize: 16,
     lineHeight: 22,
+  },
+  introPanel: {
+    backgroundColor: colors.paper,
+    borderColor: colors.line,
+    borderRadius: 8,
+    borderWidth: 1,
+    gap: 10,
+    padding: 14,
+  },
+  introText: {
+    color: colors.slate,
+    fontSize: 15,
+    lineHeight: 21,
   },
   readOnlyBadge: {
     alignSelf: 'flex-start',

@@ -1,5 +1,5 @@
 import { getLocales } from 'expo-localization';
-import { router, useFocusEffect } from 'expo-router';
+import { router, Stack, useFocusEffect } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -74,6 +74,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.screen}>
+      <Stack.Screen options={{ headerShown: false, statusBarStyle: 'dark' }} />
       <ScrollView
         contentContainerStyle={[
           styles.content,

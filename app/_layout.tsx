@@ -1,12 +1,25 @@
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { colors } from '../lib/theme';
 
 export default function RootLayout() {
   return (
     <SafeAreaProvider>
-      <Stack screenOptions={{ headerShown: false }} />
-      <StatusBar style="auto" />
+      <Stack
+        screenOptions={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: colors.spruce,
+          },
+          headerTintColor: colors.paper,
+          headerTitleStyle: {
+            color: colors.paper,
+            fontWeight: '800',
+          },
+          statusBarStyle: 'light',
+        }}
+      />
     </SafeAreaProvider>
   );
 }

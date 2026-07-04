@@ -1,10 +1,9 @@
 import { getLocales } from 'expo-localization';
-import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { SectionHeader } from '../../../components/SectionHeader';
 import { FlagBadges, welfareLevelColors } from '../../../components/questions/Badges';
 import { psittawelContentPack } from '../../../content/psittawel';
 import type { OptionFlag, WelfareLevel } from '../../../content/schema';
@@ -111,9 +110,12 @@ export default function AssessmentTrendsScreen() {
 
   if (trendsState.status !== 'ready') {
     return (
-      <SafeAreaView style={styles.screen}>
+      <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
+        <Stack.Screen options={{ title: t('assessment.trends.headerTitle') }} />
         <View style={styles.emptyState}>
-          <SectionHeader title={t('assessment.trends.unavailableTitle')} />
+          <Text accessibilityRole="header" style={styles.emptyTitle}>
+            {t('assessment.trends.unavailableTitle')}
+          </Text>
           <Text style={styles.statusText}>
             {trendsState.status === 'loading'
               ? t('assessment.trends.loading')
@@ -133,9 +135,15 @@ export default function AssessmentTrendsScreen() {
   const groups = groupIndicatorsBySection(timeline.indicators);
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
+      <Stack.Screen options={{ title: t('assessment.trends.headerTitle') }} />
       <ScrollView contentContainerStyle={styles.content}>
-        <SectionHeader description={t('assessment.trends.description')} title={title} />
+        <View style={styles.introPanel}>
+          <Text accessibilityRole="header" style={styles.introTitle}>
+            {title}
+          </Text>
+          <Text style={styles.introText}>{t('assessment.trends.description')}</Text>
+        </View>
 
         <View style={styles.consultPanel}>
           <Text accessibilityRole="header" style={styles.consultTitle}>
@@ -385,6 +393,31 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     fontSize: 16,
     lineHeight: 22,
+  },
+  emptyTitle: {
+    color: colors.text,
+    fontSize: 20,
+    fontWeight: '800',
+    lineHeight: 26,
+  },
+  introPanel: {
+    backgroundColor: colors.paper,
+    borderColor: colors.line,
+    borderRadius: 8,
+    borderWidth: 1,
+    gap: 10,
+    padding: 16,
+  },
+  introTitle: {
+    color: colors.text,
+    fontSize: 20,
+    fontWeight: '800',
+    lineHeight: 26,
+  },
+  introText: {
+    color: colors.slate,
+    fontSize: 15,
+    lineHeight: 21,
   },
   consultPanel: {
     backgroundColor: colors.paper,

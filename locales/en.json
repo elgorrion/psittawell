@@ -37,7 +37,7 @@
     "unavailable": "This assessment section could not be opened.",
     "overview": {
       "title": "Assessment",
-      "namedTitle": "Assessment - %{name}",
+      "namedTitle": "Assessment – %{name}",
       "description": "Open a section, continue where you left off, or freeze the assessment when you are done.",
       "descriptionCompleted": "This assessment is complete. You can review any section, but its answers are frozen.",
       "loading": "Opening this assessment...",
@@ -64,6 +64,7 @@
       }
     },
     "results": {
+      "headerTitle": "Welfare overview",
       "title": "A welfare overview",
       "namedTitle": "A welfare overview for %{name}",
       "loading": "Preparing this welfare overview...",
@@ -95,6 +96,7 @@
       "monthlyNote": "You can repeat the assessment monthly to monitor changes over time."
     },
     "trends": {
+      "headerTitle": "Change over time",
       "title": "How these indicators changed",
       "namedTitle": "How these indicators changed for %{name}",
       "loading": "Preparing change over time...",

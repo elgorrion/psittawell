@@ -1,10 +1,9 @@
 import { openURL } from 'expo-linking';
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import type { ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { SectionHeader } from '../components/SectionHeader';
 import { getAboutInstrumentSource } from '../lib/about';
 import { t } from '../lib/i18n';
 import { colors } from '../lib/theme';
@@ -13,9 +12,10 @@ const source = getAboutInstrumentSource();
 
 export default function AboutScreen() {
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
+      <Stack.Screen options={{ title: t('about.title') }} />
       <ScrollView contentContainerStyle={styles.content}>
-        <SectionHeader description={t('about.description')} title={t('about.title')} />
+        <Text style={styles.introText}>{t('about.description')}</Text>
 
         <AboutPanel title={t('about.what.title')}>
           <Text style={styles.paragraph}>{t('about.what.body')}</Text>
@@ -119,6 +119,11 @@ const styles = StyleSheet.create({
     gap: 16,
     padding: 20,
     paddingBottom: 32,
+  },
+  introText: {
+    color: colors.textMuted,
+    fontSize: 15,
+    lineHeight: 21,
   },
   panel: {
     backgroundColor: colors.paper,

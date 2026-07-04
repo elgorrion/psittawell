@@ -1,9 +1,8 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { SectionHeader } from '../../../../components/SectionHeader';
 import { SectionLegend } from '../../../../components/SectionLegend';
 import { FreeTextQuestion } from '../../../../components/questions/FreeTextQuestion';
 import { GridQuestion } from '../../../../components/questions/GridQuestion';
@@ -111,11 +110,11 @@ export default function AssessmentSectionScreen() {
 
   const title = useMemo(() => {
     if (!section) {
-      return t('assessment.sectionUnavailable');
+      return isLoading ? t('assessment.loading') : t('assessment.sectionUnavailable');
     }
 
     return t('assessment.sectionTitle', { number: section.number, title: section.title });
-  }, [section]);
+  }, [section, isLoading]);
 
   const visibleQuestions = useMemo(() => {
     if (!section) {
@@ -134,9 +133,9 @@ export default function AssessmentSectionScreen() {
     !assessment
   ) {
     return (
-      <SafeAreaView style={styles.screen}>
+      <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
+        <Stack.Screen options={{ title }} />
         <View style={styles.emptyState}>
-          <SectionHeader title={title} />
           <Text style={styles.statusText}>
             {isLoading ? t('assessment.loading') : t('assessment.unavailable')}
           </Text>
@@ -336,9 +335,9 @@ export default function AssessmentSectionScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
+      <Stack.Screen options={{ title }} />
       <ScrollView contentContainerStyle={styles.content}>
-        <SectionHeader title={title} />
         <SectionLegend section={section} />
         {isReadOnly ? (
           <View accessibilityRole="text" style={styles.readOnlyNotice}>

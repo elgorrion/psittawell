@@ -37,7 +37,7 @@
     "unavailable": "Dieser Assessment-Abschnitt konnte nicht geöffnet werden.",
     "overview": {
       "title": "Assessment",
-      "namedTitle": "Assessment - %{name}",
+      "namedTitle": "Assessment – %{name}",
       "description": "Öffnen Sie einen Abschnitt, machen Sie dort weiter, wo Sie aufgehört haben, oder frieren Sie das Assessment ein, wenn Sie fertig sind.",
       "descriptionCompleted": "Dieses Assessment ist abgeschlossen. Sie können jeden Abschnitt ansehen, aber die Antworten sind eingefroren.",
       "loading": "Dieses Assessment wird geöffnet...",
@@ -64,6 +64,7 @@
       }
     },
     "results": {
+      "headerTitle": "Wohlbefindensübersicht",
       "title": "Wohlbefindensübersicht",
       "namedTitle": "Wohlbefindensübersicht für %{name}",
       "loading": "Die Wohlbefindensübersicht wird vorbereitet...",
@@ -95,6 +96,7 @@
       "monthlyNote": "Sie können das Assessment monatlich wiederholen, um Veränderungen im Zeitverlauf zu beobachten."
     },
     "trends": {
+      "headerTitle": "Veränderung im Zeitverlauf",
       "title": "Wie sich diese Indikatoren verändert haben",
       "namedTitle": "Wie sich diese Indikatoren für %{name} verändert haben",
       "loading": "Die Veränderung im Zeitverlauf wird vorbereitet...",
