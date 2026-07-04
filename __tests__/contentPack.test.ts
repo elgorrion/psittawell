@@ -14,12 +14,16 @@ describe('content pack', () => {
     expect(() => validateContentPack(psittawelContentPack)).not.toThrow();
     expect(psittawelContentPack.instrument).toBe('PsittaWel');
     expect(psittawelContentPack.instrument_version).toBe('1');
-    expect(psittawelContentPack.sections).toHaveLength(5);
+    expect(psittawelContentPack.sections).toHaveLength(8);
     expect(psittawelContentPack.sections[0].questions).toHaveLength(10);
     expect(psittawelContentPack.sections[1].questions).toHaveLength(7);
     expect(psittawelContentPack.sections[2].questions).toHaveLength(23);
     expect(psittawelContentPack.sections[3].questions).toHaveLength(8);
     expect(psittawelContentPack.sections[4].questions).toHaveLength(11);
+    expect(psittawelContentPack.sections[5].questions).toHaveLength(3);
+    expect(psittawelContentPack.sections[6].questions).toHaveLength(10);
+    expect(psittawelContentPack.sections[7].questions).toHaveLength(3);
+    expect(psittawelContentPack.sections.flatMap((section) => section.questions)).toHaveLength(75);
   });
 
   it('keeps Section 1 authored order and welfare mappings', () => {
@@ -369,6 +373,228 @@ describe('content pack', () => {
     });
   });
 
+  it('keeps Section 6 authored order, reversed groups, and behaviour-urgent mappings', () => {
+    const section = psittawelContentPack.sections[5];
+    const possibilities = choiceQuestion(section.questions[0]);
+    const socialInteractions = matrixQuestion(section.questions[1]);
+    const behaviours = matrixQuestion(section.questions[2]);
+
+    expect(section.id).toBe('s6_social');
+    expect(section.indicator_icon).toBe('parrot');
+    expect(section.questions.map((question) => question.id)).toEqual([
+      'q_s6_social_possibilities',
+      'q_s6_social_interactions',
+      'q_s6_behaviours',
+    ]);
+    expect(possibilities.flags).toEqual(['context_dependent']);
+    expect(possibilities.options.map((option) => option.welfare_level)).toEqual([
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]);
+    expect(possibilities.options.flatMap((option) => option.flags)).toEqual([]);
+    expect(socialInteractions.row_groups.map((group) => group.label)).toEqual([
+      null,
+      null,
+      null,
+    ]);
+    expect(socialInteractions.row_groups[0].columns.map((column) => column.label)).toEqual([
+      'On all or most encounters',
+      'On some encounters',
+      'Rarely to never',
+    ]);
+    expect(socialInteractions.row_groups[1].columns.map((column) => column.label)).toEqual([
+      'Rarely to never',
+      'On some encounters',
+      'On all or most encounters',
+    ]);
+    expect(socialInteractions.row_groups[1].columns.map((column) => column.welfare_level)).toEqual([
+      'optimal',
+      'moderate',
+      'high_risk',
+    ]);
+    expect(socialInteractions.row_groups[2].columns[2]).toMatchObject({
+      label: 'On all or most encounters',
+      welfare_level: null,
+      flags: ['behaviour_urgent'],
+    });
+    expect(behaviours.row_groups[0].rows[1].label).toBe(
+      'Actively seeking or spending time in dark, enclosed, or secluded spaces such us underneath furniture, inside drawers or cabinets, behind cushions, or in boxes or clothing.',
+    );
+    expect(behaviours.row_groups[1].columns[3]).toMatchObject({
+      label: 'Every day',
+      welfare_level: null,
+      flags: ['behaviour_urgent'],
+    });
+  });
+
+  it('keeps Section 7 authored order, hand/parrot indicators, labels, and null columns', () => {
+    const section = psittawelContentPack.sections[6];
+    const hoursSurrounded = choiceQuestion(section.questions[0]);
+    const allowedBehaviours = matrixQuestion(section.questions[1]);
+    const interactions = matrixQuestion(section.questions[2]);
+    const trainingResponse = choiceQuestion(section.questions[3]);
+    const behavioursTowardsHumans = matrixQuestion(section.questions[4]);
+    const displayToHowMany = matrixQuestion(section.questions[5]);
+    const caregiverResponse = matrixQuestion(section.questions[6]);
+    const familiarResponse = matrixQuestion(section.questions[7]);
+    const maintenancePresence = matrixQuestion(section.questions[8]);
+    const highLocations = matrixQuestion(section.questions[9]);
+
+    expect(section.id).toBe('s7_human');
+    expect(section.indicator_icon).toBe('hand');
+    expect(section.questions.map((question) => question.id)).toEqual([
+      'q_s7_hours_surrounded',
+      'q_s7_allowed_behaviours',
+      'q_s7_interactions',
+      'q_s7_training_response',
+      'q_s7_behaviours_towards_humans',
+      'q_s7_display_to_how_many',
+      'q_s7_caregiver_response',
+      'q_s7_familiar_response',
+      'q_s7_maintenance_presence',
+      'q_s7_high_locations',
+    ]);
+    expect(hoursSurrounded.flags).toEqual(['context_dependent']);
+    expect(hoursSurrounded.options.map((option) => option.label)).toEqual([
+      '> 8h',
+      '4h - 8h',
+      '2h – 4h',
+      'It varies greatly per day',
+      'All time, including night',
+      '<1h',
+    ]);
+    expect(hoursSurrounded.options.map((option) => option.welfare_level)).toEqual([
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]);
+    expect(allowedBehaviours.indicator_icon).toBe('hand');
+    expect(interactions.indicator_icon).toBe('hand');
+    expect(trainingResponse.indicator_icon).toBe('parrot');
+    expect(trainingResponse.prompt).toBe('How does your parrot respond during a training session?');
+    expect(trainingResponse.note).toBe('Please answer only if you train your parrot.');
+    expect(behavioursTowardsHumans.indicator_icon).toBe('parrot');
+    expect(behavioursTowardsHumans.row_groups.map((group) => group.label)).toEqual([
+      'Indicators of a positive relationship',
+      'Indicators of an inappropriate or problematic relationships',
+      null,
+    ]);
+    expect(behavioursTowardsHumans.row_groups[0].rows[2].label).toBe(
+      'Voluntarily steps up onto the hand, arm, or an offered perch without encouragement',
+    );
+    expect(behavioursTowardsHumans.row_groups[2].columns[3]).toMatchObject({
+      label: 'Every day',
+      welfare_level: null,
+      flags: ['behaviour_urgent'],
+    });
+    expect(displayToHowMany.prompt).toBe(
+      'To how many people does your parrot display each of the above selected behaviour(s)?',
+    );
+    expect(displayToHowMany.row_groups[0].columns.map((column) => column.welfare_level)).toEqual([
+      null,
+      null,
+      null,
+    ]);
+    expect(displayToHowMany.row_groups[0].columns.flatMap((column) => column.flags)).toEqual([]);
+    expect(displayToHowMany.row_groups[0].rows[2].label).toBe(
+      'Voluntarily steps up onto your hand, arm, or an offered perch without encouragement',
+    );
+    expect(caregiverResponse.row_groups.map((group) => group.columns.at(-1))).toEqual([
+      expect.objectContaining({
+        label: "I don't know",
+        welfare_level: null,
+        flags: ['dont_know'],
+      }),
+      expect.objectContaining({
+        label: "I don't know",
+        welfare_level: null,
+        flags: ['dont_know'],
+      }),
+      expect.objectContaining({
+        label: "I don't know",
+        welfare_level: null,
+        flags: ['dont_know'],
+      }),
+    ]);
+    expect(familiarResponse.row_groups[0].rows[2].label).toBe(
+      'My parrot initiates physical contact itself and actively approaching them for it',
+    );
+    expect(maintenancePresence.row_groups.map((group) => group.columns[1].welfare_level)).toEqual([
+      'high_risk',
+      'elevated_risk',
+      'moderate',
+    ]);
+    expect(highLocations.row_groups.map((group) => group.columns[1].welfare_level)).toEqual([
+      'high_risk',
+      'elevated_risk',
+      'moderate',
+    ]);
+  });
+
+  it('keeps Section 8 authored order, fear grid rows, and abnormal behaviour groups', () => {
+    const section = psittawelContentPack.sections[7];
+    const vocalizations = choiceQuestion(section.questions[0]);
+    const fearDisplay = gridQuestion(section.questions[1]);
+    const abnormalBehaviours = matrixQuestion(section.questions[2]);
+
+    expect(section.id).toBe('s8_maladaptive');
+    expect(section.indicator_icon).toBe('parrot');
+    expect(section.questions.map((question) => question.id)).toEqual([
+      'q_s8_vocalizations',
+      'q_s8_fear_display',
+      'q_s8_abnormal_behaviours',
+    ]);
+    expect(vocalizations.options[4]).toMatchObject({
+      label: 'For the majority of the day, and sometimes incessantly for hours with no apparent reason or cause',
+      welfare_level: null,
+      flags: ['behaviour_urgent'],
+    });
+    expect(vocalizations.options[5]).toMatchObject({
+      label: "I don't know",
+      welfare_level: null,
+      flags: ['dont_know'],
+    });
+    expect(fearDisplay.selection).toBe('single_per_group');
+    expect(fearDisplay.column_groups).toHaveLength(1);
+    expect(fearDisplay.column_groups[0].columns.map((column) => column.welfare_level)).toEqual([
+      'optimal',
+      'good',
+      'moderate',
+      'elevated_risk',
+      null,
+      null,
+    ]);
+    expect(fearDisplay.column_groups[0].columns[4].flags).toEqual(['behaviour_urgent']);
+    expect(fearDisplay.column_groups[0].columns[5].flags).toEqual(['dont_know']);
+    expect(fearDisplay.rows.map((row) => [row.id, row.label])).toEqual([
+      ['row_s8_fear_tremors', 'Tremors or shivering, freezing, hiding, withdrawing'],
+      [
+        'row_s8_fear_escape',
+        'Attempting to escape by flying or moving away, possibly falling off the perch, screeching/high-pitched screams',
+      ],
+    ]);
+    expect(abnormalBehaviours.row_groups).toHaveLength(2);
+    expect(abnormalBehaviours.row_groups[0].rows).toHaveLength(9);
+    expect(abnormalBehaviours.row_groups[1].rows).toHaveLength(3);
+    expect(abnormalBehaviours.row_groups[0].columns[1]).toMatchObject({
+      label: 'Yes',
+      welfare_level: null,
+      flags: ['behaviour_urgent'],
+    });
+    expect(abnormalBehaviours.row_groups[1].columns[1]).toMatchObject({
+      label: 'Yes',
+      welfare_level: 'moderate',
+      flags: [],
+    });
+  });
+
   it('rejects duplicate section ids', () => {
     const pack = clonePack();
 
@@ -485,6 +711,29 @@ describe('content pack', () => {
     question.row_groups[0].columns[0].flags = ['unknown' as never];
 
     expect(() => validateContentPack(pack)).toThrow('Unknown column col_signs_acute_no flags');
+  });
+
+  it('accepts matrix row group labels when they are strings or null', () => {
+    const pack = clonePack();
+    const question = matrixQuestion(pack.sections[6].questions[4]);
+
+    expect(question.row_groups.map((group) => group.label)).toEqual([
+      'Indicators of a positive relationship',
+      'Indicators of an inappropriate or problematic relationships',
+      null,
+    ]);
+    expect(() => validateContentPack(pack)).not.toThrow();
+  });
+
+  it('rejects invalid matrix row group labels', () => {
+    const pack = clonePack();
+    const question = matrixQuestion(pack.sections[6].questions[4]);
+
+    question.row_groups[0].label = 42 as never;
+
+    expect(() => validateContentPack(pack)).toThrow(
+      'Question q_s7_behaviours_towards_humans row group 1 label must be a string or null.',
+    );
   });
 
   it('rejects unknown question-level flags', () => {

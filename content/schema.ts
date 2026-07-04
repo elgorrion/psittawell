@@ -132,6 +132,7 @@ export type Option = {
 };
 
 export type RowGroup = {
+  label?: string | null;
   columns: Column[];
   rows: Row[];
 };
@@ -304,6 +305,16 @@ function validateMatrixQuestion(question: MatrixQuestion) {
   const rowIds = new Set<string>();
 
   for (const [groupIndex, rowGroup] of question.row_groups.entries()) {
+    if (
+      rowGroup.label !== undefined &&
+      rowGroup.label !== null &&
+      typeof rowGroup.label !== 'string'
+    ) {
+      throw new Error(
+        `Question ${question.id} row group ${groupIndex + 1} label must be a string or null.`,
+      );
+    }
+
     if (!Array.isArray(rowGroup.columns) || rowGroup.columns.length === 0) {
       throw new Error(`Question ${question.id} row group ${groupIndex + 1} must include columns.`);
     }

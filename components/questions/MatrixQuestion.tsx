@@ -35,6 +35,7 @@ export function MatrixQuestion({
       {question.image_ref ? <InstrumentImage imageRef={question.image_ref} /> : null}
       {question.row_groups.map((rowGroup, groupIndex) => (
         <View key={groupIndex} style={styles.group}>
+          {rowGroup.label ? <Text style={styles.groupLabel}>{rowGroup.label}</Text> : null}
           {rowGroup.rows.map((row) => (
             <MatrixRow
               columns={rowGroup.columns}
@@ -152,6 +153,12 @@ const styles = StyleSheet.create({
   },
   group: {
     gap: 12,
+  },
+  groupLabel: {
+    color: colors.spruceInk,
+    fontSize: 15,
+    fontWeight: '800',
+    lineHeight: 20,
   },
   rowCard: {
     backgroundColor: colors.paper,

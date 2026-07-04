@@ -57,6 +57,10 @@
       "title": "How to interpret your answers",
       "goodDirection": "↑ likelihood for good welfare",
       "riskDirection": "↑ risk for compromised welfare",
+      "goodWelfareIndicator": "Indicator of good welfare",
+      "compromisedWelfareIndicator": "Indicator of compromised welfare",
+      "handGoodDirection": "↑ likelihood to build an appropriate positive relationship",
+      "handRiskDirection": "↑ risk for inappropriate or problematic relationship",
       "gradientAccessibility": "Five-level welfare gradient from optimal to high risk.",
       "orderingNote": "Answer options with icons are always ordered from most optimal to least desired, top to bottom.",
       "markersTitle": "Markers used in this section"

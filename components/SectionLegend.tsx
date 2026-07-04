@@ -17,16 +17,27 @@ type Props = {
   section: Section;
 };
 
+type DirectionRow = {
+  id: string;
+  good: string;
+  risk: string;
+};
+
 export function SectionLegend({ section }: Props) {
   const flags = getSectionLegendFlags(section);
   const guidance = getSectionLegendGuidance(section.interpretation);
+  const directionRows = getSectionLegendDirectionRows(section);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{t('assessment.legend.title')}</Text>
-      <View style={styles.directionRow}>
-        <Text style={styles.goodDirection}>{t('assessment.legend.goodDirection')}</Text>
-        <Text style={styles.riskDirection}>{t('assessment.legend.riskDirection')}</Text>
+      <View style={styles.directionRows}>
+        {directionRows.map((row) => (
+          <View key={row.id} style={styles.directionRow}>
+            <Text style={styles.goodDirection}>{row.good}</Text>
+            <Text style={styles.riskDirection}>{row.risk}</Text>
+          </View>
+        ))}
       </View>
       <View
         accessible
@@ -128,6 +139,36 @@ export function getSectionLegendFlags(section: Section): OptionFlag[] {
   return legendFlagOrder.filter((flag) => usedFlags.has(flag));
 }
 
+export function getSectionLegendDirectionRows(section: Section): DirectionRow[] {
+  const welfareDirection = {
+    id: 'welfare',
+    good: t('assessment.legend.goodDirection'),
+    risk: t('assessment.legend.riskDirection'),
+  };
+  const parrotDirection = {
+    id: 'parrot',
+    good: t('assessment.legend.goodWelfareIndicator'),
+    risk: t('assessment.legend.compromisedWelfareIndicator'),
+  };
+
+  if (section.id === 's7_human') {
+    return [
+      {
+        id: 'hand',
+        good: t('assessment.legend.handGoodDirection'),
+        risk: t('assessment.legend.handRiskDirection'),
+      },
+      parrotDirection,
+    ];
+  }
+
+  if (section.indicator_icon === 'parrot') {
+    return [parrotDirection];
+  }
+
+  return [welfareDirection];
+}
+
 export function getSectionLegendGuidance(interpretation: string): string {
   const sentences = interpretation
     .match(/[^.]+(?:\.|$)/g)
@@ -156,6 +197,9 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     lineHeight: 24,
     textAlign: 'center',
+  },
+  directionRows: {
+    gap: 8,
   },
   directionRow: {
     alignItems: 'flex-start',

@@ -2913,6 +2913,1737 @@
           ]
         }
       ]
+    },
+    {
+      "id": "s6_social",
+      "number": 6,
+      "title": "Social and reproductive behaviours",
+      "indicator_icon": "parrot",
+      "interpretation": "How to interpret your answers: ↑ welfare indicator in good condition (top/left) → ↑ risk for compromised welfare (bottom/right). For colourblind people, the answer options accompanied with icons are arranged in order from most optimal to least desired, either from top to bottom or from left to right. This section uses parrot icons for animal-based indicators. The badges below mean: 'Context dependent' — Question reflecting a behaviour that depends on the parrot's characteristics (e.g., personality, species, rearing history, prior life experiences) or husbandry practices or types of interaction whose benefits vary according to these characteristics. 'Behaviour urgent' — a behavioural problem that requires immediate behavioural consultant intervention. An avian veterinarian or a certified parrot behavioural consultant can help review your assessment results and, if needed, develop an effective plan to improve your parrot's welfare.",
+      "questions": [
+        {
+          "id": "q_s6_social_possibilities",
+          "type": "single_choice",
+          "prompt": "Please select the option that best describes your parrot's possibilities to socially interact with other parrots.",
+          "help": "Please note that parrots are highly social animals, and living in group is important for their welfare. However, introducing new individuals should always be carefully evaluated with an expert to ensure it is suitable and safe for all parrots involved.",
+          "flags": [
+            "context_dependent"
+          ],
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s6_social_possibilities_multiple_all_times",
+              "label": "My parrot can physically interact with multiple other parrots at all times.",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s6_social_possibilities_one_all_times",
+              "label": "My parrot can physically interact with one other parrot at all times.",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s6_social_possibilities_times_day",
+              "label": "Opportunities for my parrot to interact physically with one or more parrots are limited to certain times of the day.",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s6_social_possibilities_times_week",
+              "label": "Opportunities for my parrot to interact physically with one or more parrots are limited to certain times of the week.",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s6_social_possibilities_visual_vocal",
+              "label": "Opportunities for my parrot to interact are limited to visual contact and vocal communication; there are no opportunities for physical contact",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s6_social_possibilities_alone",
+              "label": "My parrot lives alone and does not have any type of contact with other parrots.",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s6_social_interactions",
+          "type": "matrix",
+          "prompt": "How frequently do the following types of social interactions occur between your parrot and other parrots?",
+          "demographic": false,
+          "conditional_on": null,
+          "row_groups": [
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s6_social_interactions_affiliative_all_most",
+                  "label": "On all or most encounters",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s6_social_interactions_affiliative_some",
+                  "label": "On some encounters",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s6_social_interactions_affiliative_rarely_never",
+                  "label": "Rarely to never",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s6_social_interactions_beside",
+                  "label": "Staying right beside another parrot",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_social_interactions_feeding",
+                  "label": "Feeding alongside another parrot",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_social_interactions_preening_other",
+                  "label": "Preening another parrot",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_social_interactions_being_preened",
+                  "label": "Being preened by another parrot",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_social_interactions_vocal",
+                  "label": "Vocally interacting with another parrot (contact calls)",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s6_social_interactions_reproductive_rarely_never",
+                  "label": "Rarely to never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s6_social_interactions_reproductive_some",
+                  "label": "On some encounters",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s6_social_interactions_reproductive_all_most",
+                  "label": "On all or most encounters",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s6_social_interactions_mating",
+                  "label": "Mating with another parrot",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_social_interactions_regurgitating_for",
+                  "label": "Regurgitating food for another parrot",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_social_interactions_regurgitated_by",
+                  "label": "Having food regurgitated by another parrot",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_social_interactions_stalking",
+                  "label": "Stalking (i.e. following or watching insistently) another parrot",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_social_interactions_being_stalked",
+                  "label": "Being stalked (i.e. followed or watched insistently) by another parrot",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s6_social_interactions_aggressive_rarely_never",
+                  "label": "Rarely to never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s6_social_interactions_aggressive_some",
+                  "label": "On some encounters",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s6_social_interactions_aggressive_all_most",
+                  "label": "On all or most encounters",
+                  "welfare_level": null,
+                  "flags": [
+                    "behaviour_urgent"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s6_social_interactions_attacking",
+                  "label": "Attacking (biting, lunging) another parrot",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_social_interactions_being_attacked",
+                  "label": "Being attacked (bitten or lunged at) by another parrot",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s6_behaviours",
+          "type": "matrix",
+          "prompt": "How frequently do you observe the following behaviours in your parrot?",
+          "demographic": false,
+          "conditional_on": null,
+          "row_groups": [
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s6_behaviours_reproductive_never",
+                  "label": "Never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s6_behaviours_reproductive_monthly",
+                  "label": "Monthly",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s6_behaviours_reproductive_weekly",
+                  "label": "Weekly",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s6_behaviours_reproductive_every_day",
+                  "label": "Every day",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s6_behaviours_cloaca_rubbing",
+                  "label": "Rubbing its cloaca (vent area) against objects such as perches, cage bars, toys",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_behaviours_dark_spaces",
+                  "label": "Actively seeking or spending time in dark, enclosed, or secluded spaces such us underneath furniture, inside drawers or cabinets, behind cushions, or in boxes or clothing.",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_behaviours_egg_laying",
+                  "label": "Egg laying",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_behaviours_regurgitating_body",
+                  "label": "Regurgitating food and directing it towards its own body parts (for example, its foot)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s6_behaviours_regurgitating_item",
+                  "label": "Regurgitating food on a special toy or item in the cage",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s6_behaviours_territorial_never",
+                  "label": "Never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s6_behaviours_territorial_monthly",
+                  "label": "Monthly",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s6_behaviours_territorial_weekly",
+                  "label": "Weekly",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s6_behaviours_territorial_every_day",
+                  "label": "Every day",
+                  "welfare_level": null,
+                  "flags": [
+                    "behaviour_urgent"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s6_behaviours_territorial_aggression",
+                  "label": "Lunging, biting, vocalizing aggressively, or chasing anyone who approaches or gets too close to a specific area (for example, cage, nest)",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s7_human",
+      "number": 7,
+      "title": "Parrot-human interactions",
+      "indicator_icon": "hand",
+      "interpretation": "How to interpret your answers: ↑ likelihood to build an appropriate positive relationship (top/left) → ↑ risk for inappropriate or problematic relationship (bottom/right). For parrot-based indicators: ↑ welfare indicator in good condition (top/left) → ↑ risk for compromised welfare (bottom/right). For colourblind people, the answer options accompanied with icons are arranged in order from most optimal to least desired, either from top to bottom or from left to right. This section uses hand icons for parrot-human interaction indicators and parrot icons for animal-based indicators. 🔍 Observe: an opportunity to learn more about your parrot's behaviours and needs by observing your bird in daily life (directly or via camera) and reflecting on the care, environment, and daily interactions you provide. Please note that the grading scales in this section are all indicative. The extent to which different types of interactions with your parrots and your parrot's behaviours contribute on building a positive or problematic relationship can vary depending on the living context, rearing history, prior life experiences and on individual characteristics such as species, personality, and age. These effects also depend on how many of these interactions or behaviours occur, how they combine, and how frequently they take place. 'Behaviour urgent' — a behavioural problem that requires immediate behavioural consultant intervention. An avian veterinarian or a certified parrot behavioural consultant can help review your assessment results and, if needed, develop an effective plan to improve your parrot's welfare.",
+      "questions": [
+        {
+          "id": "q_s7_hours_surrounded",
+          "type": "single_choice",
+          "prompt": "How many hours per day is your parrot surrounded by you and/or familiar people (for example, partner, family member)?",
+          "flags": [
+            "context_dependent"
+          ],
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s7_hours_surrounded_more_than_8",
+              "label": "> 8h",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s7_hours_surrounded_4_8",
+              "label": "4h - 8h",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s7_hours_surrounded_2_4",
+              "label": "2h – 4h",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s7_hours_surrounded_varies",
+              "label": "It varies greatly per day",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s7_hours_surrounded_all_time_night",
+              "label": "All time, including night",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s7_hours_surrounded_less_than_1",
+              "label": "<1h",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s7_allowed_behaviours",
+          "type": "matrix",
+          "prompt": "How often do you allow your parrot to engage in the following behaviours?",
+          "flags": [
+            "context_dependent"
+          ],
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "hand",
+          "row_groups": [
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_allowed_body_never",
+                  "label": "Never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_allowed_body_monthly",
+                  "label": "Monthly",
+                  "welfare_level": "good",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_allowed_body_weekly",
+                  "label": "Weekly",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_allowed_body_every_day",
+                  "label": "Every day",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_allowed_shoulder_lap",
+                  "label": "Sitting on shoulder, lap, or another part of the human body excluding the hands",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_allowed_preening",
+                  "label": "Gently nibbling or grooming hair, beard, eyelashes, or human skin with its beak (preening)",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_allowed_clothes_never",
+                  "label": "Never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_allowed_clothes_monthly",
+                  "label": "Monthly",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_allowed_clothes_weekly",
+                  "label": "Weekly",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_allowed_clothes_every_day",
+                  "label": "Every day",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_allowed_under_clothes",
+                  "label": "Crawling under clothes or blankets",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s7_interactions",
+          "type": "matrix",
+          "prompt": "How often do the following interactions take place with the parrot?",
+          "flags": [
+            "context_dependent"
+          ],
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "hand",
+          "row_groups": [
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_interactions_positive_every_day",
+                  "label": "Every day",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_interactions_positive_weekly",
+                  "label": "Weekly",
+                  "welfare_level": "good",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_interactions_positive_monthly",
+                  "label": "Monthly",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_interactions_positive_never",
+                  "label": "Never",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_interactions_head",
+                  "label": "Petting the parrot's head, cheeks and/or neck",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_vocalizations",
+                  "label": "Gently responding to the parrot's vocalizations",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_talking",
+                  "label": "Talking to the parrot",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_music",
+                  "label": "Playing music for my parrot",
+                  "help": "It should be played at a low volume and avoided when the bird is sleeping or resting",
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_training",
+                  "label": "Training the parrot",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_interactions_problematic_never",
+                  "label": "Never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_interactions_problematic_monthly",
+                  "label": "Monthly",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_interactions_problematic_weekly",
+                  "label": "Weekly",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_interactions_problematic_every_day",
+                  "label": "Every day",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_interactions_under_wings",
+                  "label": "Petting the parrot under the wings",
+                  "help": "Excluding briefly checking under the wings to assess feather condition or presence of injuries.",
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_chest",
+                  "label": "Petting the parrot's chest",
+                  "help": "Excluding when the pectoral muscle condition score is being assessed.",
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_back_tail",
+                  "label": "Petting the parrot's back and tail",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_beak_shaking",
+                  "label": "Holding and shaking the parrot's beak while playing",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_kissing",
+                  "label": "Kissing the parrot",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_mouth_food",
+                  "label": "Providing food by mouth or allowing the parrot to eat from the mouth",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_yelling",
+                  "label": "Yelling at the parrot",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_pressing_chest",
+                  "label": "Pressing on parrot's chest to encourage it to step up onto hands, arms, or an offered perch",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_holding_body",
+                  "label": "Holding the parrot's body in the hands (with or without gloves or a towel)",
+                  "help": "Excluding brief handling for physical condition assessments or medical examinations.",
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_interactions_net_towel",
+                  "label": "Grabbing the parrot with a net or a towel",
+                  "help": "Excluding brief handling for physical condition assessments or medical examinations.",
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s7_training_response",
+          "type": "single_choice",
+          "prompt": "How does your parrot respond during a training session?",
+          "note": "Please answer only if you train your parrot.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s7_training_response_focused_quick",
+              "label": "Very focused and responds quickly.",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s7_training_response_mostly_focused",
+              "label": "Mostly focused but gets distracted sometimes.",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s7_training_response_sometimes_distracted",
+              "label": "Responds sometimes but often gets distracted.",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s7_training_response_rarely_focused",
+              "label": "Rarely focused, responds only occasionally.",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s7_training_response_no_interest",
+              "label": "Does not respond or shows no interest in training.",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s7_training_response_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": [
+                "dont_know"
+              ],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s7_behaviours_towards_humans",
+          "type": "matrix",
+          "prompt": "How frequently does your parrot display the following behaviours towards humans?",
+          "flags": [
+            "context_dependent"
+          ],
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "row_groups": [
+            {
+              "label": "Indicators of a positive relationship",
+              "columns": [
+                {
+                  "id": "col_s7_human_positive_every_day",
+                  "label": "Every day",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_human_positive_weekly",
+                  "label": "Weekly",
+                  "welfare_level": "good",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_human_positive_monthly",
+                  "label": "Monthly",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_human_positive_never",
+                  "label": "Never",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_human_offer_head",
+                  "label": "Offering the head/neck to be petted",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_human_contact_calls",
+                  "label": "Contact calls/vocalizations",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_human_step_up_the",
+                  "label": "Voluntarily steps up onto the hand, arm, or an offered perch without encouragement",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": "Indicators of an inappropriate or problematic relationships",
+              "columns": [
+                {
+                  "id": "col_s7_human_problematic_never",
+                  "label": "Never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_human_problematic_monthly",
+                  "label": "Monthly",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_human_problematic_weekly",
+                  "label": "Weekly",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_human_problematic_every_day",
+                  "label": "Every day",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_human_begging",
+                  "label": "Begging for food (raise its wings, flutter them and bob its head up, and down in a rhythmic pattern)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_human_regurgitating",
+                  "label": "Regurgitating food",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_human_masturbating",
+                  "label": "Masturbating (rubbing the cloaca against humans)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_human_mating_solicitation",
+                  "label": "Mating solicitation posture (head lowered, tail raised)",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_human_biting_never",
+                  "label": "Never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_human_biting_monthly",
+                  "label": "Monthly",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_human_biting_weekly",
+                  "label": "Weekly",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_human_biting_every_day",
+                  "label": "Every day",
+                  "welfare_level": null,
+                  "flags": [
+                    "behaviour_urgent"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_human_biting",
+                  "label": "Approaching a person and biting",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s7_display_to_how_many",
+          "type": "matrix",
+          "prompt": "To how many people does your parrot display each of the above selected behaviour(s)?",
+          "note": "Please answer this question only if your parrot exhibits any of the behaviours listed in the previous table.",
+          "demographic": false,
+          "conditional_on": null,
+          "row_groups": [
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_display_to_everyone",
+                  "label": "To everyone",
+                  "welfare_level": null,
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_display_to_few_people",
+                  "label": "To a few people",
+                  "welfare_level": null,
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_display_to_only_me",
+                  "label": "Only to me",
+                  "welfare_level": null,
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_display_offer_head",
+                  "label": "Offering the head/neck to be petted",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_display_contact_calls",
+                  "label": "Contact calls/vocalizations",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_display_step_up_your",
+                  "label": "Voluntarily steps up onto your hand, arm, or an offered perch without encouragement",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_display_begging",
+                  "label": "Begging for food (raise its wings, flutter them and bob its head up, and down in a rhythmic pattern)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_display_regurgitating",
+                  "label": "Regurgitating food",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_display_masturbating",
+                  "label": "Masturbating (rubbing the cloaca against humans)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_display_mating_solicitation",
+                  "label": "Mating solicitation posture (head lowered, tail raised)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_display_biting",
+                  "label": "Approaching a person and biting",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s7_caregiver_response",
+          "type": "matrix",
+          "prompt": "How does your parrot respond to you as the caregiver?",
+          "flags": [
+            "context_dependent"
+          ],
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "row_groups": [
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_caregiver_positive_every_most",
+                  "label": "Every or most times",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_caregiver_positive_sometimes",
+                  "label": "Sometimes",
+                  "welfare_level": "good",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_caregiver_positive_rarely_never",
+                  "label": "Rarely to never",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_caregiver_positive_dont_know",
+                  "label": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_caregiver_seeks_proximity",
+                  "label": "My parrot seeks proximity to me when I am around",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_caregiver_accepts_contact",
+                  "label": "My parrot accepts physical contact initiated by me",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_caregiver_initiates_contact",
+                  "label": "My parrot initiates physical contact itself and actively approaches me for it",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_caregiver_freeze_rarely_never",
+                  "label": "Rarely to never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_caregiver_freeze_sometimes",
+                  "label": "Sometimes",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_caregiver_freeze_every_most",
+                  "label": "Every or most times",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_caregiver_freeze_dont_know",
+                  "label": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_caregiver_still",
+                  "label": "My parrot stays completely still and does not react when I am approaching it",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_caregiver_urgent_rarely_never",
+                  "label": "Rarely to never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_caregiver_urgent_sometimes",
+                  "label": "Sometimes",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_caregiver_urgent_every_most",
+                  "label": "Every or most times",
+                  "welfare_level": null,
+                  "flags": [
+                    "behaviour_urgent"
+                  ]
+                },
+                {
+                  "id": "col_s7_caregiver_urgent_dont_know",
+                  "label": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_caregiver_lunge_bite_chase",
+                  "label": "My parrot tries to lunge, attempt to bite or chase me when I am approaching it",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_caregiver_escape_avoid",
+                  "label": "My parrot tries to escape and avoid contact when I am approaching it",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s7_familiar_response",
+          "type": "matrix",
+          "prompt": "How does your parrot respond to a familiar person (for example, partner, family member, friend)?",
+          "flags": [
+            "context_dependent"
+          ],
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "row_groups": [
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_familiar_positive_every_most",
+                  "label": "Every or most times",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_familiar_positive_sometimes",
+                  "label": "Sometimes",
+                  "welfare_level": "good",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_familiar_positive_rarely_never",
+                  "label": "Rarely to never",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_familiar_positive_dont_know",
+                  "label": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_familiar_seeks_proximity",
+                  "label": "My parrot seeks proximity to them when they are around",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_familiar_accepts_contact",
+                  "label": "My parrot accepts physical contact initiated by them",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_familiar_initiates_contact",
+                  "label": "My parrot initiates physical contact itself and actively approaching them for it",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_familiar_negative_rarely_never",
+                  "label": "Rarely to never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_familiar_negative_sometimes",
+                  "label": "Sometimes",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_familiar_negative_every_most",
+                  "label": "Every or most times",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_familiar_negative_dont_know",
+                  "label": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_familiar_still",
+                  "label": "My parrot stays completely still and does not react when they are approaching it",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_familiar_lunge_bite_chase",
+                  "label": "My parrot tries to lunge, attempt to bite or chase them when they are approaching it",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_familiar_escape_avoid",
+                  "label": "My parrot tries to escape and avoid contact when they are approaching it",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s7_maintenance_presence",
+          "type": "matrix",
+          "prompt": "Does your parrot eat, drink, rest and/or clean its feathers…",
+          "help": "Please note that a negative behavioural response may not change, but you can help prevent it by avoiding the situations that trigger it.",
+          "flags": [
+            "context_dependent"
+          ],
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "row_groups": [
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_maintenance_close_yes",
+                  "label": "Yes",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_maintenance_close_no",
+                  "label": "No",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_maintenance_close_dont_know",
+                  "label": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_maintenance_your_presence",
+                  "label": "in your presence?",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_maintenance_household",
+                  "label": "in the presence of all household members?",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_maintenance_regular_yes",
+                  "label": "Yes",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_maintenance_regular_no",
+                  "label": "No",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_maintenance_regular_dont_know",
+                  "label": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_maintenance_regular_people",
+                  "label": "in presence of people that come by regularly?",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_maintenance_infrequent_yes",
+                  "label": "Yes",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_maintenance_infrequent_no",
+                  "label": "No",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_maintenance_infrequent_dont_know",
+                  "label": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_maintenance_infrequent_people",
+                  "label": "in presence of people that come by infrequently?",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s7_high_locations",
+          "type": "matrix",
+          "prompt": "Does your parrot spend most of its time in high locations out of human reach…",
+          "help": "Please note that a negative behavioural response may not change, but you can help prevent it by avoiding the situations that trigger it.",
+          "flags": [
+            "context_dependent"
+          ],
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "row_groups": [
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_high_close_no",
+                  "label": "No",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_high_close_yes",
+                  "label": "Yes",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_high_close_dont_know",
+                  "label": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_high_your_presence",
+                  "label": "in your presence?",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s7_high_household",
+                  "label": "in the presence of all household members?",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_high_regular_no",
+                  "label": "No",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_high_regular_yes",
+                  "label": "Yes",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_high_regular_dont_know",
+                  "label": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_high_regular_people",
+                  "label": "in presence of people that come by regularly?",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s7_high_infrequent_no",
+                  "label": "No",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_high_infrequent_yes",
+                  "label": "Yes",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s7_high_infrequent_dont_know",
+                  "label": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s7_high_infrequent_people",
+                  "label": "in presence of people that come by infrequently?",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s8_maladaptive",
+      "number": 8,
+      "title": "Maladaptive and fear-related behaviours",
+      "indicator_icon": "parrot",
+      "interpretation": "How to interpret your answers: ↑ welfare indicator in good condition (top/left) → ↑ risk for compromised welfare (bottom/right). For colourblind people, the answer options accompanied with icons are arranged in order from most optimal to least desired, either from top to bottom or from left to right. This section uses parrot icons for animal-based indicators. The badges below mean: '🔍 Observe' — an opportunity to learn more about your parrot's behaviours and needs by observing your bird in daily life (directly or via camera) and reflecting on the care, environment, and daily interactions you provide. 'Context dependent' — Question reflecting a behaviour that depends on the parrot's characteristics (e.g., personality, species, rearing history, prior life experiences) or husbandry practices or types of interaction whose benefits vary according to these characteristics. 'Behaviour urgent' — a behavioural problem that requires immediate behavioural consultant intervention. An avian veterinarian or a certified parrot behavioural consultant can help review your assessment results and, if needed, develop an effective plan to improve your parrot's welfare.",
+      "questions": [
+        {
+          "id": "q_s8_vocalizations",
+          "type": "single_choice",
+          "prompt": "How often does your parrot produce disruptive, loud vocalizations or screams?",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s8_vocalizations_never",
+              "label": "Never",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s8_vocalizations_rarely_specific",
+              "label": "Rarely and mostly limited to specific moments of the day (for example, morning and evening) or in response to specific and uncommon situations (for example, sudden loud noise)",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s8_vocalizations_occasionally_contexts",
+              "label": "Occasionally and mostly when exposed to specific contexts (for example, when left alone, presence of unfamiliar people/guests)",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s8_vocalizations_frequently_contexts",
+              "label": "Frequently, and incessant screaming can occur but mostly in specific contexts (for example, when left alone, presence of unfamiliar people/guests)",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s8_vocalizations_majority_day",
+              "label": "For the majority of the day, and sometimes incessantly for hours with no apparent reason or cause",
+              "welfare_level": null,
+              "flags": [
+                "behaviour_urgent"
+              ],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s8_vocalizations_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": [
+                "dont_know"
+              ],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s8_fear_display",
+          "type": "grid",
+          "selection": "single_per_group",
+          "prompt": "When does your parrot display the following behaviours?",
+          "note": "Please note that the behavioural response could be linked to your parrot's personality. A negative behavioural response may not change, but you can help prevent it by avoiding the situations that trigger it.",
+          "flags": [
+            "context_dependent"
+          ],
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "column_groups": [
+            {
+              "id": "group_s8_fear_frequency",
+              "label": "",
+              "help": null,
+              "columns": [
+                {
+                  "id": "col_s8_fear_never",
+                  "label": "Never",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s8_fear_specific_uncommon",
+                  "label": "Mostly in response to specific or uncommon situations (for example, visit to the vet, sudden loud noise).",
+                  "welfare_level": "good",
+                  "flags": []
+                },
+                {
+                  "id": "col_s8_fear_outside_daily",
+                  "label": "Mostly when exposed to a certain situation, outside of its daily environment (for example, outdoor activity, visit of a new place)",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s8_fear_daily_changes",
+                  "label": "Predominantly when exposed to changes in its daily environment (for example, presence or approach by new, unfamiliar people/guests or animals, change of furniture, new house decorations, provision of new toys).",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s8_fear_most_time",
+                  "label": "Most of the time, even in its daily environment.",
+                  "welfare_level": null,
+                  "flags": [
+                    "behaviour_urgent"
+                  ]
+                },
+                {
+                  "id": "col_s8_fear_dont_know",
+                  "label": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ]
+            }
+          ],
+          "rows": [
+            {
+              "id": "row_s8_fear_tremors",
+              "label": "Tremors or shivering, freezing, hiding, withdrawing",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s8_fear_escape",
+              "label": "Attempting to escape by flying or moving away, possibly falling off the perch, screeching/high-pitched screams",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s8_abnormal_behaviours",
+          "type": "matrix",
+          "prompt": "Does your parrot exhibit any of the following behaviours?",
+          "help": "Please note that interpreting abnormal behaviours can be challenging. Whether these reflect a welfare issue depends highly on species, context and frequency with which these occur. If you observe any of these behaviours in the table, seeking expert guidance is highly recommended.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "row_groups": [
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s8_abnormal_urgent_no",
+                  "label": "No",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s8_abnormal_urgent_yes",
+                  "label": "Yes",
+                  "welfare_level": null,
+                  "flags": [
+                    "behaviour_urgent"
+                  ]
+                },
+                {
+                  "id": "col_s8_abnormal_urgent_not_sure",
+                  "label": "I am not sure",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s8_abnormal_pacing",
+                  "label": "Pacing: repetitive walking back and forth along a fixed path",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s8_abnormal_route_tracing",
+                  "label": "Route tracing: repeatedly follow the same path or pattern within its enclosure, such as moving along a specific perch, climbing the same section of the cage, or flying in a predictable loop",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s8_abnormal_swaying_rocking",
+                  "label": "Swaying and rocking: repeatedly shift its body side to side or back and forth in a rhythmic motion",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s8_abnormal_tongue",
+                  "label": "Tongue rolling and flicking: repetitive quick movement of the tongue or rolling or flicking of the tongue inside or outside the beak",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s8_abnormal_beak_clacking",
+                  "label": "Beak clacking: rapid, repetitive, excessive or compulsive clicking or clacking of the beak",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s8_abnormal_beak_rubbing",
+                  "label": "Beak rubbing: repeatedly rubbing the beak against surfaces such as perches or bars",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s8_abnormal_licking",
+                  "label": "Repetitive licking: repeated licking of surfaces such as cage bars, perches, or walls",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s8_abnormal_spot_pecking",
+                  "label": "Spot pecking: repetitively peck at a specific spot, such as a cage bar, perch, wall, or even an imaginary point",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s8_abnormal_toe_nail",
+                  "label": "Toe-nail biting: repeatedly bite or nibble at their own toes or nails",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "label": null,
+              "columns": [
+                {
+                  "id": "col_s8_abnormal_moderate_no",
+                  "label": "No",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s8_abnormal_moderate_yes",
+                  "label": "Yes",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s8_abnormal_moderate_not_sure",
+                  "label": "I am not sure",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s8_abnormal_sham_bathing",
+                  "label": "Sham bathing: mimic bathing motions without the presence of water or an appropriate bathing substrate",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s8_abnormal_sham_chewing",
+                  "label": "Sham chewing and chewing not chewable items: mimics chewing motions or engages with non-chewable objects (for example, metal bars or plastic) or surfaces",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s8_abnormal_feeding_objects",
+                  "label": "Feeding objects (for example, mirrors, toys)",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }

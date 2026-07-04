@@ -57,6 +57,10 @@
       "title": "So interpretieren Sie Ihre Antworten",
       "goodDirection": "↑ Wahrscheinlichkeit für gutes Wohlbefinden",
       "riskDirection": "↑ Risiko für beeinträchtigtes Wohlbefinden",
+      "goodWelfareIndicator": "Indikator für gutes Wohlbefinden",
+      "compromisedWelfareIndicator": "Indikator für beeinträchtigtes Wohlbefinden",
+      "handGoodDirection": "↑ Wahrscheinlichkeit, eine angemessene positive Beziehung aufzubauen",
+      "handRiskDirection": "↑ Risiko für eine unangemessene oder problematische Beziehung",
       "gradientAccessibility": "Fünfstufiger Wohlbefindensverlauf von optimal bis hohes Risiko.",
       "orderingNote": "Antwortoptionen mit Symbolen sind stets von optimal bis am wenigsten erwünscht angeordnet, von oben nach unten.",
       "markersTitle": "Marker in diesem Abschnitt"
