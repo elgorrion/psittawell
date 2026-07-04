@@ -9,6 +9,7 @@ import {
   completeAssessment,
   createFollowUpAssessment,
   countAnsweredVisibleQuestions,
+  countUnansweredVisibleQuestions,
   getAnswers,
   getAssessment,
   mapAnswersByQuestion,
@@ -124,9 +125,14 @@ export default function AssessmentOverviewScreen() {
       : t('assessment.overview.title');
 
   function handleCompleteAssessment() {
+    const unansweredCount = countUnansweredVisibleQuestions(
+      psittawelContentPack.sections,
+      answers,
+    );
+
     Alert.alert(
       t('assessment.overview.confirmTitle'),
-      t('assessment.overview.confirmMessage'),
+      getCompleteConfirmMessage(unansweredCount),
       [
         {
           text: t('assessment.overview.confirmCancel'),
@@ -320,6 +326,19 @@ function getSectionStatusLabel(progress: SectionAnswerProgress, completed: boole
   }
 
   return t('assessment.overview.status.inProgress');
+}
+
+function getCompleteConfirmMessage(unansweredCount: number) {
+  if (unansweredCount <= 0) {
+    return t('assessment.overview.confirmMessage');
+  }
+
+  return t(
+    unansweredCount === 1
+      ? 'assessment.overview.confirmMessageWithUnansweredOne'
+      : 'assessment.overview.confirmMessageWithUnansweredOther',
+    { count: unansweredCount },
+  );
 }
 
 const styles = StyleSheet.create({

@@ -11,4 +11,6 @@ export const colors = {
   text: '#17352F',
   textMuted: '#526B63',
   help: '#EEF5F1',
+  danger: '#8A2C18',
+  dangerBorder: '#B85B48',
 } as const;

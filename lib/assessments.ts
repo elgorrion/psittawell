@@ -180,6 +180,37 @@ export function listAssessments(): AssessmentSummary[] {
   }));
 }
 
+export function getLatestCompletedAssessment(): AssessmentSummary | null {
+  const database = getDatabase();
+  const row = database.getFirstSync<AssessmentSummaryRow>(
+    `
+      SELECT
+        assessment.id,
+        assessment.parrot_id,
+        assessment.instrument_version,
+        assessment.status,
+        assessment.started_at,
+        assessment.completed_at,
+        NULLIF(TRIM(name_answer.free_text), '') AS parrot_name
+      FROM assessment
+      LEFT JOIN answer AS name_answer
+        ON name_answer.assessment_id = assessment.id
+        AND name_answer.question_id = ?
+      WHERE assessment.status = ? AND assessment.completed_at IS NOT NULL
+      ORDER BY assessment.completed_at DESC, assessment.id DESC
+      LIMIT 1
+    `,
+    [parrotNameQuestionId, 'completed'],
+  );
+
+  return row
+    ? {
+        ...mapAssessmentRow(row),
+        parrotName: row.parrot_name,
+      }
+    : null;
+}
+
 export function listCompletedAssessmentsForParrot(parrotId: number): Assessment[] {
   const database = getDatabase();
   const rows = database.getAllSync<AssessmentRow>(
@@ -193,6 +224,15 @@ export function listCompletedAssessmentsForParrot(parrotId: number): Assessment[
   );
 
   return rows.map(mapAssessmentRow);
+}
+
+export function deleteAssessment(id: number): void {
+  const database = getDatabase();
+
+  database.withTransactionSync(() => {
+    database.runSync('DELETE FROM answer WHERE assessment_id = ?', [id]);
+    database.runSync('DELETE FROM assessment WHERE id = ?', [id]);
+  });
 }
 
 export function completeAssessment(id: number): void {
@@ -286,6 +326,17 @@ export function countAnsweredVisibleQuestions(
     answered,
     total: visibleQuestions.length,
   };
+}
+
+export function countUnansweredVisibleQuestions(
+  sections: readonly Section[],
+  answers: AnswerLookup,
+): number {
+  return sections.reduce((unansweredCount, section) => {
+    const progress = countAnsweredVisibleQuestions(section, answers);
+
+    return unansweredCount + Math.max(0, progress.total - progress.answered);
+  }, 0);
 }
 
 export function buildWelfareSnapshot(
