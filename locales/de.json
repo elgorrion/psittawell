@@ -11,8 +11,41 @@
     "sectionTitle": "Abschnitt %{number}: %{title}",
     "questionProgress": "Frage %{current} von %{total}",
     "consultNote": "Wenden Sie sich bei Bedenken an eine vogelkundige Tierarztpraxis oder eine zertifizierte Beratung für Papageienverhalten.",
+    "nextSection": "Nächster Abschnitt",
     "doneForNow": "Für jetzt fertig",
     "sectionUnavailable": "Abschnitt nicht verfügbar",
-    "unavailable": "Dieser Assessment-Abschnitt konnte nicht geöffnet werden."
+    "unavailable": "Dieser Assessment-Abschnitt konnte nicht geöffnet werden.",
+    "imagePlaceholder": "Bildplatzhalter",
+    "imagePlaceholderAccessibility": "Bildplatzhalter für %{label}",
+    "matrixRowAccessibility": "Optionen für %{row}",
+    "welfareLevels": {
+      "optimal": "Wohlbefindensindikator: optimal",
+      "good": "Wohlbefindensindikator: gut",
+      "moderate": "Wohlbefindensindikator: moderat",
+      "elevated_risk": "Wohlbefindensindikator: erhöhtes Risiko",
+      "high_risk": "Wohlbefindensindikator: hohes Risiko"
+    },
+    "flags": {
+      "vet_concern": {
+        "text": "Tierarzt",
+        "accessibilityLabel": "Tierarzt: möglicherweise abklärungsbedürftig"
+      },
+      "vet_urgent": {
+        "text": "Tierarzt dringend",
+        "accessibilityLabel": "Tierarzt: dringend"
+      },
+      "behaviour_urgent": {
+        "text": "Verhalten dringend",
+        "accessibilityLabel": "Verhaltensberatung: dringend"
+      },
+      "dont_know": {
+        "text": "🔍 Beobachten",
+        "accessibilityLabel": "Mehr beobachten"
+      },
+      "context_dependent": {
+        "text": "Kommt darauf an",
+        "accessibilityLabel": "Hängt von Ihrem Papagei ab"
+      }
+    }
   }
 }

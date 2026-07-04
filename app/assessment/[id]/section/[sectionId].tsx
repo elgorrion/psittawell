@@ -4,15 +4,25 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FreeTextQuestion } from '../../../../components/questions/FreeTextQuestion';
+import { MatrixQuestion } from '../../../../components/questions/MatrixQuestion';
+import { ScaleQuestion } from '../../../../components/questions/ScaleQuestion';
 import { SingleChoiceQuestion } from '../../../../components/questions/SingleChoiceQuestion';
 import { psittawelContentPack } from '../../../../content/psittawel';
-import type { ChoiceQuestion, FreeTextQuestion as FreeTextContent } from '../../../../content/schema';
+import type {
+  FreeTextQuestion as FreeTextContent,
+  MatrixQuestion as MatrixQuestionContent,
+  ScaleQuestion as ScaleQuestionContent,
+  SingleChoiceQuestion as SingleChoiceContent,
+  YesNoQuestion,
+} from '../../../../content/schema';
 import {
   buildWelfareSnapshot,
+  getMatrixRowAnswerQuestionId,
   getAnswers,
   upsertAnswer,
   type Answer,
 } from '../../../../lib/assessments';
+import { isQuestionVisible } from '../../../../lib/conditionals';
 import { t } from '../../../../lib/i18n';
 
 type LocalAnswer = {
@@ -29,6 +39,17 @@ export default function AssessmentSectionScreen() {
   const section = psittawelContentPack.sections.find((candidate) => candidate.id === sectionId);
   const [answers, setAnswers] = useState<AnswerState>({});
   const [isUnavailable, setIsUnavailable] = useState(false);
+  const nextSection = useMemo(() => {
+    if (!section) {
+      return null;
+    }
+
+    const sectionIndex = psittawelContentPack.sections.findIndex(
+      (candidate) => candidate.id === section.id,
+    );
+
+    return psittawelContentPack.sections[sectionIndex + 1] ?? null;
+  }, [section]);
 
   useEffect(() => {
     let isMounted = true;
@@ -64,6 +85,14 @@ export default function AssessmentSectionScreen() {
     return t('assessment.sectionTitle', { number: section.number, title: section.title });
   }, [section]);
 
+  const visibleQuestions = useMemo(() => {
+    if (!section) {
+      return [];
+    }
+
+    return section.questions.filter((question) => isQuestionVisible(question, answers));
+  }, [answers, section]);
+
   if (!section || !Number.isFinite(assessmentId) || isUnavailable) {
     return (
       <SafeAreaView style={styles.screen}>
@@ -87,7 +116,10 @@ export default function AssessmentSectionScreen() {
     });
   }
 
-  function handleSingleChoiceSelect(question: ChoiceQuestion & { type: 'single_choice' }, optionId: string) {
+  function handleChoiceSelect(
+    question: SingleChoiceContent | YesNoQuestion | ScaleQuestionContent,
+    optionId: string,
+  ) {
     const selectedOption = question.options.find((option) => option.id === optionId);
     const previousFreeText = answers[question.id]?.freeText ?? '';
     const nextFreeText = selectedOption?.allow_text ? previousFreeText : '';
@@ -102,7 +134,7 @@ export default function AssessmentSectionScreen() {
     });
   }
 
-  function handleSingleChoiceTextChange(question: ChoiceQuestion & { type: 'single_choice' }, value: string) {
+  function handleChoiceTextChange(question: SingleChoiceContent | YesNoQuestion, value: string) {
     const optionIds = answers[question.id]?.optionIds ?? [];
     const nextAnswer = { optionIds, freeText: value };
 
@@ -114,6 +146,19 @@ export default function AssessmentSectionScreen() {
     });
   }
 
+  function handleMatrixSelect(question: MatrixQuestionContent, rowId: string, columnId: string) {
+    const answerQuestionId = getMatrixRowAnswerQuestionId(question.id, rowId);
+    const optionIds = [columnId];
+    const nextAnswer = { optionIds, freeText: '' };
+
+    setAnswers((current) => ({ ...current, [answerQuestionId]: nextAnswer }));
+    upsertAnswer(assessmentId, answerQuestionId, {
+      optionIds,
+      freeText: null,
+      welfareSnapshot: buildWelfareSnapshot(question, optionIds),
+    });
+  }
+
   return (
     <SafeAreaView style={styles.screen}>
       <ScrollView contentContainerStyle={styles.content}>
@@ -121,7 +166,7 @@ export default function AssessmentSectionScreen() {
           {title}
         </Text>
         <Text style={styles.interpretation}>{section.interpretation}</Text>
-        {section.questions.map((question, index) => {
+        {visibleQuestions.map((question, index) => {
           const answer = answers[question.id] ?? { optionIds: [], freeText: '' };
 
           return (
@@ -129,7 +174,7 @@ export default function AssessmentSectionScreen() {
               <Text style={styles.progress}>
                 {t('assessment.questionProgress', {
                   current: index + 1,
-                  total: section.questions.length,
+                  total: visibleQuestions.length,
                 })}
               </Text>
               {question.type === 'free_text' ? (
@@ -139,29 +184,69 @@ export default function AssessmentSectionScreen() {
                   value={answer.freeText}
                 />
               ) : null}
-              {question.type === 'single_choice' ? (
+              {question.type === 'single_choice' || question.type === 'yes_no' ? (
                 <SingleChoiceQuestion
                   indicatorIcon={question.indicator_icon ?? section.indicator_icon}
-                  onChangeOptionText={(value) => handleSingleChoiceTextChange(question, value)}
-                  onSelectOption={(optionId) => handleSingleChoiceSelect(question, optionId)}
+                  onChangeOptionText={(value) => handleChoiceTextChange(question, value)}
+                  onSelectOption={(optionId) => handleChoiceSelect(question, optionId)}
                   optionText={answer.freeText}
                   question={question}
                   selectedOptionId={answer.optionIds[0] ?? null}
+                />
+              ) : null}
+              {question.type === 'scale' ? (
+                <ScaleQuestion
+                  indicatorIcon={question.indicator_icon ?? section.indicator_icon}
+                  onSelectOption={(optionId) => handleChoiceSelect(question, optionId)}
+                  question={question}
+                  selectedOptionId={answer.optionIds[0] ?? null}
+                />
+              ) : null}
+              {question.type === 'matrix' ? (
+                <MatrixQuestion
+                  indicatorIcon={question.indicator_icon ?? section.indicator_icon}
+                  onSelectColumn={(rowId, columnId) =>
+                    handleMatrixSelect(question, rowId, columnId)
+                  }
+                  question={question}
+                  selectedColumnIdForRow={(rowId) =>
+                    answers[getMatrixRowAnswerQuestionId(question.id, rowId)]?.optionIds[0] ??
+                    null
+                  }
                 />
               ) : null}
             </View>
           );
         })}
       </ScrollView>
-      <Footer />
+      <Footer assessmentId={assessmentId} nextSectionId={nextSection?.id ?? null} />
     </SafeAreaView>
   );
 }
 
-function Footer() {
+type FooterProps = {
+  assessmentId?: number;
+  nextSectionId?: string | null;
+};
+
+function Footer({ assessmentId, nextSectionId = null }: FooterProps) {
   return (
     <View style={styles.footer}>
       <Text style={styles.consultNote}>{t('assessment.consultNote')}</Text>
+      {assessmentId !== undefined && nextSectionId ? (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() =>
+            router.push({
+              pathname: '/assessment/[id]/section/[sectionId]',
+              params: { id: String(assessmentId), sectionId: nextSectionId },
+            })
+          }
+          style={styles.nextButton}
+        >
+          <Text style={styles.nextButtonText}>{t('assessment.nextSection')}</Text>
+        </Pressable>
+      ) : null}
       <Pressable
         accessibilityRole="button"
         onPress={() => router.replace('/')}
@@ -248,6 +333,20 @@ const styles = StyleSheet.create({
     color: '#2F4C44',
     fontSize: 14,
     lineHeight: 20,
+  },
+  nextButton: {
+    alignItems: 'center',
+    backgroundColor: '#2F6658',
+    borderRadius: 8,
+    justifyContent: 'center',
+    minHeight: 48,
+    paddingHorizontal: 18,
+  },
+  nextButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+    lineHeight: 22,
   },
   doneButton: {
     alignItems: 'center',

@@ -1,6 +1,6 @@
 import { psittawelContentPack } from '../content/psittawel';
-import type { ChoiceQuestion, ContentPack } from '../content/schema';
-import { buildWelfareSnapshot } from '../lib/assessments';
+import type { ChoiceQuestion, ContentPack, MatrixQuestion } from '../content/schema';
+import { buildWelfareSnapshot, getMatrixRowAnswerQuestionId } from '../lib/assessments';
 
 describe('buildWelfareSnapshot', () => {
   it('records selected welfare levels from the content pack at answer time', () => {
@@ -35,6 +35,20 @@ describe('buildWelfareSnapshot', () => {
       'Question q_s1_observe_frequency has no option opt_missing.',
     );
   });
+
+  it('records selected matrix column welfare levels for a row answer', () => {
+    const question = matrixQuestion(clonePack().sections[1].questions[5]);
+
+    expect(buildWelfareSnapshot(question, ['col_signs_chronic_yes_dx'])).toEqual({
+      col_signs_chronic_yes_dx: 'moderate',
+    });
+  });
+
+  it('builds stable matrix row answer ids', () => {
+    expect(
+      getMatrixRowAnswerQuestionId('q_s2_signs_of_illness', 'row_signs_lameness'),
+    ).toBe('q_s2_signs_of_illness::row_signs_lameness');
+  });
 });
 
 function clonePack(): ContentPack {
@@ -44,6 +58,14 @@ function clonePack(): ContentPack {
 function choiceQuestion(question: ContentPack['sections'][number]['questions'][number]): ChoiceQuestion {
   if (question.type === 'free_text' || question.type === 'matrix') {
     throw new Error(`Question ${question.id} is not a choice question.`);
+  }
+
+  return question;
+}
+
+function matrixQuestion(question: ContentPack['sections'][number]['questions'][number]): MatrixQuestion {
+  if (question.type !== 'matrix') {
+    throw new Error(`Question ${question.id} is not a matrix question.`);
   }
 
   return question;

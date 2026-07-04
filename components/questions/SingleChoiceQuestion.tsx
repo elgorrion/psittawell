@@ -1,26 +1,21 @@
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import type {
-  ChoiceQuestion,
   IndicatorIcon,
-  Option,
-  WelfareLevel,
+  SingleChoiceQuestion as SingleChoiceQuestionContent,
+  YesNoQuestion,
 } from '../../content/schema';
-
-type SingleChoiceContent = ChoiceQuestion & {
-  type: 'single_choice';
-};
+import { FlagBadges, getChoiceAccessibilityLabel, IndicatorBadge } from './Badges';
+import { ImagePlaceholder } from './ImagePlaceholder';
 
 type Props = {
-  question: SingleChoiceContent;
+  question: SingleChoiceQuestionContent | YesNoQuestion;
   indicatorIcon: IndicatorIcon;
   selectedOptionId: string | null;
   optionText: string;
   onSelectOption: (optionId: string) => void;
   onChangeOptionText: (value: string) => void;
 };
-
-const observeMoreIndicator = '\uD83D\uDD0D';
 
 export function SingleChoiceQuestion({
   question,
@@ -34,6 +29,7 @@ export function SingleChoiceQuestion({
     <View style={styles.container}>
       <Text style={styles.prompt}>{question.prompt}</Text>
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
+      {question.image_ref ? <ImagePlaceholder label={question.prompt} /> : null}
       <View style={styles.options}>
         {question.options.map((option) => {
           const selected = selectedOptionId === option.id;
@@ -41,26 +37,38 @@ export function SingleChoiceQuestion({
           return (
             <View key={option.id} style={styles.optionBlock}>
               <Pressable
-                accessibilityLabel={String(option.label)}
+                accessibilityLabel={getChoiceAccessibilityLabel(
+                  option.label,
+                  option.welfare_level,
+                  option.flags,
+                )}
                 accessibilityRole="radio"
                 accessibilityState={{ selected }}
                 onPress={() => onSelectOption(option.id)}
-                style={styles.optionRow}
+                style={[styles.optionCard, selected ? styles.optionCardSelected : null]}
               >
-                <View style={[styles.radio, selected ? styles.radioSelected : null]}>
-                  {selected ? <View style={styles.radioDot} /> : null}
+                <View style={styles.optionRow}>
+                  <View style={[styles.radio, selected ? styles.radioSelected : null]}>
+                    {selected ? <View style={styles.radioDot} /> : null}
+                  </View>
+                  <IndicatorBadge
+                    indicatorIcon={indicatorIcon}
+                    welfareLevel={option.welfare_level}
+                  />
+                  <View style={styles.optionContent}>
+                    <Text style={styles.optionLabel}>{option.label}</Text>
+                    <FlagBadges flags={option.flags} />
+                  </View>
                 </View>
-                {renderIndicator(option, indicatorIcon)}
-                <Text style={styles.optionLabel}>{option.label}</Text>
-                {option.flags.includes('dont_know') ? (
-                  <Text accessible={false} style={styles.observeMore}>
-                    {observeMoreIndicator}
-                  </Text>
-                ) : null}
+                {option.image_ref ? <ImagePlaceholder label={String(option.label)} /> : null}
               </Pressable>
               {selected && option.allow_text ? (
                 <TextInput
-                  accessibilityLabel={String(option.label)}
+                  accessibilityLabel={getChoiceAccessibilityLabel(
+                    option.label,
+                    option.welfare_level,
+                    option.flags,
+                  )}
                   onChangeText={onChangeOptionText}
                   style={styles.optionTextInput}
                   value={optionText}
@@ -73,41 +81,6 @@ export function SingleChoiceQuestion({
     </View>
   );
 }
-
-function renderIndicator(option: Option, indicatorIcon: IndicatorIcon) {
-  if (option.welfare_level === null) {
-    return null;
-  }
-
-  if (indicatorIcon !== 'circle') {
-    return <View accessible={false} style={[styles.circle, getCircleStyle(option.welfare_level)]} />;
-  }
-
-  return <View accessible={false} style={[styles.circle, getCircleStyle(option.welfare_level)]} />;
-}
-
-function getCircleStyle(welfareLevel: WelfareLevel) {
-  return {
-    backgroundColor: welfareLevelColors[welfareLevel],
-    borderColor: welfareLevelBorders[welfareLevel],
-  };
-}
-
-const welfareLevelColors: Record<WelfareLevel, string> = {
-  optimal: '#146C43',
-  good: '#6FAF4F',
-  moderate: '#C28A00',
-  elevated_risk: '#C95D00',
-  high_risk: '#A52714',
-};
-
-const welfareLevelBorders: Record<WelfareLevel, string> = {
-  optimal: '#0F5132',
-  good: '#3F7F2D',
-  moderate: '#7A5600',
-  elevated_risk: '#7A3800',
-  high_risk: '#6F1A0E',
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -133,17 +106,22 @@ const styles = StyleSheet.create({
   optionBlock: {
     gap: 8,
   },
-  optionRow: {
-    alignItems: 'center',
+  optionCard: {
     backgroundColor: '#FFFFFF',
     borderColor: '#D2DDD8',
     borderRadius: 8,
     borderWidth: 1,
-    flexDirection: 'row',
     gap: 10,
     minHeight: 48,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    padding: 12,
+  },
+  optionCardSelected: {
+    borderColor: '#12312A',
+  },
+  optionRow: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    gap: 10,
   },
   radio: {
     alignItems: 'center',
@@ -152,6 +130,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: 18,
     justifyContent: 'center',
+    marginTop: 2,
     width: 18,
   },
   radioSelected: {
@@ -163,22 +142,13 @@ const styles = StyleSheet.create({
     height: 10,
     width: 10,
   },
-  circle: {
-    borderRadius: 8,
-    borderWidth: 1,
-    height: 16,
-    width: 16,
+  optionContent: {
+    flex: 1,
+    flexShrink: 1,
   },
   optionLabel: {
     color: '#17352F',
-    flex: 1,
-    flexShrink: 1,
     fontSize: 16,
-    lineHeight: 22,
-  },
-  observeMore: {
-    color: '#17352F',
-    fontSize: 18,
     lineHeight: 22,
   },
   optionTextInput: {

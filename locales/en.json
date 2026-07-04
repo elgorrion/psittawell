@@ -11,8 +11,41 @@
     "sectionTitle": "Section %{number}: %{title}",
     "questionProgress": "Question %{current} of %{total}",
     "consultNote": "For any concern, consult an avian vet or a certified parrot behaviour consultant.",
+    "nextSection": "Next section",
     "doneForNow": "Done for now",
     "sectionUnavailable": "Section unavailable",
-    "unavailable": "This assessment section could not be opened."
+    "unavailable": "This assessment section could not be opened.",
+    "imagePlaceholder": "Image placeholder",
+    "imagePlaceholderAccessibility": "Image placeholder for %{label}",
+    "matrixRowAccessibility": "Options for %{row}",
+    "welfareLevels": {
+      "optimal": "Welfare indicator: optimal",
+      "good": "Welfare indicator: good",
+      "moderate": "Welfare indicator: moderate",
+      "elevated_risk": "Welfare indicator: elevated risk",
+      "high_risk": "Welfare indicator: high risk"
+    },
+    "flags": {
+      "vet_concern": {
+        "text": "Vet",
+        "accessibilityLabel": "Vet: may need attention"
+      },
+      "vet_urgent": {
+        "text": "Vet urgent",
+        "accessibilityLabel": "Vet: urgent"
+      },
+      "behaviour_urgent": {
+        "text": "Behaviour urgent",
+        "accessibilityLabel": "Behaviour consultant: urgent"
+      },
+      "dont_know": {
+        "text": "🔍 Observe",
+        "accessibilityLabel": "Observe more"
+      },
+      "context_dependent": {
+        "text": "Depends",
+        "accessibilityLabel": "Depends on your parrot"
+      }
+    }
   }
 }

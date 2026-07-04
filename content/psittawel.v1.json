@@ -13,7 +13,7 @@
       "number": 1,
       "title": "General information",
       "indicator_icon": "circle",
-      "interpretation": "How to interpret your answers: ↑ likelihood for good welfare (left/top) → ↑ risk for compromised welfare (right/bottom). For colourblind people, the answer options accompanied with icons are arranged in order from most optimal to least desired, either from top to bottom or from left to right. 🔍 : Opportunity to learn more about your parrot's behaviours and needs… An avian veterinarian or a certified parrot behavioural consultant can help review your assessment results and, if needed, develop an effective plan to improve your parrot's welfare.",
+      "interpretation": "How to interpret your answers: ↑ likelihood for good welfare (top/left) → ↑ risk for compromised welfare (bottom/right). For colourblind people, the answer options accompanied with icons are arranged in order from most optimal to least desired, either from top to bottom or from left to right. 🔍 Observe: an opportunity to learn more about your parrot's behaviours and needs. This includes observing your bird in daily life, either directly or via camera, reflecting on the care, environment, and daily interactions you provide. Seeking guidance from appropriately qualified professionals is highly recommended. An avian veterinarian or a certified parrot behavioural consultant can help review your assessment results and, if needed, develop an effective plan to improve your parrot's welfare.",
       "questions": [
         {
           "id": "q_s1_name",
@@ -301,6 +301,454 @@
               "label": "I don't know",
               "welfare_level": null,
               "flags": ["dont_know"],
+              "allow_text": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s2_physical_health",
+      "number": 2,
+      "title": "Physical health",
+      "indicator_icon": "parrot",
+      "interpretation": "How to interpret your answers: ↑ likelihood for good welfare (top/left) → ↑ risk for compromised welfare (bottom/right). For colourblind people, the answer options accompanied with icons are arranged in order from most optimal to least desired, either from top to bottom or from left to right. The badges below mean: 'Vet' — a health problem that is concerning and may require veterinary intervention; 'Vet urgent' — a health problem that requires immediate veterinary intervention; 'Behaviour urgent' — a behavioural problem that requires immediate behavioural consultant intervention; '🔍 Observe' — an opportunity to learn more about your parrot's behaviours and needs by observing your bird in daily life (directly or via camera) and reflecting on the care, environment, and daily interactions you provide. An avian veterinarian or a certified parrot behavioural consultant can help review your assessment results and, if needed, develop an effective plan to improve your parrot's welfare.",
+      "questions": [
+        {
+          "id": "q_s2_plumage",
+          "type": "single_choice",
+          "prompt": "What is the condition of your parrot's plumage?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s2_plumage_intact",
+              "label": "Intact with no damage",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_plumage_mild",
+              "label": "Mildly damaged or plucked: coverts and/or down feathers are missing in focal areas, but most of the feathers are still intact (though some of these may show signs of damage).",
+              "image_ref": "img_s2_plumage_mild",
+              "welfare_level": null,
+              "flags": ["vet_concern", "behaviour_urgent"],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_plumage_moderate",
+              "label": "Moderately damaged or plucked: coverts and/or down feathers are missing in several areas of the body leaving a patchy distribution or coverts are missing but down is still mostly or completely present.",
+              "image_ref": "img_s2_plumage_moderate",
+              "welfare_level": null,
+              "flags": ["vet_concern", "behaviour_urgent"],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_plumage_severe",
+              "label": "Severely damaged: large areas of the body lack both coverts and down feathers, resulting in bare skin being clearly visible over multiple regions.",
+              "image_ref": "img_s2_plumage_severe",
+              "welfare_level": null,
+              "flags": ["vet_concern", "behaviour_urgent"],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s2_plumage_head",
+          "type": "yes_no",
+          "prompt": "Does the plumage damage also affect the head?",
+          "help": "Please answer only if you observe plumage damages. Please note that if the damage extends to the head, it may have been caused by another parrot.",
+          "demographic": false,
+          "conditional_on": {
+            "question_id": "q_s2_plumage",
+            "operator": "not_in",
+            "option_ids": ["opt_s2_plumage_intact"]
+          },
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s2_plumage_head_no",
+              "label": "No",
+              "image_ref": "img_s2_head_no",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_plumage_head_yes",
+              "label": "Yes",
+              "image_ref": "img_s2_head_yes",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s2_droppings",
+          "type": "single_choice",
+          "prompt": "Which statement best describes the droppings of your parrot?",
+          "help": null,
+          "image_ref": "img_s2_droppings_reference",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s2_droppings_well_formed",
+              "label": "My parrot's droppings are well-formed with a distinct chalky white urate portion and minimal odour. The number, consistency and colour of the droppings are within my parrot's normal pattern based on its current diet.",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_droppings_slight_changes",
+              "label": "My parrot's droppings are mostly well-formed with a distinct chalky white urate portion and minimal odour, with occasional or slight changes in colour, odour, consistency and/or number that do not correspond to a change in diet.",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_droppings_abnormal",
+              "label": "My parrot's droppings are abnormal most of the times with frequent changes in colour, odour, consistency and/or number that do not correspond to diet change and/or contain undigested food particles.",
+              "welfare_level": null,
+              "flags": ["vet_concern"],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_droppings_scant_blood",
+              "label": "My parrot's droppings are scant in number and/or volume and contain fresh blood or have a tar-like, black appearance.",
+              "welfare_level": null,
+              "flags": ["vet_urgent"],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_droppings_dont_check",
+              "label": "I don't check droppings",
+              "welfare_level": null,
+              "flags": ["dont_know"],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s2_body_condition",
+          "type": "scale",
+          "prompt": "Please select the appropriate Bird Size-O-Meter score that best reflects your parrot's current muscle condition.",
+          "help": "Please calculate the score only if both you and your parrot feel comfortable while performing the assessment. The Bird Size-O-Meter has been developed by UK Pet Food (see https://www.ukpetfood.org/spotlight-on-obesity/how-to-identify-if-a-pet-needs-help/bird-size-o-meter-new.html for further details, including how to assess your bird's body shape). Note for colour-blind participants: In the following scale, the most favourable answer is in the middle (3). Scores decrease in welfare quality as you move toward 1 or 5.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s2_body_condition_cannot_calculate",
+              "label": "I can't calculate the score because my parrot doesn't accept handling and I don't feel comfortable insisting.",
+              "detail": null,
+              "welfare_level": null,
+              "flags": ["vet_concern"],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_body_condition_1",
+              "label": "1",
+              "detail": "Breast bone is very sharp to the touch · Loss of breast muscle and no fat cover",
+              "welfare_level": null,
+              "flags": ["vet_urgent"],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_body_condition_2",
+              "label": "2",
+              "detail": "Breast bone is easily felt and sharp · Loss of breast muscle and little or no fat cover",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_body_condition_3",
+              "label": "3",
+              "detail": "Breast bone easily felt but not sharp · Breast muscle rounded",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_body_condition_4",
+              "label": "4",
+              "detail": "Pressure is needed to feel the breast bone · Well rounded breast muscle and some fat cover · May see some fat below where breast bone ends",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_body_condition_5",
+              "label": "5",
+              "detail": "Very hard or not possible to feel the breast bone · Very rounded muscle and possible to feel or see fat moving under the skin · Fat also obvious below where breast bone ends",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s2_disease_diagnosed",
+          "type": "yes_no",
+          "prompt": "Has your parrot been diagnosed with any disease* by an avian veterinarian?",
+          "help": "* may also include cases where the parrot tests positive for a non-pathogenic agent or is an asymptomatic carrier, without showing clinical signs. If yes, please indicate the disease(s) and any medication they are currently taking in the comment box",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s2_disease_diagnosed_no",
+              "label": "No",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_disease_diagnosed_yes",
+              "label": "Yes",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": true
+            }
+          ]
+        },
+        {
+          "id": "q_s2_signs_of_illness",
+          "type": "matrix",
+          "prompt": "Do you notice any of these conditions?",
+          "help": "Some of the information was sourced from the handout \"Signs of Illness in Companion Birds\" provided by the Association of Avian Veterinarians.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "row_groups": [
+            {
+              "columns": [
+                {
+                  "id": "col_signs_acute_no",
+                  "label": "No",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_signs_acute_yes_dx",
+                  "label": "Yes, diagnosed by a veterinarian",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_signs_acute_yes_undx",
+                  "label": "Yes, not diagnosed by a veterinarian",
+                  "welfare_level": null,
+                  "flags": ["vet_urgent"]
+                },
+                {
+                  "id": "col_signs_acute_unsure",
+                  "label": "I am not sure",
+                  "welfare_level": null,
+                  "flags": ["vet_urgent"]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_signs_vomiting_regurgitation",
+                  "label": "Vomiting or regurgitation",
+                  "help": "This does not include regurgitation performed as part of courtship behaviour or chick-feeding",
+                  "image_ref": null
+                },
+                {
+                  "id": "row_signs_laboured_breathing",
+                  "label": "Signs of laboured breathing, such as tail bobbing, open-mouth breathing, or abnormal respiratory sounds",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_signs_self_mutilation",
+                  "label": "Signs of self-mutilation",
+                  "help": "View example images (sensitive content warning)",
+                  "image_ref": null
+                },
+                {
+                  "id": "row_signs_blood_loss_injury",
+                  "label": "Blood loss and/or severe injury",
+                  "help": "View example images (sensitive content warning)",
+                  "image_ref": null
+                },
+                {
+                  "id": "row_signs_fluffed_posture",
+                  "label": "Fluffed posture, droopy wings, and/or sleeping more than usual",
+                  "help": null,
+                  "image_ref": "img_s2_signs_fluffed"
+                },
+                {
+                  "id": "row_signs_enlargement_swelling",
+                  "label": "Enlargement and/or swelling on the body",
+                  "help": null,
+                  "image_ref": "img_s2_signs_enlargement"
+                },
+                {
+                  "id": "row_signs_weight_change",
+                  "label": ">10% increase or decrease of body weight within a week",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_signs_unable_to_perch",
+                  "label": "Inability to perch and/or sitting at the bottom of the cage",
+                  "help": null,
+                  "image_ref": "img_s2_signs_perch"
+                },
+                {
+                  "id": "row_signs_uncoordinated_movement",
+                  "label": "Uncontrolled and/or uncoordinated movement of the head, wings, and/or feet",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_signs_repeated_straining",
+                  "label": "Repeated straining, possibly with associated tail bobbing",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_signs_cloaca_prolapse",
+                  "label": "Cloaca protrudes outside the body (prolapse)",
+                  "help": "View example images (sensitive content warning)",
+                  "image_ref": null
+                }
+              ]
+            },
+            {
+              "columns": [
+                {
+                  "id": "col_signs_chronic_no",
+                  "label": "No",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_signs_chronic_yes_dx",
+                  "label": "Yes, diagnosed by a veterinarian",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_signs_chronic_yes_undx",
+                  "label": "Yes, not diagnosed by a veterinarian",
+                  "welfare_level": null,
+                  "flags": ["vet_concern"]
+                },
+                {
+                  "id": "col_signs_chronic_unsure",
+                  "label": "I am not sure",
+                  "welfare_level": null,
+                  "flags": ["vet_concern"]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_signs_eyes",
+                  "label": "Redness, swelling or loss of feathers around eyes",
+                  "help": null,
+                  "image_ref": "img_s2_signs_eyes"
+                },
+                {
+                  "id": "row_signs_discharge",
+                  "label": "Discharge from eyes, nares (nostrils), or mouth",
+                  "help": null,
+                  "image_ref": "img_s2_signs_discharge"
+                },
+                {
+                  "id": "row_signs_crusty",
+                  "label": "Crusty material in or around nares or flakiness on the skin and/or beak",
+                  "help": null,
+                  "image_ref": "img_s2_signs_crusty"
+                },
+                {
+                  "id": "row_signs_overgrown",
+                  "label": "Overgrown beak and/or nails",
+                  "help": null,
+                  "image_ref": "img_s2_signs_overgrown"
+                },
+                {
+                  "id": "row_signs_beak_align",
+                  "label": "Upper and/or lower beak not properly aligned",
+                  "help": null,
+                  "image_ref": "img_s2_signs_beak_align"
+                },
+                {
+                  "id": "row_signs_discolour",
+                  "label": "Feather discolouration and/or depigmentation, overall dull and ragged looking plumage",
+                  "help": null,
+                  "image_ref": "img_s2_signs_discolour"
+                },
+                {
+                  "id": "row_signs_stress",
+                  "label": "Stress marks: translucent or black lines in the vane of a feather, generally oriented perpendicular to the shaft",
+                  "help": null,
+                  "image_ref": "img_s2_signs_stress"
+                },
+                {
+                  "id": "row_signs_pin",
+                  "label": "Pin or blood feathers",
+                  "help": null,
+                  "image_ref": "img_s2_signs_pin"
+                },
+                {
+                  "id": "row_signs_abraded",
+                  "label": "Abraded feathers",
+                  "help": null,
+                  "image_ref": "img_s2_signs_abraded"
+                },
+                {
+                  "id": "row_signs_lameness",
+                  "label": "Lameness and/or shifting of body weight",
+                  "help": null,
+                  "image_ref": "img_s2_signs_lameness"
+                },
+                {
+                  "id": "row_signs_feet",
+                  "label": "Swelling, ulcers, and/or other lesions under the feet",
+                  "help": null,
+                  "image_ref": "img_s2_signs_feet"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s2_medication",
+          "type": "single_choice",
+          "prompt": "Is your parrot currently receiving medication or treatment prescribed by a veterinarian for any of the conditions listed above?",
+          "help": "Please answer this question only if your parrot exhibits any of the signs of illness listed in the previous table.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s2_medication_yes_prescribed",
+              "label": "Yes, my parrot is receiving treatments prescribed by the veterinarian",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_medication_no_otc",
+              "label": "No, my parrot has not been seen by a veterinarian, but my it is receiving over-the-counter medications or other types of care interventions (without consultation of a veterinarian)",
+              "welfare_level": null,
+              "flags": ["vet_concern"],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s2_medication_no_none",
+              "label": "No, my parrot is not receiving any medication",
+              "welfare_level": null,
+              "flags": ["vet_concern"],
               "allow_text": false
             }
           ]

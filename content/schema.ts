@@ -15,10 +15,12 @@ export const optionFlags = [
 ] as const;
 
 export const indicatorIcons = ['circle', 'parrot', 'house', 'hand'] as const;
+export const conditionalOperators = ['equals', 'not_equals', 'in', 'not_in'] as const;
 
 export type WelfareLevel = (typeof welfareLevels)[number];
 export type OptionFlag = (typeof optionFlags)[number];
 export type IndicatorIcon = (typeof indicatorIcons)[number];
+export type ConditionalOperator = (typeof conditionalOperators)[number];
 
 export type ContentPack = {
   instrument: string;
@@ -43,7 +45,8 @@ export type Section = {
 
 export type ConditionalOn = {
   question_id: string;
-  equals_option_id: string;
+  operator: ConditionalOperator;
+  option_ids: string[];
 };
 
 export type BaseQuestion = {
@@ -51,6 +54,7 @@ export type BaseQuestion = {
   type: QuestionType;
   prompt: string;
   help?: string | null;
+  image_ref?: string | null;
   demographic: boolean;
   conditional_on?: ConditionalOn | null;
   indicator_icon?: IndicatorIcon;
@@ -108,6 +112,8 @@ export type Question = FreeTextQuestion | ChoiceQuestion | MatrixQuestion;
 export type Option = {
   id: string;
   label: string | number;
+  detail?: string | null;
+  image_ref?: string | null;
   welfare_level: WelfareLevel | null;
   flags: OptionFlag[];
   allow_text: boolean;
@@ -181,6 +187,25 @@ export function validateContentPack(pack: ContentPack): void {
         continue;
       }
 
+      assertEnum(
+        conditionalOn.operator,
+        conditionalOperators,
+        `question ${question.id} conditional_on operator`,
+      );
+
+      if (!Array.isArray(conditionalOn.option_ids) || conditionalOn.option_ids.length === 0) {
+        throw new Error(`Question ${question.id} conditional_on must include option_ids.`);
+      }
+
+      if (
+        (conditionalOn.operator === 'equals' || conditionalOn.operator === 'not_equals') &&
+        conditionalOn.option_ids.length !== 1
+      ) {
+        throw new Error(
+          `Question ${question.id} conditional_on ${conditionalOn.operator} must reference exactly one option.`,
+        );
+      }
+
       const options = questionOptions.get(conditionalOn.question_id);
 
       if (!questionIds.has(conditionalOn.question_id) || !options) {
@@ -189,10 +214,12 @@ export function validateContentPack(pack: ContentPack): void {
         );
       }
 
-      if (!options.has(conditionalOn.equals_option_id)) {
-        throw new Error(
-          `Question ${question.id} conditional_on references missing option ${conditionalOn.equals_option_id}.`,
-        );
+      for (const optionId of conditionalOn.option_ids) {
+        if (!options.has(optionId)) {
+          throw new Error(
+            `Question ${question.id} conditional_on references missing option ${optionId}.`,
+          );
+        }
       }
     }
   }
@@ -231,6 +258,9 @@ function validateMatrixQuestion(question: MatrixQuestion) {
     throw new Error(`Question ${question.id} must include at least one row group.`);
   }
 
+  const columnIds = new Set<string>();
+  const rowIds = new Set<string>();
+
   for (const [groupIndex, rowGroup] of question.row_groups.entries()) {
     if (!Array.isArray(rowGroup.columns) || rowGroup.columns.length === 0) {
       throw new Error(`Question ${question.id} row group ${groupIndex + 1} must include columns.`);
@@ -241,12 +271,17 @@ function validateMatrixQuestion(question: MatrixQuestion) {
     }
 
     for (const column of rowGroup.columns) {
+      assertUnique(columnIds, column.id, `column for question ${question.id}`);
       validateWelfareLevel(column.welfare_level, `column ${column.id} welfare_level`);
       validateFlags(column.flags, `column ${column.id} flags`);
 
       if (column.icon !== undefined) {
         assertEnum(column.icon, indicatorIcons, `column ${column.id} icon`);
       }
+    }
+
+    for (const row of rowGroup.rows) {
+      assertUnique(rowIds, row.id, `row for question ${question.id}`);
     }
   }
 }

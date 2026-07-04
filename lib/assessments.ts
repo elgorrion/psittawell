@@ -19,6 +19,10 @@ export type Answer = {
   answeredAt: string;
 };
 
+export function getMatrixRowAnswerQuestionId(matrixQuestionId: string, rowId: string): string {
+  return `${matrixQuestionId}::${rowId}`;
+}
+
 type AnswerRow = {
   id: number;
   assessment_id: number;
