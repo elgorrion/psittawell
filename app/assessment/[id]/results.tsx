@@ -13,6 +13,10 @@ import {
   mapAnswersByQuestion,
   parrotNameQuestionId,
 } from '../../../lib/assessments';
+import {
+  isResultsReportSharingAvailable,
+  shareResultsReport,
+} from '../../../lib/exportReport';
 import { t } from '../../../lib/i18n';
 import {
   buildAssessmentResults,
@@ -21,6 +25,7 @@ import {
   type ObserveItem,
   type UrgentItem,
 } from '../../../lib/results';
+import { buildResultsReportHtml } from '../../../lib/resultsReport';
 import { colors } from '../../../lib/theme';
 
 type ResultsState =
@@ -32,10 +37,14 @@ type ResultsState =
     }
   | { status: 'unavailable' };
 
+type ReportShareStatus = 'idle' | 'sharing' | 'unavailable' | 'error';
+
 export default function AssessmentResultsScreen() {
   const params = useLocalSearchParams();
   const assessmentId = Number(firstParam(params.id));
   const [resultsState, setResultsState] = useState<ResultsState>({ status: 'loading' });
+  const [isReportShareAvailable, setIsReportShareAvailable] = useState(false);
+  const [reportShareStatus, setReportShareStatus] = useState<ReportShareStatus>('idle');
 
   useFocusEffect(
     useCallback(() => {
@@ -79,6 +88,31 @@ export default function AssessmentResultsScreen() {
     }, [assessmentId]),
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      let isMounted = true;
+
+      setReportShareStatus('idle');
+      setIsReportShareAvailable(false);
+
+      isResultsReportSharingAvailable()
+        .then((isAvailable) => {
+          if (isMounted) {
+            setIsReportShareAvailable(isAvailable);
+          }
+        })
+        .catch(() => {
+          if (isMounted) {
+            setIsReportShareAvailable(false);
+          }
+        });
+
+      return () => {
+        isMounted = false;
+      };
+    }, []),
+  );
+
   if (resultsState.status !== 'ready') {
     return (
       <SafeAreaView style={styles.screen}>
@@ -101,6 +135,35 @@ export default function AssessmentResultsScreen() {
       ? t('assessment.results.namedTitle', { name: parrotName })
       : t('assessment.results.title');
   const hasUrgentItems = results.urgent.length > 0;
+  const shouldShowReportShareAction =
+    isReportShareAvailable || reportShareStatus === 'unavailable' || reportShareStatus === 'error';
+
+  const handleShareReport = async () => {
+    if (reportShareStatus === 'sharing') {
+      return;
+    }
+
+    setReportShareStatus('sharing');
+
+    try {
+      const html = buildResultsReportHtml({
+        generatedAtLabel: formatGeneratedAtLabel(new Date()),
+        parrotName,
+        results,
+      });
+      const outcome = await shareResultsReport(html);
+
+      if (outcome === 'unavailable') {
+        setIsReportShareAvailable(false);
+        setReportShareStatus('unavailable');
+        return;
+      }
+
+      setReportShareStatus('idle');
+    } catch (error) {
+      setReportShareStatus(isShareCancellation(error) ? 'idle' : 'error');
+    }
+  };
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -108,6 +171,10 @@ export default function AssessmentResultsScreen() {
         <SectionHeader description={t('assessment.results.disclaimer')} title={title} />
 
         <ConsultPanel prominent={hasUrgentItems} />
+
+        {shouldShowReportShareAction ? (
+          <ShareReportAction onPress={handleShareReport} status={reportShareStatus} />
+        ) : null}
 
         {hasUrgentItems ? (
           <View style={styles.panel}>
@@ -190,6 +257,38 @@ export default function AssessmentResultsScreen() {
         <BackToOverviewButton assessmentId={assessmentId} />
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+function ShareReportAction({
+  onPress,
+  status,
+}: {
+  onPress: () => void;
+  status: ReportShareStatus;
+}) {
+  const isDisabled = status === 'sharing' || status === 'unavailable';
+
+  return (
+    <View style={styles.sharePanel}>
+      <Pressable
+        accessibilityLabel={t('assessment.report.shareButton')}
+        accessibilityRole="button"
+        disabled={isDisabled}
+        onPress={onPress}
+        style={[styles.shareButton, isDisabled ? styles.shareButtonDisabled : null]}
+      >
+        <Text style={styles.shareButtonText}>{t('assessment.report.shareButton')}</Text>
+      </Pressable>
+      {status === 'unavailable' ? (
+        <Text style={styles.shareMessage}>{t('assessment.report.unavailable')}</Text>
+      ) : null}
+      {status === 'error' ? (
+        <Text accessibilityRole="alert" style={styles.shareError}>
+          {t('assessment.report.error')}
+        </Text>
+      ) : null}
+    </View>
   );
 }
 
@@ -310,6 +409,22 @@ function firstParam(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
 
+function formatGeneratedAtLabel(date: Date) {
+  return new Intl.DateTimeFormat(undefined, {
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  }).format(date);
+}
+
+function isShareCancellation(error: unknown) {
+  const message = error instanceof Error ? error.message : String(error ?? '');
+
+  return /cancel|dismiss/i.test(message);
+}
+
 const styles = StyleSheet.create({
   screen: {
     backgroundColor: colors.mintSoft,
@@ -373,6 +488,37 @@ const styles = StyleSheet.create({
     color: colors.slate,
     fontSize: 15,
     lineHeight: 21,
+  },
+  sharePanel: {
+    gap: 8,
+  },
+  shareButton: {
+    alignItems: 'center',
+    backgroundColor: colors.spruce,
+    borderRadius: 8,
+    justifyContent: 'center',
+    minHeight: 50,
+    paddingHorizontal: 18,
+  },
+  shareButtonDisabled: {
+    opacity: 0.55,
+  },
+  shareButtonText: {
+    color: colors.paper,
+    fontSize: 16,
+    fontWeight: '800',
+    lineHeight: 22,
+  },
+  shareMessage: {
+    color: colors.textMuted,
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  shareError: {
+    color: '#8A2C18',
+    fontSize: 14,
+    fontWeight: '700',
+    lineHeight: 20,
   },
   itemList: {
     gap: 10,

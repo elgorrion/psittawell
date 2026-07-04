@@ -80,6 +80,15 @@
       },
       "monthlyNote": "You can repeat the assessment monthly to monitor changes over time."
     },
+    "report": {
+      "title": "Welfare overview report",
+      "namedTitle": "Welfare overview report for %{name}",
+      "generatedOn": "Generated on %{date}",
+      "shareButton": "Share report",
+      "shareDialogTitle": "Share welfare overview",
+      "unavailable": "Report sharing is not available on this device.",
+      "error": "The report could not be shared. Please try again."
+    },
     "imageReferenceCaption": "Reference illustration in the printed guide.",
     "imageReferenceAccessibility": "Reference illustration placeholder. No photo is embedded.",
     "instrumentImageAccessibility": "Reference illustration.",

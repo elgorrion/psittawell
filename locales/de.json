@@ -80,6 +80,15 @@
       },
       "monthlyNote": "Sie können das Assessment monatlich wiederholen, um Veränderungen im Zeitverlauf zu beobachten."
     },
+    "report": {
+      "title": "Bericht zur Wohlbefindensübersicht",
+      "namedTitle": "Bericht zur Wohlbefindensübersicht für %{name}",
+      "generatedOn": "Erstellt am %{date}",
+      "shareButton": "Bericht teilen",
+      "shareDialogTitle": "Wohlbefindensübersicht teilen",
+      "unavailable": "Das Teilen des Berichts ist auf diesem Gerät nicht verfügbar.",
+      "error": "Der Bericht konnte nicht geteilt werden. Bitte versuchen Sie es erneut."
+    },
     "imageReferenceCaption": "Referenzillustration im gedruckten Leitfaden.",
     "imageReferenceAccessibility": "Platzhalter für eine Referenzillustration. Es ist kein Foto eingebettet.",
     "instrumentImageAccessibility": "Referenzillustration.",
