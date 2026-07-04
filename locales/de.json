@@ -1,0 +1,9 @@
+{
+  "home": {
+    "title": "PsittaWell",
+    "description": "Offline-Hilfe für das Wohlbefinden von Begleitpapageien mit lokalen Daten auf diesem Gerät.",
+    "databaseOpening": "Lokale Datenbank wird geöffnet...",
+    "databaseReady": "Lokale Datenbank bereit. Schemaversion %{version}.",
+    "databaseUnavailable": "Lokale Datenbank konnte nicht geöffnet werden."
+  }
+}

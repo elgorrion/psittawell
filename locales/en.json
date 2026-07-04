@@ -1,0 +1,9 @@
+{
+  "home": {
+    "title": "PsittaWell",
+    "description": "Offline companion-parrot welfare support with local data kept on this device.",
+    "databaseOpening": "Opening local database...",
+    "databaseReady": "Local database ready. Schema version %{version}.",
+    "databaseUnavailable": "Local database could not be opened."
+  }
+}
