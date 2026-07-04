@@ -23,10 +23,12 @@ export function ScaleQuestion({
   onSelectOption,
   disabled = false,
 }: Props) {
+  const hasIndicators = question.options.some((option) => option.welfare_level !== null);
   return (
     <View style={styles.container}>
       <Text style={styles.prompt}>{question.prompt}</Text>
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
+      {question.note ? <Text style={styles.note}>{question.note}</Text> : null}
       {question.image_ref ? <ImagePlaceholder /> : null}
       <View style={styles.options}>
         {question.options.map((option) => {
@@ -58,6 +60,7 @@ export function ScaleQuestion({
                 </View>
                 <IndicatorBadge
                   indicatorIcon={indicatorIcon}
+                  reserveSpace={hasIndicators}
                   welfareLevel={option.welfare_level}
                 />
                 <View style={styles.optionContent}>
@@ -93,6 +96,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     padding: 12,
+  },
+  note: {
+    color: colors.textMuted,
+    fontSize: 14,
+    fontStyle: 'italic',
+    lineHeight: 20,
   },
   options: {
     gap: 8,

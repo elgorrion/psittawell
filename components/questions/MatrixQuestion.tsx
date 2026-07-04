@@ -30,6 +30,7 @@ export function MatrixQuestion({
     <View style={styles.container}>
       <Text style={styles.prompt}>{question.prompt}</Text>
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
+      {question.note ? <Text style={styles.note}>{question.note}</Text> : null}
       {question.image_ref ? <ImagePlaceholder /> : null}
       {question.row_groups.map((rowGroup, groupIndex) => (
         <View key={groupIndex} style={styles.group}>
@@ -67,6 +68,8 @@ function MatrixRow({
   onSelectColumn,
   disabled,
 }: MatrixRowProps) {
+  const hasIndicators = columns.some((column) => column.welfare_level !== null);
+
   return (
     <View style={styles.rowCard}>
       <Text style={styles.rowLabel}>{row.label}</Text>
@@ -104,6 +107,7 @@ function MatrixRow({
               </View>
               <IndicatorBadge
                 indicatorIcon={indicatorIcon}
+                reserveSpace={hasIndicators}
                 welfareLevel={column.welfare_level}
               />
               <View style={styles.columnContent}>
@@ -137,6 +141,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     padding: 12,
+  },
+  note: {
+    color: colors.textMuted,
+    fontSize: 14,
+    fontStyle: 'italic',
+    lineHeight: 20,
   },
   group: {
     gap: 12,

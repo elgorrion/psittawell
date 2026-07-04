@@ -6,7 +6,7 @@ import { psittawelContentPack } from '../content/psittawel';
 
 describe('section legend', () => {
   it('derives only the markers used in each section', () => {
-    const [general, physicalHealth] = psittawelContentPack.sections;
+    const [general, physicalHealth, housing] = psittawelContentPack.sections;
 
     expect(getSectionLegendFlags(general)).toEqual(['dont_know']);
     expect(getSectionLegendFlags(physicalHealth)).toEqual([
@@ -15,6 +15,7 @@ describe('section legend', () => {
       'vet_urgent',
       'behaviour_urgent',
     ]);
+    expect(getSectionLegendFlags(housing)).toEqual(['dont_know']);
   });
 
   it('keeps the professional guidance sentence from the instrument interpretation', () => {

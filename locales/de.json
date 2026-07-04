@@ -50,6 +50,7 @@
     "imageReferenceCaption": "Referenzillustration im gedruckten Leitfaden.",
     "imageReferenceAccessibility": "Platzhalter für eine Referenzillustration. Es ist kein Foto eingebettet.",
     "matrixRowAccessibility": "Optionen für %{row}",
+    "gridGroupAccessibility": "Optionen für %{row}, %{group}",
     "legend": {
       "title": "So interpretieren Sie Ihre Antworten",
       "goodDirection": "↑ Wahrscheinlichkeit für gutes Wohlbefinden",

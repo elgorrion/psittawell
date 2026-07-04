@@ -754,6 +754,1111 @@
           ]
         }
       ]
+    },
+    {
+      "id": "s3_housing",
+      "number": 3,
+      "title": "Housing and physical activity",
+      "indicator_icon": "house",
+      "interpretation": "How to interpret your answers: ↑ likelihood for good welfare (top/left) → ↑ risk for compromised welfare (bottom/right). For colourblind people, the answer options accompanied with icons are arranged in order from most optimal to least desired, either from top to bottom or from left to right. This section uses house icons for environment-based indicators and parrot icons for animal-based indicators. 🔍 Observe: an opportunity to learn more about your parrot's behaviours and needs. This includes observing your bird in daily life, either directly or via camera, reflecting on the care, environment, and daily interactions you provide. Seeking guidance from appropriately qualified professionals is highly recommended to help interpret your parrot's behaviour and assess whether the husbandry and management conditions you offer are appropriate. An avian veterinarian or a certified parrot behavioural consultant can help review your assessment results and, if needed, develop an effective plan to improve your parrot's welfare.",
+      "questions": [
+        {
+          "id": "q_s3_enclosure_location",
+          "type": "grid",
+          "selection": "multi",
+          "prompt": "Where is your parrot's enclosure located?",
+          "help": "If your parrot has select enclosures, please specify all locations. Enclosure: space where the parrot sleeps, eats, drinks, and stays when it can't be supervised.",
+          "note": "Please select only the answer options that apply to your parrot and leave the remaining ones blank.",
+          "demographic": false,
+          "conditional_on": null,
+          "column_groups": [
+            {
+              "id": "group_s3_enclosure_location",
+              "label": "",
+              "help": null,
+              "columns": [
+                {
+                  "id": "col_s3_location_main",
+                  "label": "Main enclosure",
+                  "help": "space where the parrot stays most of time",
+                  "welfare_level": null,
+                  "flags": []
+                },
+                {
+                  "id": "col_s3_location_secondary",
+                  "label": "Secondary enclosure(s)",
+                  "help": "additional space(s) used occasionally",
+                  "welfare_level": null,
+                  "flags": []
+                }
+              ]
+            }
+          ],
+          "rows": [
+            {
+              "id": "row_s3_location_living_room",
+              "label": "Living room",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_location_hallway",
+              "label": "Hallway",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_location_kitchen",
+              "label": "Kitchen",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_location_bedroom",
+              "label": "Bedroom",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_location_garage",
+              "label": "Garage",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_location_basement",
+              "label": "Basement",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_location_no_dedicated_enclosure",
+              "label": "Parrot lives indoors and does not have a dedicated enclosure",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_location_dedicated_room",
+              "label": "Room exclusively dedicated to the parrot",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_location_outdoor_enclosure",
+              "label": "Outdoor enclosure",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_location_other",
+              "label": "Other:",
+              "help": null,
+              "image_ref": null,
+              "allow_text": true
+            }
+          ]
+        },
+        {
+          "id": "q_s3_enclosure_size",
+          "type": "single_choice",
+          "prompt": "Which statement most accurately describes the size of your parrot's main enclosure (where it resides most of the daytime) and its ability to move around?",
+          "help": "For information on species wingspan measurements and recommended minimum cage sizes, please consult the following link: https://naturalinspirationsparrotcages.com/p/wingspan-info",
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_enclosure_size_ample",
+              "label": "My parrot has ample space to move, climb, hop and fly.",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_enclosure_size_two_wingspans",
+              "label": "My parrot has at least 2 wingspans of space in all directions to move, climb, and hop.",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_enclosure_size_less_than_two_wingspans",
+              "label": "My parrot has less than 2 wingspans of space in one or more directions but can at least extend the wings in all directions.",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_enclosure_size_cannot_extend_wings",
+              "label": "My parrot is unable to fully extend its wings in one or more directions.",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_bar_orientation",
+          "type": "multi_choice",
+          "prompt": "Please select the statement(s) that most accurately describe the bar orientation of your parrot's main enclosure.",
+          "note": "Please do not answer this question if your parrot has a dedicated room and/or does not have an enclosure. Check all answers that apply",
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_bar_grid_pattern",
+              "label": "The enclosure(s) has grid-patterned bars",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_bar_horizontal",
+              "label": "The enclosure(s) has horizontal bars",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_bar_vertical",
+              "label": "The enclosure(s) has vertical bars",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_bar_no_climbing_bars",
+              "label": "There are no bars to allow climbing (for example, solid panels made of glass, acrylic)",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_enclosure_material",
+          "type": "multi_choice",
+          "prompt": "What type of material is your parrot's enclosure(s) made from?",
+          "help": "The choice of enclosure material should take into account the parrot's tendency and ability to chew on the bars, since parrots with stronger beaks can break off fragments that may be ingested, creating a risk of injury or toxicity.",
+          "note": "Check all answers that apply",
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_material_stainless_steel",
+              "label": "Stainless steel",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_material_powder_coated_metal",
+              "label": "Powder-coated metal",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_material_wrought_iron",
+              "label": "Wrought iron",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_material_plastic_zinc_wood_acrylic",
+              "label": "Plastic-coated wire, zinc, wood or acrylic",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_material_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": ["dont_know"],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_material_other",
+              "label": "Other:",
+              "welfare_level": null,
+              "flags": ["dont_know"],
+              "allow_text": true
+            }
+          ]
+        },
+        {
+          "id": "q_s3_perches_count",
+          "type": "single_choice",
+          "prompt": "How many perches are available in the parrot's main enclosure?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_perches_more_than_5",
+              "label": ">5",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_perches_3_to_5",
+              "label": "3-5",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_perches_1_to_2",
+              "label": "1-2",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_perches_none",
+              "label": "There are no perches",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_perch_variety",
+          "type": "matrix",
+          "prompt": "Do you provide perches of…",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "row_groups": [
+            {
+              "columns": [
+                {
+                  "id": "col_s3_perch_variety_yes",
+                  "label": "Yes",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s3_perch_variety_no",
+                  "label": "No",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s3_perch_variety_sizes",
+                  "label": "different sizes?",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s3_perch_variety_materials",
+                  "label": "different materials?",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s3_perch_variety_heights",
+                  "label": "different heights?",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s3_movement_enrichment",
+          "type": "grid",
+          "selection": "single_per_group",
+          "prompt": "Please indicate if your parrot receives the following types of enrichment that promote movement and climbing.",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "column_groups": [
+            {
+              "id": "group_s3_movement_inside",
+              "label": "Inside the enclosure",
+              "help": null,
+              "columns": [
+                {
+                  "id": "col_s3_movement_inside_yes",
+                  "label": "Yes",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s3_movement_inside_no",
+                  "label": "No",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ]
+            },
+            {
+              "id": "group_s3_movement_outside",
+              "label": "Outside the enclosure",
+              "help": null,
+              "columns": [
+                {
+                  "id": "col_s3_movement_outside_yes",
+                  "label": "Yes",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s3_movement_outside_no",
+                  "label": "No",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ]
+            }
+          ],
+          "rows": [
+            {
+              "id": "row_s3_movement_branches",
+              "label": "Branches",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_movement_ropes",
+              "label": "Ropes",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_movement_swings",
+              "label": "Swings",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_movement_ladders",
+              "label": "Ladders",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_movement_boings_atoms",
+              "label": "Boings and/or atoms balls",
+              "help": null,
+              "image_ref": "img_s3_boings",
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_enrichment_material_safe",
+          "type": "single_choice",
+          "prompt": "Have you checked whether the material of the enrichment provided (perches, ropes, branches etc.) is safe for parrots?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_enrichment_material_safe_vet",
+              "label": "Yes, I consulted my veterinarian or a behavioural consultant",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_enrichment_material_safe_researched",
+              "label": "Yes, I researched myself online, in books, or magazines",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_enrichment_material_safe_no",
+              "label": "No",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_undisturbed_area",
+          "type": "yes_no",
+          "prompt": "Does your parrot have unlimited access to an undisturbed area where it can rest, sleep or retreat from potential stressful situations (noise, presence of unfamiliar people, other animals etc.)?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_undisturbed_area_yes",
+              "label": "Yes",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_undisturbed_area_no",
+              "label": "No",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_time_out_of_enclosure",
+          "type": "single_choice",
+          "prompt": "How often does your parrot spend time out of its enclosure?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_time_out_most_or_all",
+              "label": "Most or all of its time (for example, only in the enclosure when sleeping or when there is no human supervision)",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_time_out_daily_more_than_3h",
+              "label": "Every day, for more than 3 hours",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_time_out_daily_3h_or_less",
+              "label": "Every day, for 3 hours or less",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_time_out_several_weekly",
+              "label": "Several times a week, but not every day",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_time_out_never_less_than_weekly",
+              "label": "Never or less than once a week on average",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_indoor_space_safe",
+          "type": "single_choice",
+          "prompt": "Have you checked whether the indoor space your parrot uses outside the cage, or its dedicated room, is safe?",
+          "help": "A safe indoor environment for parrots is a space where they can move, explore, chew, and interact without exposure to hazards. It should be free of toxic plants, fumes, and dangerous household items such as cables, sharp objects, small swallowable items, and objects made of toxic heavy metals like lead or zinc.",
+          "note": "Please answer only if your parrot spend time out of its enclosure or have a dedicated room.",
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_indoor_space_safe_vet",
+              "label": "Yes, I consulted my veterinarian or a behavioural consultant",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_indoor_space_safe_researched",
+              "label": "Yes, I researched by myself online, in books or magazines",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_indoor_space_safe_no",
+              "label": "No",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_cleaning",
+          "type": "matrix",
+          "prompt": "How often do you clean…",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "row_groups": [
+            {
+              "columns": [
+                {
+                  "id": "col_s3_cleaning_daily_after_use",
+                  "label": "Every day or after every use",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s3_cleaning_several_weekly",
+                  "label": "Several times a week, but not every day",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s3_cleaning_weekly_or_less",
+                  "label": "Once a week or less",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s3_cleaning_enclosure",
+                  "label": "Enclosure (cage, room, aviary)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s3_cleaning_furnishings",
+                  "label": "Enclosure furnishings",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s3_cleaning_food_bowls",
+                  "label": "Food bowl(s)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s3_cleaning_water_bowls",
+                  "label": "Water bowl(s)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s3_cleaning_foraging_toys",
+                  "label": "Foraging toys",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s3_cleaning_other_toys",
+                  "label": "Other toys",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s3_cleaning_climbing_materials",
+                  "label": "Climbing materials (for example, perches or ropes)",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s3_humidity_temperature",
+          "type": "single_choice",
+          "prompt": "Do you regularly check the humidity and temperature in your parrot's living environment to ensure they are appropriate for its species?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_humidity_temperature_both",
+              "label": "Yes, both",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_humidity_temperature_only_temperature",
+              "label": "Only temperature",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_humidity_temperature_only_humidity",
+              "label": "Only humidity",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_humidity_temperature_no",
+              "label": "No",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_air_refresh",
+          "type": "single_choice",
+          "prompt": "How often do you refresh the air in the area where your parrot lives and spends most of its time?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_air_refresh_more_than_daily",
+              "label": "More than once per day / I use an air purifier / My parrot lives outdoors",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_air_refresh_daily_or_air_purifier_not_constant",
+              "label": "Once per day / I use an air purifier but is not constantly activated",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_air_refresh_several_weekly",
+              "label": "Several times a week, but not every day",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_air_refresh_weekly_or_less",
+              "label": "Once per week or less",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_outdoors_time",
+          "type": "single_choice",
+          "prompt": "How often does your parrot spend time outdoors?",
+          "help": "While spending time outdoors is generally considered beneficial for a parrot's mental and physical health, this may not always be feasible and/or advisable (e.g., due to climate, risk of predation, insect vectors, personality of the parrot, absence of an outdoor area). It is therefore recommended to discuss with your veterinarian or behaviour consultant how your parrot can spend time outdoors safely and, if this is not possible, what alternative opportunities might be available.",
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_outdoors_time_daily",
+              "label": "At least once a day",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_outdoors_time_weekly",
+              "label": "At least once a week",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_outdoors_time_less_than_weekly",
+              "label": "Less than once a week",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_outdoors_time_never",
+              "label": "Never",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_outdoors_safe",
+          "type": "single_choice",
+          "prompt": "Have you checked whether the outdoors space your parrot uses is safe?",
+          "help": "A safe outdoors environment for parrots is a space where they are protected from extreme temperatures (for example with a shelter for those in outdoor enclosures), predators, biting or stinging insects, and exposure to toxic plants or materials.",
+          "note": "Please answer only if your parrot spend time outdoors.",
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_outdoors_safe_vet",
+              "label": "Yes, I consulted my veterinarian or a behavioural consultant",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_outdoors_safe_researched",
+              "label": "Yes, I researched by myself online, in books or magazines",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_outdoors_safe_no",
+              "label": "No",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_uv_exposure",
+          "type": "single_choice",
+          "prompt": "How often do you expose your parrot to a UVA and UVB lamp or to direct sunlight without a window in between?",
+          "help": "UVA and UVB are types of ultraviolet light produced by the sun or by special lamps. UVA allows parrots to see the full colour spectrum, including ultraviolet tones invisible to humans, while UVB enables the production of vitamin D₃, essential for bone and metabolic health.",
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_uv_exposure_everyday",
+              "label": "Everyday",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_uv_exposure_weekly",
+              "label": "Weekly",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_uv_exposure_monthly",
+              "label": "Monthly",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_uv_exposure_never",
+              "label": "Never",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_high_perch",
+          "type": "single_choice",
+          "prompt": "Does your parrot have the opportunity to perch in high locations that are out of reach of people and other animals?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_high_perch_inside_outside",
+              "label": "Yes, both inside and outside of the enclosure",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_high_perch_inside_only",
+              "label": "Only inside the enclosure",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_high_perch_outside_only",
+              "label": "Only outside the enclosure",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_high_perch_no",
+              "label": "No",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_daily_movement",
+          "type": "single_choice",
+          "prompt": "How much time does your parrot spend each day moving, climbing, and flying?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s3_daily_movement_4h_or_more",
+              "label": "4 or more hours",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_daily_movement_2_to_4h",
+              "label": "Between 2 and 4 hours",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_daily_movement_1_to_2h",
+              "label": "Between 1 and 2 hours",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_daily_movement_1h_or_less",
+              "label": "1 hour or less",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_daily_movement_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": ["dont_know"],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_fly_opportunity",
+          "type": "single_choice",
+          "prompt": "How often does your parrot have the opportunity to fly?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s3_fly_opportunity_daily_4h_or_more",
+              "label": "Every day for 4 or more hours",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_fly_opportunity_daily_less_than_4h",
+              "label": "Every day for less than 4 hours",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_fly_opportunity_several_weekly",
+              "label": "Several times a week, but not every day",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_fly_opportunity_never_less_than_weekly",
+              "label": "Never or less than once a week on average",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_fly_space_safe",
+          "type": "grid",
+          "selection": "single_per_group",
+          "prompt": "Is the space where your parrot has the opportunity to fly safe?",
+          "help": "Safe space: environment where the parrot can move or fly with a low risk of injury. Indoor safe space: risk of collisions with windows, mirrors, or walls is minimized, and where access to potentially hazardous spaces like the kitchen is managed with appropriate precautions (no access to hot surfaces, boiling water, or toxic substances). Outdoors safe space: appropriate temperature and no risk of predation or biting or stinging insects.",
+          "demographic": false,
+          "conditional_on": null,
+          "column_groups": [
+            {
+              "id": "group_s3_fly_opportunity_provided",
+              "label": "Opportunity provided",
+              "help": null,
+              "columns": [
+                {
+                  "id": "col_s3_fly_opportunity_provided_yes",
+                  "label": "Yes",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s3_fly_opportunity_provided_no",
+                  "label": "No",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ]
+            },
+            {
+              "id": "group_s3_fly_safe_space",
+              "label": "Safe space",
+              "help": null,
+              "columns": [
+                {
+                  "id": "col_s3_fly_safe_space_yes",
+                  "label": "Yes",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s3_fly_safe_space_no",
+                  "label": "No",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ]
+            }
+          ],
+          "rows": [
+            {
+              "id": "row_s3_fly_indoor",
+              "label": "Indoor flying",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s3_fly_outdoors",
+              "label": "Outdoors flying",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_flight_ability",
+          "type": "single_choice",
+          "prompt": "How would you describe your parrot's flight ability?",
+          "help": "If you are unsure of your parrot's flying ability, please select the answer \"I don't know.\" Avoid attempting to assess it, as it could lead to injury or stress for your parrot.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s3_flight_ability_all_directions",
+              "label": "My parrot flies in all directions and maintains height during flight",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_flight_ability_downward_horizontal",
+              "label": "My parrot flies in a downward trend and horizontally but cannot gain altitude",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_flight_ability_attempts_falls",
+              "label": "My parrot attempts flying but is unable to do so and falls to the ground",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_flight_ability_does_not_fly",
+              "label": "My parrot does not fly or does not attempt to fly",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_flight_ability_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": ["dont_know"],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s3_wing_trim",
+          "type": "single_choice",
+          "prompt": "Has your parrot received a wing trim?",
+          "help": "Wing trimming is often regarded as unethical and a welfare concern, as it restricts parrots from performing natural behaviours such as flying. As a result, it is prohibited by law in several countries. See https://www.aav.org/blogpost/2127750/503645/Wing-Trimming-in-Pet-Parrots-Understanding-Best-Practices-and-Implications-for-this-Welfare-Issue to learn more about the potential welfare implications of wing trimming. The illustrations below show different types of wing trimming. The grey areas indicate the portions of the wings that are trimmed.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s3_wing_trim_no",
+              "label": "No",
+              "image_ref": "img_s3_trim_no",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_wing_trim_skinny",
+              "label": "My parrot has received a bilateral skinny wing trim",
+              "image_ref": "img_s3_trim_skinny",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_wing_trim_transverse",
+              "label": "My parrot has received a bilateral, transverse wing trim",
+              "image_ref": "img_s3_trim_transverse",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_wing_trim_secondaries",
+              "label": "My parrot has received a bilateral wing trim which includes the secondaries",
+              "image_ref": "img_s3_trim_secondaries",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_wing_trim_primaries_secondaries",
+              "label": "My parrot has received a bilateral wing trim which includes the primaries and secondaries",
+              "image_ref": "img_s3_trim_prim_sec",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_wing_trim_unilateral",
+              "label": "My parrot has received a unilateral wing trim",
+              "image_ref": "img_s3_trim_unilateral",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s3_wing_trim_deflighted",
+              "label": "My parrot has been permanently deflighted through a surgical procedure (for example, pinioning) for non-medical reasons.",
+              "image_ref": "img_s3_trim_deflighted",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -6,15 +6,20 @@ import { t } from '../../lib/i18n';
 type IndicatorBadgeProps = {
   welfareLevel: WelfareLevel | null;
   indicatorIcon: IndicatorIcon;
+  reserveSpace?: boolean;
 };
 
 type FlagBadgesProps = {
   flags: OptionFlag[];
 };
 
-export function IndicatorBadge({ welfareLevel, indicatorIcon }: IndicatorBadgeProps) {
+export function IndicatorBadge({
+  welfareLevel,
+  indicatorIcon,
+  reserveSpace = true,
+}: IndicatorBadgeProps) {
   if (welfareLevel === null) {
-    return <View accessible={false} style={styles.indicatorSpacer} />;
+    return reserveSpace ? <View accessible={false} style={styles.indicatorSpacer} /> : null;
   }
 
   return (

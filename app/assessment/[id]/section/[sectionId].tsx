@@ -6,13 +6,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { SectionHeader } from '../../../../components/SectionHeader';
 import { SectionLegend } from '../../../../components/SectionLegend';
 import { FreeTextQuestion } from '../../../../components/questions/FreeTextQuestion';
+import { GridQuestion } from '../../../../components/questions/GridQuestion';
 import { MatrixQuestion } from '../../../../components/questions/MatrixQuestion';
+import { MultiChoiceQuestion } from '../../../../components/questions/MultiChoiceQuestion';
 import { ScaleQuestion } from '../../../../components/questions/ScaleQuestion';
 import { SingleChoiceQuestion } from '../../../../components/questions/SingleChoiceQuestion';
 import { psittawelContentPack } from '../../../../content/psittawel';
 import type {
   FreeTextQuestion as FreeTextContent,
+  GridQuestion as GridQuestionContent,
   MatrixQuestion as MatrixQuestionContent,
+  MultiChoiceQuestion as MultiChoiceContent,
   ScaleQuestion as ScaleQuestionContent,
   SingleChoiceQuestion as SingleChoiceContent,
   YesNoQuestion,
@@ -21,6 +25,8 @@ import {
   type Assessment,
   buildWelfareSnapshot,
   getAssessment,
+  getGridGroupAnswerQuestionId,
+  getGridRowAnswerQuestionId,
   getMatrixRowAnswerQuestionId,
   getAnswers,
   upsertAnswer,
@@ -194,6 +200,51 @@ export default function AssessmentSectionScreen() {
     });
   }
 
+  function handleMultiChoiceToggle(question: MultiChoiceContent, optionId: string) {
+    if (isReadOnly) {
+      return;
+    }
+
+    const currentOptionIds = answers[question.id]?.optionIds ?? [];
+    const wasSelected = currentOptionIds.includes(optionId);
+    const selectedOption = question.options.find((option) => option.id === optionId);
+    const optionIds = wasSelected
+      ? currentOptionIds.filter((currentOptionId) => currentOptionId !== optionId)
+      : question.options
+          .filter(
+            (option) => option.id === optionId || currentOptionIds.includes(option.id),
+          )
+          .map((option) => option.id);
+    const keepsText =
+      selectedOption?.allow_text !== true ||
+      (!wasSelected && optionIds.includes(selectedOption.id));
+    const nextFreeText = keepsText ? answers[question.id]?.freeText ?? '' : '';
+    const nextAnswer = { optionIds, freeText: nextFreeText };
+
+    setAnswers((current) => ({ ...current, [question.id]: nextAnswer }));
+    upsertAnswer(assessmentId, question.id, {
+      optionIds,
+      freeText: nextFreeText.length > 0 ? nextFreeText : null,
+      welfareSnapshot: buildWelfareSnapshot(question, optionIds),
+    });
+  }
+
+  function handleMultiChoiceTextChange(question: MultiChoiceContent, value: string) {
+    if (isReadOnly) {
+      return;
+    }
+
+    const optionIds = answers[question.id]?.optionIds ?? [];
+    const nextAnswer = { optionIds, freeText: value };
+
+    setAnswers((current) => ({ ...current, [question.id]: nextAnswer }));
+    upsertAnswer(assessmentId, question.id, {
+      optionIds,
+      freeText: value,
+      welfareSnapshot: buildWelfareSnapshot(question, optionIds),
+    });
+  }
+
   function handleMatrixSelect(question: MatrixQuestionContent, rowId: string, columnId: string) {
     if (isReadOnly) {
       return;
@@ -207,6 +258,79 @@ export default function AssessmentSectionScreen() {
     upsertAnswer(assessmentId, answerQuestionId, {
       optionIds,
       freeText: null,
+      welfareSnapshot: buildWelfareSnapshot(question, optionIds),
+    });
+  }
+
+  function handleGridMultiToggle(question: GridQuestionContent, rowId: string, columnId: string) {
+    if (isReadOnly || question.selection !== 'multi') {
+      return;
+    }
+
+    const answerQuestionId = getGridRowAnswerQuestionId(question.id, rowId);
+    const row = question.rows.find((candidate) => candidate.id === rowId);
+    const currentOptionIds = answers[answerQuestionId]?.optionIds ?? [];
+    const optionIds = currentOptionIds.includes(columnId)
+      ? currentOptionIds.filter((currentOptionId) => currentOptionId !== columnId)
+      : question.column_groups
+          .flatMap((columnGroup) => columnGroup.columns)
+          .filter(
+            (column) => column.id === columnId || currentOptionIds.includes(column.id),
+          )
+          .map((column) => column.id);
+    const nextFreeText =
+      row?.allow_text === true && optionIds.length > 0
+        ? answers[answerQuestionId]?.freeText ?? ''
+        : '';
+    const nextAnswer = { optionIds, freeText: nextFreeText };
+
+    setAnswers((current) => ({ ...current, [answerQuestionId]: nextAnswer }));
+    upsertAnswer(assessmentId, answerQuestionId, {
+      optionIds,
+      freeText: nextFreeText.length > 0 ? nextFreeText : null,
+      welfareSnapshot: buildWelfareSnapshot(question, optionIds),
+    });
+  }
+
+  function handleGridSingleSelect(
+    question: GridQuestionContent,
+    rowId: string,
+    groupId: string,
+    columnId: string,
+  ) {
+    if (isReadOnly || question.selection !== 'single_per_group') {
+      return;
+    }
+
+    const answerQuestionId = getGridGroupAnswerQuestionId(question.id, rowId, groupId);
+    const optionIds = [columnId];
+    const nextAnswer = { optionIds, freeText: '' };
+
+    setAnswers((current) => ({ ...current, [answerQuestionId]: nextAnswer }));
+    upsertAnswer(assessmentId, answerQuestionId, {
+      optionIds,
+      freeText: null,
+      welfareSnapshot: buildWelfareSnapshot(question, optionIds),
+    });
+  }
+
+  function handleGridRowTextChange(
+    question: GridQuestionContent,
+    rowId: string,
+    value: string,
+  ) {
+    if (isReadOnly || question.selection !== 'multi') {
+      return;
+    }
+
+    const answerQuestionId = getGridRowAnswerQuestionId(question.id, rowId);
+    const optionIds = answers[answerQuestionId]?.optionIds ?? [];
+    const nextAnswer = { optionIds, freeText: value };
+
+    setAnswers((current) => ({ ...current, [answerQuestionId]: nextAnswer }));
+    upsertAnswer(assessmentId, answerQuestionId, {
+      optionIds,
+      freeText: value,
       welfareSnapshot: buildWelfareSnapshot(question, optionIds),
     });
   }
@@ -251,6 +375,17 @@ export default function AssessmentSectionScreen() {
                   selectedOptionId={answer.optionIds[0] ?? null}
                 />
               ) : null}
+              {question.type === 'multi_choice' ? (
+                <MultiChoiceQuestion
+                  disabled={isReadOnly}
+                  indicatorIcon={question.indicator_icon ?? section.indicator_icon}
+                  onChangeOptionText={(value) => handleMultiChoiceTextChange(question, value)}
+                  onToggleOption={(optionId) => handleMultiChoiceToggle(question, optionId)}
+                  optionText={answer.freeText}
+                  question={question}
+                  selectedOptionIds={answer.optionIds}
+                />
+              ) : null}
               {question.type === 'scale' ? (
                 <ScaleQuestion
                   disabled={isReadOnly}
@@ -271,6 +406,32 @@ export default function AssessmentSectionScreen() {
                   selectedColumnIdForRow={(rowId) =>
                     answers[getMatrixRowAnswerQuestionId(question.id, rowId)]?.optionIds[0] ??
                     null
+                  }
+                />
+              ) : null}
+              {question.type === 'grid' ? (
+                <GridQuestion
+                  disabled={isReadOnly}
+                  indicatorIcon={question.indicator_icon ?? section.indicator_icon}
+                  onChangeRowText={(rowId, value) =>
+                    handleGridRowTextChange(question, rowId, value)
+                  }
+                  onSelectColumn={(rowId, groupId, columnId) =>
+                    handleGridSingleSelect(question, rowId, groupId, columnId)
+                  }
+                  onToggleColumn={(rowId, columnId) =>
+                    handleGridMultiToggle(question, rowId, columnId)
+                  }
+                  question={question}
+                  rowTextForRow={(rowId) =>
+                    answers[getGridRowAnswerQuestionId(question.id, rowId)]?.freeText ?? ''
+                  }
+                  selectedColumnIdForGroup={(rowId, groupId) =>
+                    answers[getGridGroupAnswerQuestionId(question.id, rowId, groupId)]
+                      ?.optionIds[0] ?? null
+                  }
+                  selectedColumnIdsForRow={(rowId) =>
+                    answers[getGridRowAnswerQuestionId(question.id, rowId)]?.optionIds ?? []
                   }
                 />
               ) : null}

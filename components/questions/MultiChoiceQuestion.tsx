@@ -2,33 +2,34 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import type {
   IndicatorIcon,
-  SingleChoiceQuestion as SingleChoiceQuestionContent,
-  YesNoQuestion,
+  MultiChoiceQuestion as MultiChoiceQuestionContent,
 } from '../../content/schema';
 import { colors } from '../../lib/theme';
 import { FlagBadges, getChoiceAccessibilityLabel, IndicatorBadge } from './Badges';
 import { ImagePlaceholder } from './ImagePlaceholder';
 
 type Props = {
-  question: SingleChoiceQuestionContent | YesNoQuestion;
+  question: MultiChoiceQuestionContent;
   indicatorIcon: IndicatorIcon;
-  selectedOptionId: string | null;
+  selectedOptionIds: string[];
   optionText: string;
-  onSelectOption: (optionId: string) => void;
+  onToggleOption: (optionId: string) => void;
   onChangeOptionText: (value: string) => void;
   disabled?: boolean;
 };
 
-export function SingleChoiceQuestion({
+export function MultiChoiceQuestion({
   question,
   indicatorIcon,
-  selectedOptionId,
+  selectedOptionIds,
   optionText,
-  onSelectOption,
+  onToggleOption,
   onChangeOptionText,
   disabled = false,
 }: Props) {
   const hasIndicators = question.options.some((option) => option.welfare_level !== null);
+  const selectedOptions = new Set(selectedOptionIds);
+
   return (
     <View style={styles.container}>
       <Text style={styles.prompt}>{question.prompt}</Text>
@@ -37,7 +38,7 @@ export function SingleChoiceQuestion({
       {question.image_ref ? <ImagePlaceholder /> : null}
       <View style={styles.options}>
         {question.options.map((option) => {
-          const selected = selectedOptionId === option.id;
+          const checked = selectedOptions.has(option.id);
 
           return (
             <View key={option.id} style={styles.optionBlock}>
@@ -47,19 +48,19 @@ export function SingleChoiceQuestion({
                   option.welfare_level,
                   option.flags,
                 )}
-                accessibilityRole="radio"
-                accessibilityState={{ disabled, selected }}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked, disabled }}
                 disabled={disabled}
-                onPress={() => onSelectOption(option.id)}
+                onPress={() => onToggleOption(option.id)}
                 style={[
                   styles.optionCard,
-                  selected ? styles.optionCardSelected : null,
+                  checked ? styles.optionCardSelected : null,
                   disabled ? styles.optionCardDisabled : null,
                 ]}
               >
                 <View style={styles.optionRow}>
-                  <View style={[styles.radio, selected ? styles.radioSelected : null]}>
-                    {selected ? <View style={styles.radioDot} /> : null}
+                  <View style={[styles.checkbox, checked ? styles.checkboxSelected : null]}>
+                    {checked ? <View style={styles.checkboxMark} /> : null}
                   </View>
                   <IndicatorBadge
                     indicatorIcon={indicatorIcon}
@@ -73,7 +74,7 @@ export function SingleChoiceQuestion({
                 </View>
                 {option.image_ref ? <ImagePlaceholder /> : null}
               </Pressable>
-              {selected && option.allow_text ? (
+              {checked && option.allow_text ? (
                 <TextInput
                   accessibilityLabel={getChoiceAccessibilityLabel(
                     option.label,
@@ -149,22 +150,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
   },
-  radio: {
+  checkbox: {
     alignItems: 'center',
     borderColor: colors.textMuted,
-    borderRadius: 9,
+    borderRadius: 3,
     borderWidth: 2,
     height: 18,
     justifyContent: 'center',
     marginTop: 2,
     width: 18,
   },
-  radioSelected: {
+  checkboxSelected: {
     borderColor: colors.spruce,
   },
-  radioDot: {
+  checkboxMark: {
     backgroundColor: colors.spruce,
-    borderRadius: 5,
+    borderRadius: 2,
     height: 10,
     width: 10,
   },

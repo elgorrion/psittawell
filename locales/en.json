@@ -50,6 +50,7 @@
     "imageReferenceCaption": "Reference illustration in the printed guide.",
     "imageReferenceAccessibility": "Reference illustration placeholder. No photo is embedded.",
     "matrixRowAccessibility": "Options for %{row}",
+    "gridGroupAccessibility": "Options for %{row}, %{group}",
     "legend": {
       "title": "How to interpret your answers",
       "goodDirection": "↑ likelihood for good welfare",

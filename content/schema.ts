@@ -16,11 +16,13 @@ export const optionFlags = [
 
 export const indicatorIcons = ['circle', 'parrot', 'house', 'hand'] as const;
 export const conditionalOperators = ['equals', 'not_equals', 'in', 'not_in'] as const;
+export const gridSelections = ['single_per_group', 'multi'] as const;
 
 export type WelfareLevel = (typeof welfareLevels)[number];
 export type OptionFlag = (typeof optionFlags)[number];
 export type IndicatorIcon = (typeof indicatorIcons)[number];
 export type ConditionalOperator = (typeof conditionalOperators)[number];
+export type GridSelection = (typeof gridSelections)[number];
 
 export type ContentPack = {
   instrument: string;
@@ -54,6 +56,7 @@ export type BaseQuestion = {
   type: QuestionType;
   prompt: string;
   help?: string | null;
+  note?: string | null;
   image_ref?: string | null;
   demographic: boolean;
   conditional_on?: ConditionalOn | null;
@@ -66,7 +69,8 @@ export type QuestionType =
   | 'multi_choice'
   | 'yes_no'
   | 'scale'
-  | 'matrix';
+  | 'matrix'
+  | 'grid';
 
 export type FreeTextQuestion = BaseQuestion & {
   type: 'free_text';
@@ -107,7 +111,14 @@ export type MatrixQuestion = BaseQuestion & {
   row_groups: RowGroup[];
 };
 
-export type Question = FreeTextQuestion | ChoiceQuestion | MatrixQuestion;
+export type GridQuestion = BaseQuestion & {
+  type: 'grid';
+  selection: GridSelection;
+  column_groups: ColumnGroup[];
+  rows: GridRow[];
+};
+
+export type Question = FreeTextQuestion | ChoiceQuestion | MatrixQuestion | GridQuestion;
 
 export type Option = {
   id: string;
@@ -124,9 +135,17 @@ export type RowGroup = {
   rows: Row[];
 };
 
+export type ColumnGroup = {
+  id: string;
+  label: string;
+  help?: string | null;
+  columns: Column[];
+};
+
 export type Column = {
   id: string;
   label: string;
+  help?: string | null;
   welfare_level: WelfareLevel | null;
   flags: OptionFlag[];
   icon?: IndicatorIcon;
@@ -137,6 +156,10 @@ export type Row = {
   label: string;
   help?: string | null;
   image_ref?: string | null;
+};
+
+export type GridRow = Row & {
+  allow_text: boolean;
 };
 
 export function validateContentPack(pack: ContentPack): void {
@@ -172,6 +195,11 @@ export function validateContentPack(pack: ContentPack): void {
 
       if (question.type === 'matrix') {
         validateMatrixQuestion(question);
+        continue;
+      }
+
+      if (question.type === 'grid') {
+        validateGridQuestion(question);
         continue;
       }
 
@@ -225,7 +253,15 @@ export function validateContentPack(pack: ContentPack): void {
   }
 }
 
-const questionTypes = ['free_text', 'single_choice', 'multi_choice', 'yes_no', 'scale', 'matrix'] as const;
+const questionTypes = [
+  'free_text',
+  'single_choice',
+  'multi_choice',
+  'yes_no',
+  'scale',
+  'matrix',
+  'grid',
+] as const;
 const inputKeyboards = ['default', 'numeric'] as const;
 
 function validateChoiceQuestion(
@@ -282,6 +318,48 @@ function validateMatrixQuestion(question: MatrixQuestion) {
 
     for (const row of rowGroup.rows) {
       assertUnique(rowIds, row.id, `row for question ${question.id}`);
+    }
+  }
+}
+
+function validateGridQuestion(question: GridQuestion) {
+  assertEnum(question.selection, gridSelections, `question ${question.id} selection`);
+
+  if (!Array.isArray(question.column_groups) || question.column_groups.length === 0) {
+    throw new Error(`Question ${question.id} must include at least one column group.`);
+  }
+
+  if (!Array.isArray(question.rows) || question.rows.length === 0) {
+    throw new Error(`Question ${question.id} must include at least one row.`);
+  }
+
+  const groupIds = new Set<string>();
+  const columnIds = new Set<string>();
+  const rowIds = new Set<string>();
+
+  for (const columnGroup of question.column_groups) {
+    assertUnique(groupIds, columnGroup.id, `column group for question ${question.id}`);
+
+    if (!Array.isArray(columnGroup.columns) || columnGroup.columns.length === 0) {
+      throw new Error(`Question ${question.id} column group ${columnGroup.id} must include columns.`);
+    }
+
+    for (const column of columnGroup.columns) {
+      assertUnique(columnIds, column.id, `column for question ${question.id}`);
+      validateWelfareLevel(column.welfare_level, `column ${column.id} welfare_level`);
+      validateFlags(column.flags, `column ${column.id} flags`);
+
+      if (column.icon !== undefined) {
+        assertEnum(column.icon, indicatorIcons, `column ${column.id} icon`);
+      }
+    }
+  }
+
+  for (const row of question.rows) {
+    assertUnique(rowIds, row.id, `row for question ${question.id}`);
+
+    if (typeof row.allow_text !== 'boolean') {
+      throw new Error(`Question ${question.id} row ${row.id} allow_text must be a boolean.`);
     }
   }
 }

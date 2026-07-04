@@ -1,6 +1,6 @@
 import { getDatabase } from './db';
 import { isQuestionVisible } from './conditionals';
-import type { MatrixQuestion, Question, Section, WelfareLevel } from '../content/schema';
+import type { GridQuestion, MatrixQuestion, Question, Section, WelfareLevel } from '../content/schema';
 
 export const parrotNameQuestionId = 'q_s1_name';
 
@@ -52,6 +52,18 @@ export type SectionAnswerProgress = {
 
 export function getMatrixRowAnswerQuestionId(matrixQuestionId: string, rowId: string): string {
   return `${matrixQuestionId}::${rowId}`;
+}
+
+export function getGridRowAnswerQuestionId(gridQuestionId: string, rowId: string): string {
+  return `${gridQuestionId}::${rowId}`;
+}
+
+export function getGridGroupAnswerQuestionId(
+  gridQuestionId: string,
+  rowId: string,
+  groupId: string,
+): string {
+  return `${gridQuestionId}::${rowId}::${groupId}`;
 }
 
 type AssessmentRow = {
@@ -241,6 +253,12 @@ export function buildWelfareSnapshot(
         welfareByOptionId.set(column.id, column.welfare_level);
       }
     }
+  } else if (question.type === 'grid') {
+    for (const columnGroup of question.column_groups) {
+      for (const column of columnGroup.columns) {
+        welfareByOptionId.set(column.id, column.welfare_level);
+      }
+    }
   } else {
     for (const option of question.options) {
       welfareByOptionId.set(option.id, option.welfare_level);
@@ -268,6 +286,10 @@ function isQuestionAnswered(question: Question, answers: AnswerLookup): boolean 
     );
   }
 
+  if (question.type === 'grid') {
+    return isGridQuestionAnswered(question, answers);
+  }
+
   return isChoiceAnswered(answers[question.id]);
 }
 
@@ -277,6 +299,22 @@ function isChoiceAnswered(answer: AnswerLookup[string]): boolean {
 
 function getMatrixRowIds(question: MatrixQuestion): string[] {
   return question.row_groups.flatMap((rowGroup) => rowGroup.rows.map((row) => row.id));
+}
+
+function isGridQuestionAnswered(question: GridQuestion, answers: AnswerLookup): boolean {
+  if (question.selection === 'multi') {
+    return question.rows.some((row) =>
+      isChoiceAnswered(answers[getGridRowAnswerQuestionId(question.id, row.id)]),
+    );
+  }
+
+  return question.rows.every((row) =>
+    question.column_groups.every((columnGroup) =>
+      isChoiceAnswered(
+        answers[getGridGroupAnswerQuestionId(question.id, row.id, columnGroup.id)],
+      ),
+    ),
+  );
 }
 
 function mapAssessmentRow(row: AssessmentRow): Assessment {

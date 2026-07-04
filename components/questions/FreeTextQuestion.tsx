@@ -15,6 +15,7 @@ export function FreeTextQuestion({ question, value, onChangeText, disabled = fal
     <View style={styles.container}>
       <Text style={styles.prompt}>{question.prompt}</Text>
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
+      {question.note ? <Text style={styles.note}>{question.note}</Text> : null}
       <TextInput
         accessibilityLabel={question.prompt}
         editable={!disabled}
@@ -52,6 +53,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     padding: 12,
+  },
+  note: {
+    color: colors.textMuted,
+    fontSize: 14,
+    fontStyle: 'italic',
+    lineHeight: 20,
   },
   input: {
     backgroundColor: colors.paper,

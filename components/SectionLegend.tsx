@@ -96,6 +96,18 @@ export function getSectionLegendFlags(section: Section): OptionFlag[] {
       continue;
     }
 
+    if (question.type === 'grid') {
+      for (const columnGroup of question.column_groups) {
+        for (const column of columnGroup.columns) {
+          for (const flag of column.flags) {
+            usedFlags.add(flag);
+          }
+        }
+      }
+
+      continue;
+    }
+
     for (const option of question.options) {
       for (const flag of option.flags) {
         usedFlags.add(flag);

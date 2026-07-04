@@ -1,11 +1,13 @@
 import { psittawelContentPack } from '../content/psittawel';
-import type { ChoiceQuestion, ContentPack, MatrixQuestion } from '../content/schema';
+import type { ChoiceQuestion, ContentPack, GridQuestion, MatrixQuestion } from '../content/schema';
 import { getDatabase } from '../lib/db';
 import {
   buildWelfareSnapshot,
   completeAssessment,
   countAnsweredVisibleQuestions,
   getAssessment,
+  getGridGroupAnswerQuestionId,
+  getGridRowAnswerQuestionId,
   getMatrixRowAnswerQuestionId,
   listAssessments,
 } from '../lib/assessments';
@@ -65,10 +67,39 @@ describe('buildWelfareSnapshot', () => {
     });
   });
 
+  it('records selected grid column welfare levels for a multi-selection row answer', () => {
+    const question = gridQuestion(clonePack().sections[2].questions[0]);
+
+    expect(buildWelfareSnapshot(question, ['col_s3_location_main'])).toEqual({
+      col_s3_location_main: null,
+    });
+  });
+
+  it('records selected grid column welfare levels for a single-per-group answer', () => {
+    const question = gridQuestion(clonePack().sections[2].questions[6]);
+
+    expect(buildWelfareSnapshot(question, ['col_s3_movement_inside_no'])).toEqual({
+      col_s3_movement_inside_no: 'high_risk',
+    });
+  });
+
   it('builds stable matrix row answer ids', () => {
     expect(
       getMatrixRowAnswerQuestionId('q_s2_signs_of_illness', 'row_signs_lameness'),
     ).toBe('q_s2_signs_of_illness::row_signs_lameness');
+  });
+
+  it('builds stable grid answer ids', () => {
+    expect(getGridRowAnswerQuestionId('q_s3_enclosure_location', 'row_s3_location_kitchen')).toBe(
+      'q_s3_enclosure_location::row_s3_location_kitchen',
+    );
+    expect(
+      getGridGroupAnswerQuestionId(
+        'q_s3_movement_enrichment',
+        'row_s3_movement_branches',
+        'group_s3_movement_inside',
+      ),
+    ).toBe('q_s3_movement_enrichment::row_s3_movement_branches::group_s3_movement_inside');
   });
 });
 
@@ -195,6 +226,55 @@ describe('countAnsweredVisibleQuestions', () => {
       total: 6,
     });
   });
+
+  it('counts a multi-selection grid when any row has a selection', () => {
+    const section = clonePack().sections[2];
+    const question = gridQuestion(section.questions[0]);
+
+    expect(countAnsweredVisibleQuestions(section, {})).toEqual({ answered: 0, total: 23 });
+
+    expect(
+      countAnsweredVisibleQuestions(section, {
+        [getGridRowAnswerQuestionId(question.id, 'row_s3_location_kitchen')]: {
+          optionIds: ['col_s3_location_main', 'col_s3_location_secondary'],
+          freeText: '',
+        },
+      }),
+    ).toEqual({ answered: 1, total: 23 });
+  });
+
+  it('counts a single-per-group grid only when every row and group has an answer', () => {
+    const section = clonePack().sections[2];
+    const question = gridQuestion(section.questions[6]);
+    const firstAnswerKey = getGridGroupAnswerQuestionId(
+      question.id,
+      question.rows[0].id,
+      question.column_groups[0].id,
+    );
+
+    expect(
+      countAnsweredVisibleQuestions(section, {
+        [firstAnswerKey]: {
+          optionIds: [question.column_groups[0].columns[0].id],
+          freeText: '',
+        },
+      }),
+    ).toEqual({ answered: 0, total: 23 });
+
+    const gridAnswers = Object.fromEntries(
+      question.rows.flatMap((row) =>
+        question.column_groups.map((columnGroup) => [
+          getGridGroupAnswerQuestionId(question.id, row.id, columnGroup.id),
+          { optionIds: [columnGroup.columns[0].id], freeText: '' },
+        ]),
+      ),
+    );
+
+    expect(countAnsweredVisibleQuestions(section, gridAnswers)).toEqual({
+      answered: 1,
+      total: 23,
+    });
+  });
 });
 
 function clonePack(): ContentPack {
@@ -202,8 +282,16 @@ function clonePack(): ContentPack {
 }
 
 function choiceQuestion(question: ContentPack['sections'][number]['questions'][number]): ChoiceQuestion {
-  if (question.type === 'free_text' || question.type === 'matrix') {
+  if (question.type === 'free_text' || question.type === 'matrix' || question.type === 'grid') {
     throw new Error(`Question ${question.id} is not a choice question.`);
+  }
+
+  return question;
+}
+
+function gridQuestion(question: ContentPack['sections'][number]['questions'][number]): GridQuestion {
+  if (question.type !== 'grid') {
+    throw new Error(`Question ${question.id} is not a grid question.`);
   }
 
   return question;

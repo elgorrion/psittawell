@@ -2,7 +2,9 @@ import { psittawelContentPack } from '../content/psittawel';
 import {
   type ChoiceQuestion,
   type ContentPack,
+  type GridQuestion,
   type MatrixQuestion,
+  type MultiChoiceQuestion,
   type ScaleQuestion,
   validateContentPack,
 } from '../content/schema';
@@ -12,9 +14,10 @@ describe('content pack', () => {
     expect(() => validateContentPack(psittawelContentPack)).not.toThrow();
     expect(psittawelContentPack.instrument).toBe('PsittaWel');
     expect(psittawelContentPack.instrument_version).toBe('1');
-    expect(psittawelContentPack.sections).toHaveLength(2);
+    expect(psittawelContentPack.sections).toHaveLength(3);
     expect(psittawelContentPack.sections[0].questions).toHaveLength(10);
     expect(psittawelContentPack.sections[1].questions).toHaveLength(7);
+    expect(psittawelContentPack.sections[2].questions).toHaveLength(23);
   });
 
   it('keeps Section 1 authored order and welfare mappings', () => {
@@ -104,6 +107,117 @@ describe('content pack', () => {
     );
   });
 
+  it('keeps Section 3 authored order and spot welfare mappings', () => {
+    const section = psittawelContentPack.sections[2];
+    const enclosureLocation = gridQuestion(section.questions[0]);
+    const enclosureSize = choiceQuestion(section.questions[1]);
+    const barOrientation = multiChoiceQuestion(section.questions[2]);
+    const humidityTemperature = choiceQuestion(section.questions[12]);
+    const uvExposure = choiceQuestion(section.questions[16]);
+    const highPerch = choiceQuestion(section.questions[17]);
+    const dailyMovement = choiceQuestion(section.questions[18]);
+    const flySpaceSafe = gridQuestion(section.questions[20]);
+    const wingTrim = choiceQuestion(section.questions[22]);
+
+    expect(section.id).toBe('s3_housing');
+    expect(section.indicator_icon).toBe('house');
+    expect(section.questions.map((question) => question.id)).toEqual([
+      'q_s3_enclosure_location',
+      'q_s3_enclosure_size',
+      'q_s3_bar_orientation',
+      'q_s3_enclosure_material',
+      'q_s3_perches_count',
+      'q_s3_perch_variety',
+      'q_s3_movement_enrichment',
+      'q_s3_enrichment_material_safe',
+      'q_s3_undisturbed_area',
+      'q_s3_time_out_of_enclosure',
+      'q_s3_indoor_space_safe',
+      'q_s3_cleaning',
+      'q_s3_humidity_temperature',
+      'q_s3_air_refresh',
+      'q_s3_outdoors_time',
+      'q_s3_outdoors_safe',
+      'q_s3_uv_exposure',
+      'q_s3_high_perch',
+      'q_s3_daily_movement',
+      'q_s3_fly_opportunity',
+      'q_s3_fly_space_safe',
+      'q_s3_flight_ability',
+      'q_s3_wing_trim',
+    ]);
+    expect(enclosureLocation.selection).toBe('multi');
+    expect(enclosureLocation.column_groups[0].columns.map((column) => column.label)).toEqual([
+      'Main enclosure',
+      'Secondary enclosure(s)',
+    ]);
+    expect(enclosureLocation.rows[9]).toMatchObject({
+      id: 'row_s3_location_other',
+      label: 'Other:',
+      allow_text: true,
+    });
+    expect(enclosureSize.options.map((option) => option.welfare_level)).toEqual([
+      'optimal',
+      'moderate',
+      'elevated_risk',
+      'high_risk',
+    ]);
+    expect(barOrientation.options.map((option) => option.welfare_level)).toEqual([
+      'optimal',
+      'good',
+      'elevated_risk',
+      'high_risk',
+    ]);
+    expect(humidityTemperature.options.map((option) => option.welfare_level)).toEqual([
+      'optimal',
+      'moderate',
+      'moderate',
+      'high_risk',
+    ]);
+    expect(uvExposure.options.map((option) => option.welfare_level)).toEqual([
+      'optimal',
+      'moderate',
+      'elevated_risk',
+      'high_risk',
+    ]);
+    expect(highPerch.options.map((option) => option.welfare_level)).toEqual([
+      'optimal',
+      'moderate',
+      'elevated_risk',
+      'high_risk',
+    ]);
+    expect(dailyMovement.indicator_icon).toBe('parrot');
+    expect(dailyMovement.options[4]).toMatchObject({
+      label: "I don't know",
+      welfare_level: null,
+      flags: ['dont_know'],
+    });
+    expect(flySpaceSafe.selection).toBe('single_per_group');
+    expect(flySpaceSafe.column_groups.map((group) => group.label)).toEqual([
+      'Opportunity provided',
+      'Safe space',
+    ]);
+    expect(wingTrim.indicator_icon).toBe('parrot');
+    expect(wingTrim.options.map((option) => option.welfare_level)).toEqual([
+      'optimal',
+      'good',
+      'moderate',
+      'elevated_risk',
+      'high_risk',
+      'high_risk',
+      'high_risk',
+    ]);
+    expect(wingTrim.options.map((option) => option.image_ref)).toEqual([
+      'img_s3_trim_no',
+      'img_s3_trim_skinny',
+      'img_s3_trim_transverse',
+      'img_s3_trim_secondaries',
+      'img_s3_trim_prim_sec',
+      'img_s3_trim_unilateral',
+      'img_s3_trim_deflighted',
+    ]);
+  });
+
   it('rejects duplicate section ids', () => {
     const pack = clonePack();
 
@@ -177,6 +291,17 @@ describe('content pack', () => {
     );
   });
 
+  it('rejects empty option lists for multi-choice questions', () => {
+    const pack = clonePack();
+    const question = multiChoiceQuestion(pack.sections[2].questions[2]);
+
+    question.options = [];
+
+    expect(() => validateContentPack(pack)).toThrow(
+      'Question q_s3_bar_orientation must include at least one option.',
+    );
+  });
+
   it('rejects invalid conditional operators', () => {
     const pack = clonePack();
 
@@ -210,6 +335,47 @@ describe('content pack', () => {
 
     expect(() => validateContentPack(pack)).toThrow('Unknown column col_signs_acute_no flags');
   });
+
+  it('accepts both grid selection modes', () => {
+    const pack = clonePack();
+
+    expect(gridQuestion(pack.sections[2].questions[0]).selection).toBe('multi');
+    expect(gridQuestion(pack.sections[2].questions[6]).selection).toBe('single_per_group');
+    expect(() => validateContentPack(pack)).not.toThrow();
+  });
+
+  it('rejects unknown grid selection values', () => {
+    const pack = clonePack();
+    const question = gridQuestion(pack.sections[2].questions[0]);
+
+    question.selection = 'single' as never;
+
+    expect(() => validateContentPack(pack)).toThrow(
+      'Unknown question q_s3_enclosure_location selection',
+    );
+  });
+
+  it('rejects duplicate grid column ids across column groups', () => {
+    const pack = clonePack();
+    const question = gridQuestion(pack.sections[2].questions[6]);
+
+    question.column_groups[1].columns[0].id = question.column_groups[0].columns[0].id;
+
+    expect(() => validateContentPack(pack)).toThrow(
+      'Duplicate column for question q_s3_movement_enrichment id: col_s3_movement_inside_yes.',
+    );
+  });
+
+  it('rejects grid rows without an allow_text boolean', () => {
+    const pack = clonePack();
+    const question = gridQuestion(pack.sections[2].questions[0]);
+
+    delete (question.rows[0] as Partial<GridQuestion['rows'][number]>).allow_text;
+
+    expect(() => validateContentPack(pack)).toThrow(
+      'Question q_s3_enclosure_location row row_s3_location_living_room allow_text must be a boolean.',
+    );
+  });
 });
 
 function clonePack(): ContentPack {
@@ -217,8 +383,18 @@ function clonePack(): ContentPack {
 }
 
 function choiceQuestion(question: ContentPack['sections'][number]['questions'][number]): ChoiceQuestion {
-  if (question.type === 'free_text' || question.type === 'matrix') {
+  if (question.type === 'free_text' || question.type === 'matrix' || question.type === 'grid') {
     throw new Error(`Question ${question.id} is not a choice question.`);
+  }
+
+  return question;
+}
+
+function multiChoiceQuestion(
+  question: ContentPack['sections'][number]['questions'][number],
+): MultiChoiceQuestion {
+  if (question.type !== 'multi_choice') {
+    throw new Error(`Question ${question.id} is not a multi-choice question.`);
   }
 
   return question;
@@ -235,6 +411,14 @@ function scaleQuestion(question: ContentPack['sections'][number]['questions'][nu
 function matrixQuestion(question: ContentPack['sections'][number]['questions'][number]): MatrixQuestion {
   if (question.type !== 'matrix') {
     throw new Error(`Question ${question.id} is not a matrix question.`);
+  }
+
+  return question;
+}
+
+function gridQuestion(question: ContentPack['sections'][number]['questions'][number]): GridQuestion {
+  if (question.type !== 'grid') {
+    throw new Error(`Question ${question.id} is not a grid question.`);
   }
 
   return question;
