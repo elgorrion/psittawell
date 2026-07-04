@@ -10,7 +10,7 @@ import type {
 import { t } from '../../lib/i18n';
 import { colors } from '../../lib/theme';
 import { FlagBadges, getChoiceAccessibilityLabel, IndicatorBadge } from './Badges';
-import { ImagePlaceholder } from './ImagePlaceholder';
+import { InstrumentImage } from './InstrumentImage';
 
 type Props = {
   question: GridQuestionContent;
@@ -46,7 +46,7 @@ export function GridQuestion({
       <FlagBadges flags={question.flags ?? []} />
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
       {question.note ? <Text style={styles.note}>{question.note}</Text> : null}
-      {question.image_ref ? <ImagePlaceholder /> : null}
+      {question.image_ref ? <InstrumentImage imageRef={question.image_ref} /> : null}
       <View style={styles.rows}>
         {question.rows.map((row) => (
           <GridRowCard
@@ -115,7 +115,7 @@ function GridRowCard({
         <FlagBadges flags={row.flags ?? []} />
       </View>
       {row.help ? <Text style={styles.rowHelp}>{row.help}</Text> : null}
-      {row.image_ref ? <ImagePlaceholder /> : null}
+      {row.image_ref ? <InstrumentImage imageRef={row.image_ref} /> : null}
       {question.column_groups.map((columnGroup) => (
         <ColumnGroupOptions
           columnGroup={columnGroup}

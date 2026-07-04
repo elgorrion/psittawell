@@ -9,7 +9,7 @@ import type {
 import { t } from '../../lib/i18n';
 import { colors } from '../../lib/theme';
 import { FlagBadges, getChoiceAccessibilityLabel, IndicatorBadge } from './Badges';
-import { ImagePlaceholder } from './ImagePlaceholder';
+import { InstrumentImage } from './InstrumentImage';
 
 type Props = {
   question: MatrixQuestionContent;
@@ -32,7 +32,7 @@ export function MatrixQuestion({
       <FlagBadges flags={question.flags ?? []} />
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
       {question.note ? <Text style={styles.note}>{question.note}</Text> : null}
-      {question.image_ref ? <ImagePlaceholder /> : null}
+      {question.image_ref ? <InstrumentImage imageRef={question.image_ref} /> : null}
       {question.row_groups.map((rowGroup, groupIndex) => (
         <View key={groupIndex} style={styles.group}>
           {rowGroup.rows.map((row) => (
@@ -75,7 +75,7 @@ function MatrixRow({
     <View style={styles.rowCard}>
       <Text style={styles.rowLabel}>{row.label}</Text>
       {row.help ? <Text style={styles.rowHelp}>{row.help}</Text> : null}
-      {row.image_ref ? <ImagePlaceholder /> : null}
+      {row.image_ref ? <InstrumentImage imageRef={row.image_ref} /> : null}
       <View
         accessibilityLabel={t('assessment.matrixRowAccessibility', { row: row.label })}
         accessibilityRole="radiogroup"

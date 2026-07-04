@@ -7,7 +7,7 @@ import type {
 } from '../../content/schema';
 import { colors } from '../../lib/theme';
 import { FlagBadges, getChoiceAccessibilityLabel, IndicatorBadge } from './Badges';
-import { ImagePlaceholder } from './ImagePlaceholder';
+import { InstrumentImage } from './InstrumentImage';
 
 type Props = {
   question: SingleChoiceQuestionContent | YesNoQuestion;
@@ -35,7 +35,7 @@ export function SingleChoiceQuestion({
       <FlagBadges flags={question.flags ?? []} />
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
       {question.note ? <Text style={styles.note}>{question.note}</Text> : null}
-      {question.image_ref ? <ImagePlaceholder /> : null}
+      {question.image_ref ? <InstrumentImage imageRef={question.image_ref} /> : null}
       <View style={styles.options}>
         {question.options.map((option) => {
           const selected = selectedOptionId === option.id;
@@ -72,7 +72,7 @@ export function SingleChoiceQuestion({
                     <FlagBadges flags={option.flags} />
                   </View>
                 </View>
-                {option.image_ref ? <ImagePlaceholder /> : null}
+                {option.image_ref ? <InstrumentImage imageRef={option.image_ref} /> : null}
               </Pressable>
               {selected && option.allow_text ? (
                 <TextInput

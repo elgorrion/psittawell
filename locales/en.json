@@ -49,6 +49,8 @@
     },
     "imageReferenceCaption": "Reference illustration in the printed guide.",
     "imageReferenceAccessibility": "Reference illustration placeholder. No photo is embedded.",
+    "instrumentImageAccessibility": "Reference illustration.",
+    "instrumentImageAccessibilityWithCredit": "%{credit}. Reference illustration.",
     "matrixRowAccessibility": "Options for %{row}",
     "gridGroupAccessibility": "Options for %{row}, %{group}",
     "legend": {
@@ -99,6 +101,8 @@
         "accessibilityLabel": "Depends on your parrot",
         "definition": "Interpret this answer in context with your parrot's needs."
       }
-    }
+    },
+    "instrumentImageExpandHint": "Tap to enlarge",
+    "instrumentImageCloseLabel": "Close image"
   }
 }

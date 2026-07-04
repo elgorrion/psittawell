@@ -16,6 +16,10 @@ web-build/
 build/
 *.log
 
+# Instrument imagery — third-party-credited works, local development only (see LICENSING.md)
+assets/instrument/*
+!assets/instrument/.gitkeep
+
 # Generated native projects (Expo prebuild)
 /ios/
 /android/

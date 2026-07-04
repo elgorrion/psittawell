@@ -49,6 +49,8 @@
     },
     "imageReferenceCaption": "Referenzillustration im gedruckten Leitfaden.",
     "imageReferenceAccessibility": "Platzhalter für eine Referenzillustration. Es ist kein Foto eingebettet.",
+    "instrumentImageAccessibility": "Referenzillustration.",
+    "instrumentImageAccessibilityWithCredit": "%{credit}. Referenzillustration.",
     "matrixRowAccessibility": "Optionen für %{row}",
     "gridGroupAccessibility": "Optionen für %{row}, %{group}",
     "legend": {
@@ -99,6 +101,8 @@
         "accessibilityLabel": "Hängt von Ihrem Papagei ab",
         "definition": "Diese Antwort im Kontext der Bedürfnisse Ihres Papageis interpretieren."
       }
-    }
+    },
+    "instrumentImageExpandHint": "Zum Vergrößern antippen",
+    "instrumentImageCloseLabel": "Bild schließen"
   }
 }

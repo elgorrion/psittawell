@@ -21,7 +21,13 @@ Reproducing the instrument content in an application and distributing that appli
 
 Photographs and scales in the source material are individually credited to third parties (for example: photographers and organisations named alongside each image; the UK Pet Food "Bird Size-O-Meter"; the Association of Avian Veterinarians "Signs of Illness" handout). These are **not cleared for redistribution** and **must not be embedded** without separate permission. Use cleared or original assets, or link to the source.
 
-## 4. Commitments
+## 4. Local instrument imagery
+
+Instrument photographs and illustrations are © their credited owners, as credited within the instrument (including Yvonne van Zeeland, Phoenix Landing Foundation, Janina Weißenborn/Vetmeduni, and others). They are **not** part of this repository and are **not** covered by the application code licence.
+
+During private, non-commercial development and evaluation, the application can display these images from a local, non-distributed asset directory, consistent with the instrument's terms of use. Any public distribution of the imagery requires permission from the relevant rights holders.
+
+## 5. Commitments
 
 - This project is **not monetised**.
 - Full attribution to the original authors appears in the application and in this repository.
