@@ -80,6 +80,22 @@
       },
       "monthlyNote": "You can repeat the assessment monthly to monitor changes over time."
     },
+    "trends": {
+      "title": "How these indicators changed",
+      "namedTitle": "How these indicators changed for %{name}",
+      "loading": "Preparing change over time...",
+      "unavailableTitle": "Change over time unavailable",
+      "unavailable": "Change over time is available after an assessment has been completed.",
+      "viewButton": "Change over time",
+      "description": "Each row follows one indicator that was highlighted in at least one completed assessment for this parrot. Indicators are never combined.",
+      "consultDescription": "Use changes in individual indicators as topics for professional guidance.",
+      "emptyTitle": "Come back after another completed assessment",
+      "emptyDescription": "Change over time needs at least two completed assessments for the same parrot. Repeat the assessment next month to compare individual indicators.",
+      "indicatorColumn": "Indicator",
+      "notAnswered": "Not answered",
+      "notFlagged": "No marker",
+      "cellAccessibilityWithAnswer": "%{state}: %{answer}"
+    },
     "report": {
       "title": "Welfare overview report",
       "namedTitle": "Welfare overview report for %{name}",

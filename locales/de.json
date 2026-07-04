@@ -80,6 +80,22 @@
       },
       "monthlyNote": "Sie können das Assessment monatlich wiederholen, um Veränderungen im Zeitverlauf zu beobachten."
     },
+    "trends": {
+      "title": "Wie sich diese Indikatoren verändert haben",
+      "namedTitle": "Wie sich diese Indikatoren für %{name} verändert haben",
+      "loading": "Die Veränderung im Zeitverlauf wird vorbereitet...",
+      "unavailableTitle": "Veränderung im Zeitverlauf nicht verfügbar",
+      "unavailable": "Die Veränderung im Zeitverlauf ist verfügbar, nachdem ein Assessment abgeschlossen wurde.",
+      "viewButton": "Veränderung im Zeitverlauf",
+      "description": "Jede Zeile folgt einem Indikator, der in mindestens einem abgeschlossenen Assessment dieses Papageis markiert wurde. Indikatoren werden nie zusammengeführt.",
+      "consultDescription": "Nutzen Sie Veränderungen einzelner Indikatoren als Themen für fachliche Beratung.",
+      "emptyTitle": "Kommen Sie nach einem weiteren abgeschlossenen Assessment zurück",
+      "emptyDescription": "Die Veränderung im Zeitverlauf benötigt mindestens zwei abgeschlossene Assessments für denselben Papagei. Wiederholen Sie das Assessment nächsten Monat, um einzelne Indikatoren zu vergleichen.",
+      "indicatorColumn": "Indikator",
+      "notAnswered": "Nicht beantwortet",
+      "notFlagged": "Kein Marker",
+      "cellAccessibilityWithAnswer": "%{state}: %{answer}"
+    },
     "report": {
       "title": "Bericht zur Wohlbefindensübersicht",
       "namedTitle": "Bericht zur Wohlbefindensübersicht für %{name}",

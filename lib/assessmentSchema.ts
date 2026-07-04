@@ -25,3 +25,18 @@ export const migration2Sql = `
 ${createAssessmentTableSql}
 ${createAnswerTableSql}
 `;
+
+export const addParrotIdToAssessmentSql = `
+  ALTER TABLE assessment ADD COLUMN parrot_id INTEGER;
+`;
+
+export const backfillAssessmentParrotIdSql = `
+  UPDATE assessment
+  SET parrot_id = id
+  WHERE parrot_id IS NULL;
+`;
+
+export const migration3Sql = `
+${addParrotIdToAssessmentSql}
+${backfillAssessmentParrotIdSql}
+`;

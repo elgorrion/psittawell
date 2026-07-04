@@ -217,6 +217,21 @@ export default function AssessmentOverviewScreen() {
                 </Text>
               </Pressable>
               <Pressable
+                accessibilityLabel={t('assessment.trends.viewButton')}
+                accessibilityRole="button"
+                onPress={() =>
+                  router.push({
+                    pathname: '/assessment/[id]/trends',
+                    params: { id: String(assessment.id) },
+                  })
+                }
+                style={styles.followUpButton}
+              >
+                <Text style={styles.followUpButtonText}>
+                  {t('assessment.trends.viewButton')}
+                </Text>
+              </Pressable>
+              <Pressable
                 accessibilityLabel={t('assessment.overview.followUpAccessibilityLabel')}
                 accessibilityRole="button"
                 onPress={handleStartFollowUpAssessment}

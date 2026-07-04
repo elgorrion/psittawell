@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-import { migration2Sql } from './assessmentSchema';
+import { migration2Sql, migration3Sql } from './assessmentSchema';
 import { type Migration, runMigrations } from './migrations';
 
 const databaseName = 'psittawell.db';
@@ -27,6 +27,12 @@ const migrations: readonly Migration<SQLite.SQLiteDatabase>[] = [
     version: 2,
     up(database) {
       database.execSync(migration2Sql);
+    },
+  },
+  {
+    version: 3,
+    up(database) {
+      database.execSync(migration3Sql);
     },
   },
 ];

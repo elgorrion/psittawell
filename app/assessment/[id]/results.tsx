@@ -176,6 +176,8 @@ export default function AssessmentResultsScreen() {
           <ShareReportAction onPress={handleShareReport} status={reportShareStatus} />
         ) : null}
 
+        <ChangeOverTimeAction assessmentId={assessmentId} />
+
         {hasUrgentItems ? (
           <View style={styles.panel}>
             <Text accessibilityRole="header" style={styles.panelTitle}>
@@ -257,6 +259,24 @@ export default function AssessmentResultsScreen() {
         <BackToOverviewButton assessmentId={assessmentId} />
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+function ChangeOverTimeAction({ assessmentId }: { assessmentId: number }) {
+  return (
+    <Pressable
+      accessibilityLabel={t('assessment.trends.viewButton')}
+      accessibilityRole="button"
+      onPress={() =>
+        router.push({
+          pathname: '/assessment/[id]/trends',
+          params: { id: String(assessmentId) },
+        })
+      }
+      style={styles.trendsButton}
+    >
+      <Text style={styles.trendsButtonText}>{t('assessment.trends.viewButton')}</Text>
+    </Pressable>
   );
 }
 
@@ -519,6 +539,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     lineHeight: 20,
+  },
+  trendsButton: {
+    alignItems: 'center',
+    backgroundColor: colors.paper,
+    borderColor: colors.spruce,
+    borderRadius: 8,
+    borderWidth: 1,
+    justifyContent: 'center',
+    minHeight: 50,
+    paddingHorizontal: 18,
+  },
+  trendsButtonText: {
+    color: colors.spruceDark,
+    fontSize: 16,
+    fontWeight: '800',
+    lineHeight: 22,
   },
   itemList: {
     gap: 10,

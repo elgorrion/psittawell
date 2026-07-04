@@ -68,14 +68,28 @@ export type ReviewedSection = {
   sectionTitle: string;
 };
 
+export type ResultIndicator = {
+  indicatorId: string;
+  sectionId: string;
+  sectionTitle: string;
+  questionId: string;
+  questionPrompt: string;
+  rowLabel?: string;
+  optionLabel: string;
+  welfareLevel: WelfareLevel | null;
+  flags: OptionFlag[];
+};
+
 export type AssessmentResults = {
   urgent: UrgentItem[];
   attention: SectionAttention[];
   observe: ObserveItem[];
+  indicators: ResultIndicator[];
   sectionsReviewed: ReviewedSection[];
 };
 
 type ResolvedSelection = {
+  indicatorId: string;
   questionId: string;
   questionPrompt: string;
   rowLabel?: string;
@@ -100,6 +114,7 @@ export function buildAssessmentResults(
   const urgent: UrgentItem[] = [];
   const observe: ObserveItem[] = [];
   const attention: SectionAttention[] = [];
+  const indicators: ResultIndicator[] = [];
 
   for (const section of sections) {
     const sectionItems: AttentionItem[] = [];
@@ -111,6 +126,17 @@ export function buildAssessmentResults(
 
       for (const selection of resolveQuestionSelections(question, answersByQuestion)) {
         const flags = uniqueFlags(question.flags, selection.flags);
+        indicators.push({
+          indicatorId: selection.indicatorId,
+          sectionId: section.id,
+          sectionTitle: section.title,
+          questionId: selection.questionId,
+          questionPrompt: selection.questionPrompt,
+          rowLabel: selection.rowLabel,
+          optionLabel: selection.optionLabel,
+          welfareLevel: selection.welfareLevel,
+          flags,
+        });
         const urgentFlags = urgentFlagOrder.filter((flag) => flags.includes(flag));
 
         if (urgentFlags.length > 0) {
@@ -164,6 +190,7 @@ export function buildAssessmentResults(
     urgent: orderUrgentBySeverity(urgent),
     attention,
     observe: orderByFlag(observe, observeFlagOrder),
+    indicators,
     sectionsReviewed: sections.map((section) => ({
       sectionId: section.id,
       sectionTitle: section.title,
@@ -182,6 +209,7 @@ function resolveQuestionSelections(
     return freeText.length > 0
       ? [
           {
+            indicatorId: question.id,
             questionId: question.id,
             questionPrompt: question.prompt,
             optionLabel: freeText,
@@ -215,6 +243,7 @@ function resolveChoiceSelections(
     return option
       ? [
           {
+            indicatorId: getChoiceIndicatorId(question, option.id),
             questionId: question.id,
             questionPrompt: question.prompt,
             optionLabel: labelToString(option.label),
@@ -328,6 +357,7 @@ function selectionFromColumn({
   flags: readonly OptionFlag[];
 }): ResolvedSelection {
   return {
+    indicatorId: answerQuestionId,
     questionId: answerQuestionId,
     questionPrompt: question.prompt,
     rowLabel: rowLabel(row, rowGroup),
@@ -367,6 +397,10 @@ function optionLabel(column: Column, columnGroup?: ColumnGroup): string {
 
 function labelToString(label: Option['label']): string {
   return typeof label === 'number' ? String(label) : label;
+}
+
+function getChoiceIndicatorId(question: ChoiceQuestion, optionId: string): string {
+  return question.type === 'multi_choice' ? `${question.id}::${optionId}` : question.id;
 }
 
 function orderUrgentBySeverity(items: readonly UrgentItem[]): UrgentItem[] {

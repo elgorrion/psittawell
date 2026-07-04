@@ -1,7 +1,10 @@
 import {
+  addParrotIdToAssessmentSql,
+  backfillAssessmentParrotIdSql,
   createAnswerTableSql,
   createAssessmentTableSql,
   migration2Sql,
+  migration3Sql,
 } from '../lib/assessmentSchema';
 
 describe('assessment schema', () => {
@@ -31,5 +34,16 @@ describe('assessment schema', () => {
     expect(migration2Sql).toContain(createAssessmentTableSql.trim());
     expect(migration2Sql).toContain(createAnswerTableSql.trim());
     expect(migration2Sql).not.toContain('app_meta');
+  });
+
+  it('defines the lineage migration as additive DDL plus a root backfill', () => {
+    expect(addParrotIdToAssessmentSql).toContain(
+      'ALTER TABLE assessment ADD COLUMN parrot_id INTEGER',
+    );
+    expect(backfillAssessmentParrotIdSql).toContain('UPDATE assessment');
+    expect(backfillAssessmentParrotIdSql).toContain('SET parrot_id = id');
+    expect(backfillAssessmentParrotIdSql).toContain('WHERE parrot_id IS NULL');
+    expect(migration3Sql).toContain(addParrotIdToAssessmentSql.trim());
+    expect(migration3Sql).toContain(backfillAssessmentParrotIdSql.trim());
   });
 });

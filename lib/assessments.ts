@@ -27,6 +27,7 @@ export type Answer = {
 
 export type Assessment = {
   id: number;
+  parrotId: number;
   instrumentVersion: string;
   status: AssessmentStatus;
   startedAt: string;
@@ -69,6 +70,7 @@ export function getGridGroupAnswerQuestionId(
 
 type AssessmentRow = {
   id: number;
+  parrot_id: number | null;
   instrument_version: string;
   status: string;
   started_at: string;
@@ -95,15 +97,25 @@ export function createDraftAssessment(instrumentVersion: string): number {
     'INSERT INTO assessment (instrument_version, status) VALUES (?, ?)',
     [instrumentVersion, 'draft'],
   );
+  const assessmentId = Number(result.lastInsertRowId);
 
-  return Number(result.lastInsertRowId);
+  setAssessmentParrotId(assessmentId, assessmentId);
+
+  return assessmentId;
 }
 
 export function createFollowUpAssessment(
   sourceAssessmentId: number,
   sections: readonly Section[],
 ): number {
+  const sourceAssessment = getAssessment(sourceAssessmentId);
+
+  if (!sourceAssessment) {
+    throw new Error(`Assessment ${sourceAssessmentId} could not be opened.`);
+  }
+
   const followUpAssessmentId = createDraftAssessment(psittawelContentPack.instrument_version);
+  setAssessmentParrotId(followUpAssessmentId, sourceAssessment.parrotId);
   const demographicQuestionIds = new Set(
     sections.flatMap((section) =>
       section.questions
@@ -131,7 +143,7 @@ export function getAssessment(id: number): Assessment | null {
   const database = getDatabase();
   const row = database.getFirstSync<AssessmentRow>(
     `
-      SELECT id, instrument_version, status, started_at, completed_at
+      SELECT id, parrot_id, instrument_version, status, started_at, completed_at
       FROM assessment
       WHERE id = ?
     `,
@@ -147,6 +159,7 @@ export function listAssessments(): AssessmentSummary[] {
     `
       SELECT
         assessment.id,
+        assessment.parrot_id,
         assessment.instrument_version,
         assessment.status,
         assessment.started_at,
@@ -165,6 +178,21 @@ export function listAssessments(): AssessmentSummary[] {
     ...mapAssessmentRow(row),
     parrotName: row.parrot_name,
   }));
+}
+
+export function listCompletedAssessmentsForParrot(parrotId: number): Assessment[] {
+  const database = getDatabase();
+  const rows = database.getAllSync<AssessmentRow>(
+    `
+      SELECT id, parrot_id, instrument_version, status, started_at, completed_at
+      FROM assessment
+      WHERE parrot_id = ? AND status = ?
+      ORDER BY COALESCE(completed_at, started_at) ASC, id ASC
+    `,
+    [parrotId, 'completed'],
+  );
+
+  return rows.map(mapAssessmentRow);
 }
 
 export function completeAssessment(id: number): void {
@@ -349,11 +377,25 @@ function isGridQuestionAnswered(question: GridQuestion, answers: AnswerLookup): 
 function mapAssessmentRow(row: AssessmentRow): Assessment {
   return {
     id: row.id,
+    parrotId: row.parrot_id ?? row.id,
     instrumentVersion: row.instrument_version,
     status: parseAssessmentStatus(row.status),
     startedAt: row.started_at,
     completedAt: row.completed_at,
   };
+}
+
+function setAssessmentParrotId(assessmentId: number, parrotId: number): void {
+  const database = getDatabase();
+
+  database.runSync(
+    `
+      UPDATE assessment
+      SET parrot_id = ?
+      WHERE id = ?
+    `,
+    [parrotId, assessmentId],
+  );
 }
 
 function parseAssessmentStatus(status: string): AssessmentStatus {

@@ -81,6 +81,39 @@ describe('buildAssessmentResults', () => {
     );
   });
 
+  it('keeps qualitative indicator selections for per-indicator timeline use', () => {
+    const results = buildAssessmentResults(fixtureSections, [
+      answer('q_attention', ['opt_optimal', 'opt_high']),
+      answer('q_urgent', ['opt_dual_urgent']),
+    ]);
+
+    expect(results.indicators).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          indicatorId: 'q_attention::opt_optimal',
+          questionId: 'q_attention',
+          optionLabel: 'Optimal',
+          welfareLevel: 'optimal',
+          flags: [],
+        }),
+        expect.objectContaining({
+          indicatorId: 'q_attention::opt_high',
+          questionId: 'q_attention',
+          optionLabel: 'High concern',
+          welfareLevel: 'high_risk',
+          flags: [],
+        }),
+        expect.objectContaining({
+          indicatorId: 'q_urgent::opt_dual_urgent',
+          questionId: 'q_urgent',
+          optionLabel: 'Dual marker answer',
+          welfareLevel: null,
+          flags: ['vet_concern', 'behaviour_urgent'],
+        }),
+      ]),
+    );
+  });
+
   it('detects observe items from dont_know and context-dependent flags', () => {
     const results = buildAssessmentResults(fixtureSections, [
       answer('q_observe', ['opt_dont_know']),
@@ -192,6 +225,7 @@ describe('buildAssessmentResults', () => {
       urgent: [],
       attention: [],
       observe: [],
+      indicators: [],
       sectionsReviewed: fixtureSections.map((section) => ({
         sectionId: section.id,
         sectionTitle: section.title,

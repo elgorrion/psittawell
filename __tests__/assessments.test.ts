@@ -4,6 +4,7 @@ import { getDatabase } from '../lib/db';
 import {
   buildWelfareSnapshot,
   completeAssessment,
+  createDraftAssessment,
   createFollowUpAssessment,
   countAnsweredVisibleQuestions,
   getAnswers,
@@ -11,6 +12,7 @@ import {
   getGridGroupAnswerQuestionId,
   getGridRowAnswerQuestionId,
   getMatrixRowAnswerQuestionId,
+  listCompletedAssessmentsForParrot,
   listAssessments,
 } from '../lib/assessments';
 
@@ -105,6 +107,20 @@ describe('buildWelfareSnapshot', () => {
   });
 });
 
+describe('createDraftAssessment', () => {
+  it('sets a fresh assessment as its own parrot lineage root', () => {
+    const assessmentId = createDraftAssessment(psittawelContentPack.instrument_version);
+
+    expect(getAssessment(assessmentId)).toMatchObject({
+      id: assessmentId,
+      parrotId: assessmentId,
+      instrumentVersion: psittawelContentPack.instrument_version,
+      status: 'draft',
+      completedAt: null,
+    });
+  });
+});
+
 describe('completeAssessment', () => {
   it('freezes a draft assessment with a completion timestamp', () => {
     fakeDatabase.assessments = [
@@ -169,6 +185,45 @@ describe('listAssessments', () => {
       expect.objectContaining({ id: 3, status: 'draft', parrotName: 'Kiwi' }),
       expect.objectContaining({ id: 2, status: 'completed', parrotName: null }),
       expect.objectContaining({ id: 1, status: 'draft', parrotName: 'Mango' }),
+    ]);
+  });
+});
+
+describe('listCompletedAssessmentsForParrot', () => {
+  it('returns only completed assessments in the requested lineage oldest first', () => {
+    fakeDatabase.assessments = [
+      assessmentRow({
+        id: 1,
+        parrot_id: 20,
+        status: 'completed',
+        started_at: '2026-05-04 09:00:00',
+        completed_at: '2026-05-04 10:00:00',
+      }),
+      assessmentRow({
+        id: 2,
+        parrot_id: 20,
+        status: 'draft',
+        started_at: '2026-07-04 09:00:00',
+      }),
+      assessmentRow({
+        id: 3,
+        parrot_id: 20,
+        status: 'completed',
+        started_at: '2026-06-04 09:00:00',
+        completed_at: '2026-06-04 10:00:00',
+      }),
+      assessmentRow({
+        id: 4,
+        parrot_id: 99,
+        status: 'completed',
+        started_at: '2026-04-04 09:00:00',
+        completed_at: '2026-04-04 10:00:00',
+      }),
+    ];
+
+    expect(listCompletedAssessmentsForParrot(20).map((assessment) => assessment.id)).toEqual([
+      1,
+      3,
     ]);
   });
 });
@@ -256,6 +311,7 @@ describe('createFollowUpAssessment', () => {
     expect(followUpId).not.toBe(1);
     expect(followUpAssessment).toMatchObject({
       id: followUpId,
+      parrotId: 1,
       instrumentVersion: psittawelContentPack.instrument_version,
       status: 'draft',
       completedAt: null,
@@ -281,6 +337,27 @@ describe('createFollowUpAssessment', () => {
     expect(followUpAnswers.q_s2_plumage).toBeUndefined();
     expect(followUpAnswers.q_s3_time_out_of_enclosure).toBeUndefined();
     expect(getAssessment(1)).toMatchObject({ id: 1, status: 'completed' });
+  });
+
+  it('inherits one parrot lineage across a chain of follow-up assessments', () => {
+    fakeDatabase.assessments = [
+      assessmentRow({
+        id: 1,
+        parrot_id: 81,
+        status: 'completed',
+        completed_at: '2026-07-04 11:00:00',
+      }),
+    ];
+
+    const secondAssessmentId = createFollowUpAssessment(1, psittawelContentPack.sections);
+    const thirdAssessmentId = createFollowUpAssessment(
+      secondAssessmentId,
+      psittawelContentPack.sections,
+    );
+
+    expect(getAssessment(1)?.parrotId).toBe(81);
+    expect(getAssessment(secondAssessmentId)?.parrotId).toBe(81);
+    expect(getAssessment(thirdAssessmentId)?.parrotId).toBe(81);
   });
 
   it('copies only the demographic answers that exist on a partial source', () => {
@@ -455,6 +532,7 @@ function answersByQuestionId(answers: ReturnType<typeof getAnswers>) {
 
 type AssessmentTableRow = {
   id: number;
+  parrot_id: number | null;
   instrument_version: string;
   status: string;
   started_at: string;
@@ -492,6 +570,7 @@ class FakeAssessmentDatabase {
       this.assessments.push(
         assessmentRow({
           id: nextId,
+          parrot_id: null,
           instrument_version: String(instrumentVersion),
           status: String(status),
           started_at: '2026-07-04 12:00:00',
@@ -501,7 +580,18 @@ class FakeAssessmentDatabase {
       return { lastInsertRowId: nextId };
     }
 
-    if (sql.includes('UPDATE assessment')) {
+    if (sql.includes('SET parrot_id = ?')) {
+      const [parrotId, id] = params;
+      const assessment = this.assessments.find((row) => row.id === id);
+
+      if (assessment) {
+        assessment.parrot_id = Number(parrotId);
+      }
+
+      return { lastInsertRowId: 0 };
+    }
+
+    if (sql.includes('SET status = ?')) {
       const [nextStatus, id, currentStatus] = params;
       const assessment = this.assessments.find(
         (row) => row.id === id && row.status === currentStatus,
@@ -588,6 +678,19 @@ class FakeAssessmentDatabase {
         }) as TRow[];
     }
 
+    if (sql.includes('FROM assessment') && sql.includes('WHERE parrot_id = ?')) {
+      const [parrotId, status] = params;
+
+      return this.assessments
+        .filter((assessment) => assessment.parrot_id === parrotId && assessment.status === status)
+        .sort((left, right) => {
+          const leftDate = left.completed_at ?? left.started_at;
+          const rightDate = right.completed_at ?? right.started_at;
+          const dateOrder = leftDate.localeCompare(rightDate);
+          return dateOrder !== 0 ? dateOrder : left.id - right.id;
+        }) as TRow[];
+    }
+
     throw new Error(`Unsupported getAllSync SQL: ${sql}`);
   }
 }
@@ -598,6 +701,7 @@ function nullableString(value: unknown): string | null {
 
 function assessmentRow(input: AssessmentRowInput): AssessmentTableRow {
   return {
+    parrot_id: input.parrot_id === undefined ? input.id : input.parrot_id,
     instrument_version: '1',
     status: 'draft',
     started_at: '2026-07-04 09:00:00',

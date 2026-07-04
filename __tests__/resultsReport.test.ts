@@ -55,6 +55,7 @@ describe('buildResultsReportHtml', () => {
           },
         ],
         observe: [],
+        indicators: [],
         sectionsReviewed: [{ sectionId: 's_escape', sectionTitle: 'Section & detail' }],
       },
     });
@@ -79,6 +80,7 @@ describe('buildResultsReportHtml', () => {
         urgent: [],
         attention: [],
         observe: [],
+        indicators: [],
         sectionsReviewed: [],
       },
     });
@@ -129,6 +131,7 @@ const fixtureResults: AssessmentResults = {
       sectionTitle: 'Provision of enrichment & exploration',
     },
   ],
+  indicators: [],
   sectionsReviewed: [
     { sectionId: 's_physical_health', sectionTitle: 'Physical health' },
     { sectionId: 's_housing', sectionTitle: 'Housing & physical activity' },
