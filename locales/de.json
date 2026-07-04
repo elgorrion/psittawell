@@ -3,16 +3,50 @@
     "title": "PsittaWell",
     "description": "Offline-Hilfe für das Wohlbefinden von Begleitpapageien mit lokalen Daten auf diesem Gerät.",
     "databaseUnavailable": "Die App konnte ihren lokalen Speicher nicht öffnen. Bitte starten Sie die App neu.",
-    "startAssessment": "Assessment starten"
+    "startAssessment": "Assessment starten",
+    "savedAssessments": "Gespeicherte Assessments",
+    "unnamedAssessment": "Ohne Namen",
+    "startedDate": "Gestartet %{date}",
+    "assessmentRowAccessibility": "%{name} öffnen, %{status}, gestartet %{date}",
+    "assessmentStatus": {
+      "draft": "Entwurf",
+      "completed": "Abgeschlossen"
+    }
   },
   "assessment": {
     "sectionTitle": "Abschnitt %{number}: %{title}",
     "questionProgress": "Frage %{current} von %{total}",
     "consultNote": "Wenden Sie sich bei Bedenken an eine vogelkundige Tierarztpraxis oder eine zertifizierte Beratung für Papageienverhalten.",
     "nextSection": "Nächster Abschnitt",
-    "doneForNow": "Für jetzt fertig",
+    "backToOverview": "Zur Übersicht",
+    "loading": "Dieses Assessment wird geöffnet...",
+    "readOnlyNotice": "Dieses abgeschlossene Assessment ist schreibgeschützt.",
     "sectionUnavailable": "Abschnitt nicht verfügbar",
     "unavailable": "Dieser Assessment-Abschnitt konnte nicht geöffnet werden.",
+    "overview": {
+      "title": "Assessment",
+      "namedTitle": "Assessment - %{name}",
+      "description": "Öffnen Sie einen Abschnitt, machen Sie dort weiter, wo Sie aufgehört haben, oder frieren Sie das Assessment ein, wenn Sie fertig sind.",
+      "descriptionCompleted": "Dieses Assessment ist abgeschlossen. Sie können jeden Abschnitt ansehen, aber die Antworten sind eingefroren.",
+      "loading": "Dieses Assessment wird geöffnet...",
+      "unavailable": "Dieses Assessment konnte nicht geöffnet werden.",
+      "readOnlyBadge": "Schreibgeschützt",
+      "completedTitle": "Assessment abgeschlossen",
+      "completedMessage": "Dieses Assessment ist gespeichert und eingefroren. Sie können Abschnitte prüfen, aber Antworten nicht ändern.",
+      "sectionNumber": "Abschnitt %{number}",
+      "sectionProgress": "%{answered} von %{total} beantwortet",
+      "sectionAccessibility": "Abschnitt %{number}: %{title} öffnen. %{status}. %{progress}.",
+      "completeButton": "Assessment abschließen",
+      "confirmTitle": "Assessment abschließen?",
+      "confirmMessage": "Dadurch wird dieses Assessment gespeichert und eingefroren; Sie können die Antworten danach nicht mehr ändern.",
+      "confirmCancel": "Abbrechen",
+      "confirmComplete": "Abschließen",
+      "status": {
+        "notStarted": "Nicht begonnen",
+        "inProgress": "In Bearbeitung",
+        "answered": "Beantwortet"
+      }
+    },
     "imageReferenceCaption": "Referenzillustration im gedruckten Leitfaden.",
     "imageReferenceAccessibility": "Platzhalter für eine Referenzillustration. Es ist kein Foto eingebettet.",
     "matrixRowAccessibility": "Optionen für %{row}",

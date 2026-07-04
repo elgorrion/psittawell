@@ -13,6 +13,7 @@ type Props = {
   indicatorIcon: IndicatorIcon;
   selectedOptionId: string | null;
   onSelectOption: (optionId: string) => void;
+  disabled?: boolean;
 };
 
 export function ScaleQuestion({
@@ -20,6 +21,7 @@ export function ScaleQuestion({
   indicatorIcon,
   selectedOptionId,
   onSelectOption,
+  disabled = false,
 }: Props) {
   return (
     <View style={styles.container}>
@@ -40,10 +42,15 @@ export function ScaleQuestion({
                 detail.length > 0 ? [detail] : [],
               )}
               accessibilityRole="radio"
-              accessibilityState={{ selected }}
+              accessibilityState={{ disabled, selected }}
+              disabled={disabled}
               key={option.id}
               onPress={() => onSelectOption(option.id)}
-              style={[styles.optionCard, selected ? styles.optionCardSelected : null]}
+              style={[
+                styles.optionCard,
+                selected ? styles.optionCardSelected : null,
+                disabled ? styles.optionCardDisabled : null,
+              ]}
             >
               <View style={styles.optionRow}>
                 <View style={[styles.radio, selected ? styles.radioSelected : null]}>
@@ -100,6 +107,9 @@ const styles = StyleSheet.create({
   },
   optionCardSelected: {
     borderColor: colors.spruce,
+  },
+  optionCardDisabled: {
+    backgroundColor: colors.mint,
   },
   optionRow: {
     alignItems: 'flex-start',

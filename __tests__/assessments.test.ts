@@ -1,6 +1,27 @@
 import { psittawelContentPack } from '../content/psittawel';
 import type { ChoiceQuestion, ContentPack, MatrixQuestion } from '../content/schema';
-import { buildWelfareSnapshot, getMatrixRowAnswerQuestionId } from '../lib/assessments';
+import { getDatabase } from '../lib/db';
+import {
+  buildWelfareSnapshot,
+  completeAssessment,
+  countAnsweredVisibleQuestions,
+  getAssessment,
+  getMatrixRowAnswerQuestionId,
+  listAssessments,
+} from '../lib/assessments';
+
+jest.mock('../lib/db', () => ({
+  getDatabase: jest.fn(),
+}));
+
+const getDatabaseMock = getDatabase as jest.MockedFunction<typeof getDatabase>;
+
+let fakeDatabase: FakeAssessmentDatabase;
+
+beforeEach(() => {
+  fakeDatabase = new FakeAssessmentDatabase();
+  getDatabaseMock.mockReturnValue(fakeDatabase as unknown as ReturnType<typeof getDatabase>);
+});
 
 describe('buildWelfareSnapshot', () => {
   it('records selected welfare levels from the content pack at answer time', () => {
@@ -51,6 +72,131 @@ describe('buildWelfareSnapshot', () => {
   });
 });
 
+describe('completeAssessment', () => {
+  it('freezes a draft assessment with a completion timestamp', () => {
+    fakeDatabase.assessments = [
+      assessmentRow({ id: 1, status: 'draft', completed_at: null }),
+    ];
+
+    completeAssessment(1);
+
+    expect(getAssessment(1)).toMatchObject({
+      id: 1,
+      status: 'completed',
+      completedAt: '2026-07-04 12:00:00',
+    });
+  });
+
+  it('leaves already-completed assessments unchanged', () => {
+    fakeDatabase.assessments = [
+      assessmentRow({
+        id: 1,
+        status: 'completed',
+        completed_at: '2026-07-04 09:30:00',
+      }),
+    ];
+
+    completeAssessment(1);
+
+    expect(getAssessment(1)).toMatchObject({
+      id: 1,
+      status: 'completed',
+      completedAt: '2026-07-04 09:30:00',
+    });
+  });
+});
+
+describe('listAssessments', () => {
+  it('returns parrot names, statuses, and most-recent-first ordering', () => {
+    fakeDatabase.assessments = [
+      assessmentRow({
+        id: 1,
+        status: 'draft',
+        started_at: '2026-07-04 09:00:00',
+      }),
+      assessmentRow({
+        id: 2,
+        status: 'completed',
+        started_at: '2026-07-04 10:00:00',
+        completed_at: '2026-07-04 11:00:00',
+      }),
+      assessmentRow({
+        id: 3,
+        status: 'draft',
+        started_at: '2026-07-04 10:00:00',
+      }),
+    ];
+    fakeDatabase.answers = [
+      answerRow({ assessment_id: 1, question_id: 'q_s1_name', free_text: 'Mango' }),
+      answerRow({ assessment_id: 2, question_id: 'q_s1_name', free_text: '  ' }),
+      answerRow({ assessment_id: 3, question_id: 'q_s1_name', free_text: 'Kiwi' }),
+    ];
+
+    expect(listAssessments()).toEqual([
+      expect.objectContaining({ id: 3, status: 'draft', parrotName: 'Kiwi' }),
+      expect.objectContaining({ id: 2, status: 'completed', parrotName: null }),
+      expect.objectContaining({ id: 1, status: 'draft', parrotName: 'Mango' }),
+    ]);
+  });
+});
+
+describe('countAnsweredVisibleQuestions', () => {
+  it('counts only currently-visible questions', () => {
+    const section = clonePack().sections[1];
+
+    expect(
+      countAnsweredVisibleQuestions(section, {
+        q_s2_plumage: {
+          optionIds: ['opt_s2_plumage_intact'],
+          freeText: '',
+        },
+      }),
+    ).toEqual({ answered: 1, total: 6 });
+
+    expect(
+      countAnsweredVisibleQuestions(section, {
+        q_s2_plumage: {
+          optionIds: ['opt_s2_plumage_mild'],
+          freeText: '',
+        },
+        q_s2_plumage_head: {
+          optionIds: ['opt_s2_plumage_head_no'],
+          freeText: '',
+        },
+      }),
+    ).toEqual({ answered: 2, total: 7 });
+  });
+
+  it('counts a matrix question only when every row has an answer', () => {
+    const section = clonePack().sections[1];
+    const question = matrixQuestion(section.questions[5]);
+    const [firstRow] = question.row_groups[0].rows;
+
+    expect(
+      countAnsweredVisibleQuestions(section, {
+        [getMatrixRowAnswerQuestionId(question.id, firstRow.id)]: {
+          optionIds: ['col_signs_acute_no'],
+          freeText: '',
+        },
+      }),
+    ).toEqual({ answered: 0, total: 6 });
+
+    const matrixAnswers = Object.fromEntries(
+      question.row_groups.flatMap((rowGroup) =>
+        rowGroup.rows.map((row) => [
+          getMatrixRowAnswerQuestionId(question.id, row.id),
+          { optionIds: [rowGroup.columns[0].id], freeText: '' },
+        ]),
+      ),
+    );
+
+    expect(countAnsweredVisibleQuestions(section, matrixAnswers)).toEqual({
+      answered: 1,
+      total: 6,
+    });
+  });
+});
+
 function clonePack(): ContentPack {
   return JSON.parse(JSON.stringify(psittawelContentPack)) as ContentPack;
 }
@@ -61,6 +207,111 @@ function choiceQuestion(question: ContentPack['sections'][number]['questions'][n
   }
 
   return question;
+}
+
+type AssessmentTableRow = {
+  id: number;
+  instrument_version: string;
+  status: string;
+  started_at: string;
+  completed_at: string | null;
+};
+
+type AnswerTableRow = {
+  id: number;
+  assessment_id: number;
+  question_id: string;
+  option_ids: string | null;
+  free_text: string | null;
+  welfare_snapshot: string | null;
+  answered_at: string;
+};
+
+type AssessmentRowInput = Partial<AssessmentTableRow> & {
+  id: number;
+};
+
+type AnswerRowInput = Partial<AnswerTableRow> & {
+  assessment_id: number;
+  question_id: string;
+};
+
+class FakeAssessmentDatabase {
+  assessments: AssessmentTableRow[] = [];
+  answers: AnswerTableRow[] = [];
+
+  runSync(sql: string, params: unknown[] = []) {
+    if (sql.includes('UPDATE assessment')) {
+      const [nextStatus, id, currentStatus] = params;
+      const assessment = this.assessments.find(
+        (row) => row.id === id && row.status === currentStatus,
+      );
+
+      if (assessment) {
+        assessment.status = String(nextStatus);
+        assessment.completed_at = '2026-07-04 12:00:00';
+      }
+
+      return { lastInsertRowId: 0 };
+    }
+
+    throw new Error(`Unsupported runSync SQL: ${sql}`);
+  }
+
+  getFirstSync<TRow>(sql: string, params: unknown[] = []): TRow | null {
+    if (sql.includes('FROM assessment') && sql.includes('WHERE id = ?')) {
+      const [id] = params;
+      return (this.assessments.find((row) => row.id === id) ?? null) as TRow | null;
+    }
+
+    throw new Error(`Unsupported getFirstSync SQL: ${sql}`);
+  }
+
+  getAllSync<TRow>(sql: string, params: unknown[] = []): TRow[] {
+    if (sql.includes('FROM assessment') && sql.includes('LEFT JOIN answer')) {
+      const [nameQuestionId] = params;
+
+      return this.assessments
+        .map((assessment) => {
+          const name = this.answers.find(
+            (answer) =>
+              answer.assessment_id === assessment.id && answer.question_id === nameQuestionId,
+          )?.free_text;
+
+          return {
+            ...assessment,
+            parrot_name: name && name.trim().length > 0 ? name.trim() : null,
+          };
+        })
+        .sort((left, right) => {
+          const dateOrder = right.started_at.localeCompare(left.started_at);
+          return dateOrder !== 0 ? dateOrder : right.id - left.id;
+        }) as TRow[];
+    }
+
+    throw new Error(`Unsupported getAllSync SQL: ${sql}`);
+  }
+}
+
+function assessmentRow(input: AssessmentRowInput): AssessmentTableRow {
+  return {
+    instrument_version: '1',
+    status: 'draft',
+    started_at: '2026-07-04 09:00:00',
+    completed_at: null,
+    ...input,
+  };
+}
+
+function answerRow(input: AnswerRowInput): AnswerTableRow {
+  return {
+    id: input.assessment_id,
+    option_ids: null,
+    free_text: null,
+    welfare_snapshot: null,
+    answered_at: '2026-07-04 09:00:00',
+    ...input,
+  };
 }
 
 function matrixQuestion(question: ContentPack['sections'][number]['questions'][number]): MatrixQuestion {

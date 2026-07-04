@@ -7,19 +7,25 @@ type Props = {
   question: FreeTextQuestionContent;
   value: string;
   onChangeText: (value: string) => void;
+  disabled?: boolean;
 };
 
-export function FreeTextQuestion({ question, value, onChangeText }: Props) {
+export function FreeTextQuestion({ question, value, onChangeText, disabled = false }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.prompt}>{question.prompt}</Text>
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
       <TextInput
         accessibilityLabel={question.prompt}
+        editable={!disabled}
         keyboardType={question.input.keyboard === 'numeric' ? 'numeric' : 'default'}
         multiline={question.input.multiline}
         onChangeText={onChangeText}
-        style={[styles.input, question.input.multiline ? styles.multilineInput : null]}
+        style={[
+          styles.input,
+          question.input.multiline ? styles.multilineInput : null,
+          disabled ? styles.inputDisabled : null,
+        ]}
         textAlignVertical={question.input.multiline ? 'top' : 'center'}
         value={value}
       />
@@ -60,5 +66,9 @@ const styles = StyleSheet.create({
   multilineInput: {
     minHeight: 104,
     paddingTop: 12,
+  },
+  inputDisabled: {
+    backgroundColor: colors.mint,
+    color: colors.textMuted,
   },
 });

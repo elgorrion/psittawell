@@ -3,16 +3,50 @@
     "title": "PsittaWell",
     "description": "Offline companion-parrot welfare support with local data kept on this device.",
     "databaseUnavailable": "The app could not open its local storage. Please restart the app.",
-    "startAssessment": "Start assessment"
+    "startAssessment": "Start assessment",
+    "savedAssessments": "Saved assessments",
+    "unnamedAssessment": "Unnamed",
+    "startedDate": "Started %{date}",
+    "assessmentRowAccessibility": "Open %{name}, %{status}, started %{date}",
+    "assessmentStatus": {
+      "draft": "Draft",
+      "completed": "Completed"
+    }
   },
   "assessment": {
     "sectionTitle": "Section %{number}: %{title}",
     "questionProgress": "Question %{current} of %{total}",
     "consultNote": "For any concern, consult an avian vet or a certified parrot behaviour consultant.",
     "nextSection": "Next section",
-    "doneForNow": "Done for now",
+    "backToOverview": "Back to overview",
+    "loading": "Opening this assessment...",
+    "readOnlyNotice": "This completed assessment is read-only.",
     "sectionUnavailable": "Section unavailable",
     "unavailable": "This assessment section could not be opened.",
+    "overview": {
+      "title": "Assessment",
+      "namedTitle": "Assessment - %{name}",
+      "description": "Open a section, continue where you left off, or freeze the assessment when you are done.",
+      "descriptionCompleted": "This assessment is complete. You can review any section, but its answers are frozen.",
+      "loading": "Opening this assessment...",
+      "unavailable": "This assessment could not be opened.",
+      "readOnlyBadge": "Read-only",
+      "completedTitle": "Assessment completed",
+      "completedMessage": "This assessment is saved and frozen. You can review sections, but answers cannot be changed.",
+      "sectionNumber": "Section %{number}",
+      "sectionProgress": "%{answered} of %{total} answered",
+      "sectionAccessibility": "Open Section %{number}: %{title}. %{status}. %{progress}.",
+      "completeButton": "Complete assessment",
+      "confirmTitle": "Complete assessment?",
+      "confirmMessage": "This will save and freeze this assessment; you won't be able to change answers.",
+      "confirmCancel": "Cancel",
+      "confirmComplete": "Complete",
+      "status": {
+        "notStarted": "Not started",
+        "inProgress": "In progress",
+        "answered": "Answered"
+      }
+    },
     "imageReferenceCaption": "Reference illustration in the printed guide.",
     "imageReferenceAccessibility": "Reference illustration placeholder. No photo is embedded.",
     "matrixRowAccessibility": "Options for %{row}",

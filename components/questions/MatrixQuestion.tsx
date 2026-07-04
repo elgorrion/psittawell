@@ -16,6 +16,7 @@ type Props = {
   indicatorIcon: IndicatorIcon;
   selectedColumnIdForRow: (rowId: string) => string | null;
   onSelectColumn: (rowId: string, columnId: string) => void;
+  disabled?: boolean;
 };
 
 export function MatrixQuestion({
@@ -23,6 +24,7 @@ export function MatrixQuestion({
   indicatorIcon,
   selectedColumnIdForRow,
   onSelectColumn,
+  disabled = false,
 }: Props) {
   return (
     <View style={styles.container}>
@@ -35,6 +37,7 @@ export function MatrixQuestion({
             <MatrixRow
               columns={rowGroup.columns}
               indicatorIcon={indicatorIcon}
+              disabled={disabled}
               key={row.id}
               onSelectColumn={onSelectColumn}
               row={row}
@@ -53,6 +56,7 @@ type MatrixRowProps = {
   indicatorIcon: IndicatorIcon;
   selectedColumnId: string | null;
   onSelectColumn: (rowId: string, columnId: string) => void;
+  disabled: boolean;
 };
 
 function MatrixRow({
@@ -61,6 +65,7 @@ function MatrixRow({
   indicatorIcon,
   selectedColumnId,
   onSelectColumn,
+  disabled,
 }: MatrixRowProps) {
   return (
     <View style={styles.rowCard}>
@@ -84,10 +89,15 @@ function MatrixRow({
                 [row.label],
               )}
               accessibilityRole="radio"
-              accessibilityState={{ selected }}
+              accessibilityState={{ disabled, selected }}
+              disabled={disabled}
               key={column.id}
               onPress={() => onSelectColumn(row.id, column.id)}
-              style={[styles.columnCard, selected ? styles.columnCardSelected : null]}
+              style={[
+                styles.columnCard,
+                selected ? styles.columnCardSelected : null,
+                disabled ? styles.columnCardDisabled : null,
+              ]}
             >
               <View style={[styles.radio, selected ? styles.radioSelected : null]}>
                 {selected ? <View style={styles.radioDot} /> : null}
@@ -166,6 +176,9 @@ const styles = StyleSheet.create({
   },
   columnCardSelected: {
     borderColor: colors.spruce,
+  },
+  columnCardDisabled: {
+    backgroundColor: colors.mint,
   },
   radio: {
     alignItems: 'center',

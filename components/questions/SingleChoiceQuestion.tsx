@@ -16,6 +16,7 @@ type Props = {
   optionText: string;
   onSelectOption: (optionId: string) => void;
   onChangeOptionText: (value: string) => void;
+  disabled?: boolean;
 };
 
 export function SingleChoiceQuestion({
@@ -25,6 +26,7 @@ export function SingleChoiceQuestion({
   optionText,
   onSelectOption,
   onChangeOptionText,
+  disabled = false,
 }: Props) {
   return (
     <View style={styles.container}>
@@ -44,9 +46,14 @@ export function SingleChoiceQuestion({
                   option.flags,
                 )}
                 accessibilityRole="radio"
-                accessibilityState={{ selected }}
+                accessibilityState={{ disabled, selected }}
+                disabled={disabled}
                 onPress={() => onSelectOption(option.id)}
-                style={[styles.optionCard, selected ? styles.optionCardSelected : null]}
+                style={[
+                  styles.optionCard,
+                  selected ? styles.optionCardSelected : null,
+                  disabled ? styles.optionCardDisabled : null,
+                ]}
               >
                 <View style={styles.optionRow}>
                   <View style={[styles.radio, selected ? styles.radioSelected : null]}>
@@ -70,8 +77,12 @@ export function SingleChoiceQuestion({
                     option.welfare_level,
                     option.flags,
                   )}
+                  editable={!disabled}
                   onChangeText={onChangeOptionText}
-                  style={styles.optionTextInput}
+                  style={[
+                    styles.optionTextInput,
+                    disabled ? styles.optionTextInputDisabled : null,
+                  ]}
                   value={optionText}
                 />
               ) : null}
@@ -121,6 +132,9 @@ const styles = StyleSheet.create({
   optionCardSelected: {
     borderColor: colors.spruce,
   },
+  optionCardDisabled: {
+    backgroundColor: colors.mint,
+  },
   optionRow: {
     alignItems: 'flex-start',
     flexDirection: 'row',
@@ -163,5 +177,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     minHeight: 46,
     paddingHorizontal: 12,
+  },
+  optionTextInputDisabled: {
+    backgroundColor: colors.mint,
+    color: colors.textMuted,
   },
 });

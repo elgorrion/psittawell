@@ -18,7 +18,9 @@ import type {
   YesNoQuestion,
 } from '../../../../content/schema';
 import {
+  type Assessment,
   buildWelfareSnapshot,
+  getAssessment,
   getMatrixRowAnswerQuestionId,
   getAnswers,
   upsertAnswer,
@@ -41,6 +43,9 @@ export default function AssessmentSectionScreen() {
   const sectionId = firstParam(params.sectionId);
   const section = psittawelContentPack.sections.find((candidate) => candidate.id === sectionId);
   const [answers, setAnswers] = useState<AnswerState>({});
+  const [assessment, setAssessment] = useState<Assessment | null>(null);
+  const [loadedAssessmentId, setLoadedAssessmentId] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isUnavailable, setIsUnavailable] = useState(false);
   const nextSection = useMemo(() => {
     if (!section) {
@@ -62,16 +67,34 @@ export default function AssessmentSectionScreen() {
         return;
       }
 
+      setIsLoading(true);
+
       if (!Number.isFinite(assessmentId)) {
+        setLoadedAssessmentId(null);
         setIsUnavailable(true);
+        setIsLoading(false);
         return;
       }
 
       try {
+        const nextAssessment = getAssessment(assessmentId);
+
+        if (!nextAssessment) {
+          setLoadedAssessmentId(null);
+          setIsUnavailable(true);
+          setIsLoading(false);
+          return;
+        }
+
+        setAssessment(nextAssessment);
+        setLoadedAssessmentId(assessmentId);
         setAnswers(mapAnswersByQuestion(getAnswers(assessmentId)));
         setIsUnavailable(false);
       } catch {
+        setLoadedAssessmentId(null);
         setIsUnavailable(true);
+      } finally {
+        setIsLoading(false);
       }
     });
 
@@ -96,19 +119,33 @@ export default function AssessmentSectionScreen() {
     return section.questions.filter((question) => isQuestionVisible(question, answers));
   }, [answers, section]);
 
-  if (!section || !Number.isFinite(assessmentId) || isUnavailable) {
+  if (
+    !section ||
+    !Number.isFinite(assessmentId) ||
+    isUnavailable ||
+    isLoading ||
+    loadedAssessmentId !== assessmentId ||
+    !assessment
+  ) {
     return (
       <SafeAreaView style={styles.screen}>
         <View style={styles.emptyState}>
           <SectionHeader title={title} />
-          <Text style={styles.statusText}>{t('assessment.unavailable')}</Text>
-          <Footer />
+          <Text style={styles.statusText}>
+            {isLoading ? t('assessment.loading') : t('assessment.unavailable')}
+          </Text>
         </View>
       </SafeAreaView>
     );
   }
 
+  const isReadOnly = assessment.status === 'completed';
+
   function handleFreeTextChange(question: FreeTextContent, value: string) {
+    if (isReadOnly) {
+      return;
+    }
+
     const nextAnswer = { optionIds: [], freeText: value };
 
     setAnswers((current) => ({ ...current, [question.id]: nextAnswer }));
@@ -123,6 +160,10 @@ export default function AssessmentSectionScreen() {
     question: SingleChoiceContent | YesNoQuestion | ScaleQuestionContent,
     optionId: string,
   ) {
+    if (isReadOnly) {
+      return;
+    }
+
     const selectedOption = question.options.find((option) => option.id === optionId);
     const previousFreeText = answers[question.id]?.freeText ?? '';
     const nextFreeText = selectedOption?.allow_text ? previousFreeText : '';
@@ -138,6 +179,10 @@ export default function AssessmentSectionScreen() {
   }
 
   function handleChoiceTextChange(question: SingleChoiceContent | YesNoQuestion, value: string) {
+    if (isReadOnly) {
+      return;
+    }
+
     const optionIds = answers[question.id]?.optionIds ?? [];
     const nextAnswer = { optionIds, freeText: value };
 
@@ -150,6 +195,10 @@ export default function AssessmentSectionScreen() {
   }
 
   function handleMatrixSelect(question: MatrixQuestionContent, rowId: string, columnId: string) {
+    if (isReadOnly) {
+      return;
+    }
+
     const answerQuestionId = getMatrixRowAnswerQuestionId(question.id, rowId);
     const optionIds = [columnId];
     const nextAnswer = { optionIds, freeText: '' };
@@ -167,6 +216,11 @@ export default function AssessmentSectionScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         <SectionHeader title={title} />
         <SectionLegend section={section} />
+        {isReadOnly ? (
+          <View accessibilityRole="text" style={styles.readOnlyNotice}>
+            <Text style={styles.readOnlyNoticeText}>{t('assessment.readOnlyNotice')}</Text>
+          </View>
+        ) : null}
         {visibleQuestions.map((question, index) => {
           const answer = answers[question.id] ?? { optionIds: [], freeText: '' };
 
@@ -180,6 +234,7 @@ export default function AssessmentSectionScreen() {
               </Text>
               {question.type === 'free_text' ? (
                 <FreeTextQuestion
+                  disabled={isReadOnly}
                   onChangeText={(value) => handleFreeTextChange(question, value)}
                   question={question}
                   value={answer.freeText}
@@ -187,6 +242,7 @@ export default function AssessmentSectionScreen() {
               ) : null}
               {question.type === 'single_choice' || question.type === 'yes_no' ? (
                 <SingleChoiceQuestion
+                  disabled={isReadOnly}
                   indicatorIcon={question.indicator_icon ?? section.indicator_icon}
                   onChangeOptionText={(value) => handleChoiceTextChange(question, value)}
                   onSelectOption={(optionId) => handleChoiceSelect(question, optionId)}
@@ -197,6 +253,7 @@ export default function AssessmentSectionScreen() {
               ) : null}
               {question.type === 'scale' ? (
                 <ScaleQuestion
+                  disabled={isReadOnly}
                   indicatorIcon={question.indicator_icon ?? section.indicator_icon}
                   onSelectOption={(optionId) => handleChoiceSelect(question, optionId)}
                   question={question}
@@ -205,6 +262,7 @@ export default function AssessmentSectionScreen() {
               ) : null}
               {question.type === 'matrix' ? (
                 <MatrixQuestion
+                  disabled={isReadOnly}
                   indicatorIcon={question.indicator_icon ?? section.indicator_icon}
                   onSelectColumn={(rowId, columnId) =>
                     handleMatrixSelect(question, rowId, columnId)
@@ -231,11 +289,22 @@ type FooterProps = {
 };
 
 function Footer({ assessmentId, nextSectionId = null }: FooterProps) {
+  if (assessmentId === undefined) {
+    return null;
+  }
+
+  const backToOverview = () =>
+    router.push({
+      pathname: '/assessment/[id]',
+      params: { id: String(assessmentId) },
+    });
+
   return (
     <View style={styles.footer}>
       <Text style={styles.consultNote}>{t('assessment.consultNote')}</Text>
-      {assessmentId !== undefined && nextSectionId ? (
+      {nextSectionId ? (
         <Pressable
+          accessibilityLabel={t('assessment.nextSection')}
           accessibilityRole="button"
           onPress={() =>
             router.push({
@@ -249,11 +318,14 @@ function Footer({ assessmentId, nextSectionId = null }: FooterProps) {
         </Pressable>
       ) : null}
       <Pressable
+        accessibilityLabel={t('assessment.backToOverview')}
         accessibilityRole="button"
-        onPress={() => router.replace('/')}
-        style={styles.doneButton}
+        onPress={backToOverview}
+        style={nextSectionId ? styles.overviewButton : styles.nextButton}
       >
-        <Text style={styles.doneButtonText}>{t('assessment.doneForNow')}</Text>
+        <Text style={nextSectionId ? styles.overviewButtonText : styles.nextButtonText}>
+          {t('assessment.backToOverview')}
+        </Text>
       </Pressable>
     </View>
   );
@@ -309,6 +381,19 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     lineHeight: 18,
   },
+  readOnlyNotice: {
+    backgroundColor: colors.paper,
+    borderColor: colors.line,
+    borderRadius: 8,
+    borderWidth: 1,
+    padding: 14,
+  },
+  readOnlyNoticeText: {
+    color: colors.spruceInk,
+    fontSize: 15,
+    fontWeight: '700',
+    lineHeight: 21,
+  },
   footer: {
     backgroundColor: colors.mint,
     borderColor: colors.line,
@@ -335,16 +420,18 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     lineHeight: 22,
   },
-  doneButton: {
+  overviewButton: {
     alignItems: 'center',
-    backgroundColor: colors.spruceDark,
+    backgroundColor: colors.paper,
+    borderColor: colors.spruce,
     borderRadius: 8,
+    borderWidth: 1,
     minHeight: 48,
     justifyContent: 'center',
     paddingHorizontal: 18,
   },
-  doneButtonText: {
-    color: colors.paper,
+  overviewButtonText: {
+    color: colors.spruceDark,
     fontSize: 16,
     fontWeight: '800',
     lineHeight: 22,

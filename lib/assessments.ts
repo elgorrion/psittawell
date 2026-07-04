@@ -1,5 +1,10 @@
 import { getDatabase } from './db';
-import type { Question, WelfareLevel } from '../content/schema';
+import { isQuestionVisible } from './conditionals';
+import type { MatrixQuestion, Question, Section, WelfareLevel } from '../content/schema';
+
+export const parrotNameQuestionId = 'q_s1_name';
+
+export type AssessmentStatus = 'draft' | 'completed';
 
 export type WelfareSnapshot = Record<string, WelfareLevel | null>;
 
@@ -19,9 +24,47 @@ export type Answer = {
   answeredAt: string;
 };
 
+export type Assessment = {
+  id: number;
+  instrumentVersion: string;
+  status: AssessmentStatus;
+  startedAt: string;
+  completedAt: string | null;
+};
+
+export type AssessmentSummary = Assessment & {
+  parrotName: string | null;
+};
+
+export type AnswerLookup = Record<
+  string,
+  | {
+      optionIds: readonly string[];
+      freeText?: string | null;
+    }
+  | undefined
+>;
+
+export type SectionAnswerProgress = {
+  answered: number;
+  total: number;
+};
+
 export function getMatrixRowAnswerQuestionId(matrixQuestionId: string, rowId: string): string {
   return `${matrixQuestionId}::${rowId}`;
 }
+
+type AssessmentRow = {
+  id: number;
+  instrument_version: string;
+  status: string;
+  started_at: string;
+  completed_at: string | null;
+};
+
+type AssessmentSummaryRow = AssessmentRow & {
+  parrot_name: string | null;
+};
 
 type AnswerRow = {
   id: number;
@@ -43,11 +86,70 @@ export function createDraftAssessment(instrumentVersion: string): number {
   return Number(result.lastInsertRowId);
 }
 
+export function getAssessment(id: number): Assessment | null {
+  const database = getDatabase();
+  const row = database.getFirstSync<AssessmentRow>(
+    `
+      SELECT id, instrument_version, status, started_at, completed_at
+      FROM assessment
+      WHERE id = ?
+    `,
+    [id],
+  );
+
+  return row ? mapAssessmentRow(row) : null;
+}
+
+export function listAssessments(): AssessmentSummary[] {
+  const database = getDatabase();
+  const rows = database.getAllSync<AssessmentSummaryRow>(
+    `
+      SELECT
+        assessment.id,
+        assessment.instrument_version,
+        assessment.status,
+        assessment.started_at,
+        assessment.completed_at,
+        NULLIF(TRIM(name_answer.free_text), '') AS parrot_name
+      FROM assessment
+      LEFT JOIN answer AS name_answer
+        ON name_answer.assessment_id = assessment.id
+        AND name_answer.question_id = ?
+      ORDER BY assessment.started_at DESC, assessment.id DESC
+    `,
+    [parrotNameQuestionId],
+  );
+
+  return rows.map((row) => ({
+    ...mapAssessmentRow(row),
+    parrotName: row.parrot_name,
+  }));
+}
+
+export function completeAssessment(id: number): void {
+  const database = getDatabase();
+
+  database.runSync(
+    `
+      UPDATE assessment
+      SET status = ?, completed_at = CURRENT_TIMESTAMP
+      WHERE id = ? AND status = ?
+    `,
+    ['completed', id, 'draft'],
+  );
+}
+
 export function upsertAnswer(
   assessmentId: number,
   questionId: string,
   { optionIds = null, freeText = null, welfareSnapshot = null }: AnswerInput,
 ) {
+  const assessment = getAssessment(assessmentId);
+
+  if (assessment?.status !== 'draft') {
+    return;
+  }
+
   const database = getDatabase();
 
   database.runSync(
@@ -93,6 +195,30 @@ export function getAnswers(assessmentId: number): Answer[] {
   }));
 }
 
+export function mapAnswersByQuestion(answers: readonly Answer[]): AnswerLookup {
+  return answers.reduce<AnswerLookup>((nextAnswers, answer) => {
+    nextAnswers[answer.questionId] = {
+      optionIds: answer.optionIds,
+      freeText: answer.freeText,
+    };
+
+    return nextAnswers;
+  }, {});
+}
+
+export function countAnsweredVisibleQuestions(
+  section: Section,
+  answers: AnswerLookup,
+): SectionAnswerProgress {
+  const visibleQuestions = section.questions.filter((question) => isQuestionVisible(question, answers));
+  const answered = visibleQuestions.filter((question) => isQuestionAnswered(question, answers)).length;
+
+  return {
+    answered,
+    total: visibleQuestions.length,
+  };
+}
+
 export function buildWelfareSnapshot(
   question: Question,
   optionIds: readonly string[] | null | undefined,
@@ -129,6 +255,46 @@ export function buildWelfareSnapshot(
     snapshot[optionId] = welfareByOptionId.get(optionId) ?? null;
     return snapshot;
   }, {});
+}
+
+function isQuestionAnswered(question: Question, answers: AnswerLookup): boolean {
+  if (question.type === 'free_text') {
+    return (answers[question.id]?.freeText ?? '').trim().length > 0;
+  }
+
+  if (question.type === 'matrix') {
+    return getMatrixRowIds(question).every((rowId) =>
+      isChoiceAnswered(answers[getMatrixRowAnswerQuestionId(question.id, rowId)]),
+    );
+  }
+
+  return isChoiceAnswered(answers[question.id]);
+}
+
+function isChoiceAnswered(answer: AnswerLookup[string]): boolean {
+  return (answer?.optionIds.length ?? 0) > 0;
+}
+
+function getMatrixRowIds(question: MatrixQuestion): string[] {
+  return question.row_groups.flatMap((rowGroup) => rowGroup.rows.map((row) => row.id));
+}
+
+function mapAssessmentRow(row: AssessmentRow): Assessment {
+  return {
+    id: row.id,
+    instrumentVersion: row.instrument_version,
+    status: parseAssessmentStatus(row.status),
+    startedAt: row.started_at,
+    completedAt: row.completed_at,
+  };
+}
+
+function parseAssessmentStatus(status: string): AssessmentStatus {
+  if (status === 'draft' || status === 'completed') {
+    return status;
+  }
+
+  throw new Error(`Unsupported assessment status: ${status}.`);
 }
 
 function parseStringArray(value: string | null): string[] {
