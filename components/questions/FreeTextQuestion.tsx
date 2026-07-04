@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 import type { FreeTextQuestion as FreeTextQuestionContent } from '../../content/schema';
+import { colors } from '../../lib/theme';
 
 type Props = {
   question: FreeTextQuestionContent;
@@ -31,25 +32,27 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   prompt: {
-    color: '#17352F',
+    color: colors.text,
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: '800',
     lineHeight: 24,
   },
   help: {
-    backgroundColor: '#E9EFEC',
+    backgroundColor: colors.help,
+    borderLeftColor: colors.spruce,
+    borderLeftWidth: 3,
     borderRadius: 8,
-    color: '#3F5750',
+    color: colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
     padding: 12,
   },
   input: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#AEBDB7',
+    backgroundColor: colors.paper,
+    borderColor: colors.lineStrong,
     borderRadius: 8,
     borderWidth: 1,
-    color: '#132D28',
+    color: colors.text,
     fontSize: 17,
     minHeight: 48,
     paddingHorizontal: 14,

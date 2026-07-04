@@ -1,0 +1,14 @@
+export const colors = {
+  spruce: '#00662C',
+  spruceDark: '#004D22',
+  spruceInk: '#12312A',
+  slate: '#3E3E3E',
+  mint: '#E9F0EC',
+  mintSoft: '#F7FAF9',
+  paper: '#FFFFFF',
+  line: '#D2DDD8',
+  lineStrong: '#AFC3BA',
+  text: '#17352F',
+  textMuted: '#526B63',
+  help: '#EEF5F1',
+} as const;

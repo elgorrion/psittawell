@@ -2,9 +2,7 @@
   "home": {
     "title": "PsittaWell",
     "description": "Offline companion-parrot welfare support with local data kept on this device.",
-    "databaseOpening": "Opening local database...",
-    "databaseReady": "Local database ready. Schema version %{version}.",
-    "databaseUnavailable": "Local database could not be opened.",
+    "databaseUnavailable": "The app could not open its local storage. Please restart the app.",
     "startAssessment": "Start assessment"
   },
   "assessment": {
@@ -15,9 +13,24 @@
     "doneForNow": "Done for now",
     "sectionUnavailable": "Section unavailable",
     "unavailable": "This assessment section could not be opened.",
-    "imagePlaceholder": "Image placeholder",
-    "imagePlaceholderAccessibility": "Image placeholder for %{label}",
+    "imageReferenceCaption": "Reference illustration in the printed guide.",
+    "imageReferenceAccessibility": "Reference illustration placeholder. No photo is embedded.",
     "matrixRowAccessibility": "Options for %{row}",
+    "legend": {
+      "title": "How to interpret your answers",
+      "goodDirection": "↑ likelihood for good welfare",
+      "riskDirection": "↑ risk for compromised welfare",
+      "gradientAccessibility": "Five-level welfare gradient from optimal to high risk.",
+      "orderingNote": "Answer options with icons are always ordered from most optimal to least desired, top to bottom.",
+      "markersTitle": "Markers used in this section"
+    },
+    "welfareLevelShort": {
+      "optimal": "Optimal",
+      "good": "Good",
+      "moderate": "Moderate",
+      "elevated_risk": "Elevated",
+      "high_risk": "High risk"
+    },
     "welfareLevels": {
       "optimal": "Welfare indicator: optimal",
       "good": "Welfare indicator: good",
@@ -28,23 +41,28 @@
     "flags": {
       "vet_concern": {
         "text": "Vet",
-        "accessibilityLabel": "Vet: may need attention"
+        "accessibilityLabel": "Vet: may need attention",
+        "definition": "May need veterinary attention."
       },
       "vet_urgent": {
         "text": "Vet urgent",
-        "accessibilityLabel": "Vet: urgent"
+        "accessibilityLabel": "Vet urgent: immediate veterinary attention",
+        "definition": "Immediate veterinary attention."
       },
       "behaviour_urgent": {
         "text": "Behaviour urgent",
-        "accessibilityLabel": "Behaviour consultant: urgent"
+        "accessibilityLabel": "Behaviour urgent: immediate behaviour-consultant attention",
+        "definition": "Immediate behaviour-consultant attention."
       },
       "dont_know": {
         "text": "🔍 Observe",
-        "accessibilityLabel": "Observe more"
+        "accessibilityLabel": "Observe: learn more and observe your bird",
+        "definition": "Learn more and observe your bird."
       },
       "context_dependent": {
         "text": "Depends",
-        "accessibilityLabel": "Depends on your parrot"
+        "accessibilityLabel": "Depends on your parrot",
+        "definition": "Interpret this answer in context with your parrot's needs."
       }
     }
   }

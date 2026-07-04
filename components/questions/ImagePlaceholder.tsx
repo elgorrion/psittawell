@@ -1,46 +1,80 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { t } from '../../lib/i18n';
+import { colors } from '../../lib/theme';
 
-type Props = {
-  label: string;
-};
-
-export function ImagePlaceholder({ label }: Props) {
+export function ImagePlaceholder() {
   return (
     <View
-      accessibilityLabel={t('assessment.imagePlaceholderAccessibility', { label })}
+      accessible
+      accessibilityLabel={t('assessment.imageReferenceAccessibility')}
       accessibilityRole="image"
       style={styles.placeholder}
     >
-      <Text style={styles.title}>{t('assessment.imagePlaceholder')}</Text>
-      <Text numberOfLines={2} style={styles.label}>
-        {label}
-      </Text>
+      <View style={styles.marker}>
+        <View style={styles.markerSun} />
+        <View style={styles.markerPerch} />
+        <View style={styles.markerBody} />
+      </View>
+      <Text style={styles.caption}>{t('assessment.imageReferenceCaption')}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   placeholder: {
-    backgroundColor: '#F1F5F3',
-    borderColor: '#C8D5CF',
+    alignItems: 'center',
+    backgroundColor: '#F8FAF9',
+    borderColor: colors.line,
     borderRadius: 8,
-    borderStyle: 'dashed',
     borderWidth: 1,
-    gap: 4,
-    minHeight: 72,
+    flexDirection: 'row',
+    gap: 10,
+    minHeight: 54,
     padding: 10,
   },
-  title: {
-    color: '#536B63',
-    fontSize: 12,
-    fontWeight: '700',
-    lineHeight: 16,
-    textTransform: 'uppercase',
+  marker: {
+    backgroundColor: colors.mint,
+    borderColor: colors.lineStrong,
+    borderRadius: 8,
+    borderWidth: 1,
+    height: 34,
+    overflow: 'hidden',
+    position: 'relative',
+    width: 42,
   },
-  label: {
-    color: '#2F4C44',
+  markerSun: {
+    backgroundColor: '#F3C84B',
+    borderRadius: 5,
+    height: 10,
+    left: 7,
+    position: 'absolute',
+    top: 7,
+    width: 10,
+  },
+  markerPerch: {
+    backgroundColor: colors.lineStrong,
+    bottom: 8,
+    height: 2,
+    left: 7,
+    position: 'absolute',
+    right: 7,
+  },
+  markerBody: {
+    backgroundColor: colors.spruce,
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 8,
+    borderTopLeftRadius: 9,
+    borderTopRightRadius: 5,
+    bottom: 10,
+    height: 14,
+    position: 'absolute',
+    right: 9,
+    width: 12,
+  },
+  caption: {
+    color: colors.textMuted,
+    flex: 1,
     fontSize: 13,
     lineHeight: 18,
   },

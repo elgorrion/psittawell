@@ -7,6 +7,7 @@ import type {
   Row,
 } from '../../content/schema';
 import { t } from '../../lib/i18n';
+import { colors } from '../../lib/theme';
 import { FlagBadges, getChoiceAccessibilityLabel, IndicatorBadge } from './Badges';
 import { ImagePlaceholder } from './ImagePlaceholder';
 
@@ -27,7 +28,7 @@ export function MatrixQuestion({
     <View style={styles.container}>
       <Text style={styles.prompt}>{question.prompt}</Text>
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
-      {question.image_ref ? <ImagePlaceholder label={question.prompt} /> : null}
+      {question.image_ref ? <ImagePlaceholder /> : null}
       {question.row_groups.map((rowGroup, groupIndex) => (
         <View key={groupIndex} style={styles.group}>
           {rowGroup.rows.map((row) => (
@@ -65,7 +66,7 @@ function MatrixRow({
     <View style={styles.rowCard}>
       <Text style={styles.rowLabel}>{row.label}</Text>
       {row.help ? <Text style={styles.rowHelp}>{row.help}</Text> : null}
-      {row.image_ref ? <ImagePlaceholder label={row.label} /> : null}
+      {row.image_ref ? <ImagePlaceholder /> : null}
       <View
         accessibilityLabel={t('assessment.matrixRowAccessibility', { row: row.label })}
         accessibilityRole="radiogroup"
@@ -112,15 +113,17 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   prompt: {
-    color: '#17352F',
+    color: colors.text,
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: '800',
     lineHeight: 24,
   },
   help: {
-    backgroundColor: '#E9EFEC',
+    backgroundColor: colors.help,
+    borderLeftColor: colors.spruce,
+    borderLeftWidth: 3,
     borderRadius: 8,
-    color: '#3F5750',
+    color: colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
     padding: 12,
@@ -129,21 +132,21 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   rowCard: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#D2DDD8',
+    backgroundColor: colors.paper,
+    borderColor: colors.line,
     borderRadius: 8,
     borderWidth: 1,
     gap: 10,
     padding: 12,
   },
   rowLabel: {
-    color: '#17352F',
+    color: colors.text,
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: '800',
     lineHeight: 22,
   },
   rowHelp: {
-    color: '#536B63',
+    color: colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },
@@ -152,21 +155,21 @@ const styles = StyleSheet.create({
   },
   columnCard: {
     alignItems: 'flex-start',
-    backgroundColor: '#FFFFFF',
-    borderColor: '#D2DDD8',
+    backgroundColor: colors.paper,
+    borderColor: colors.line,
     borderRadius: 8,
-    borderWidth: 1,
+    borderWidth: 2,
     flexDirection: 'row',
     gap: 10,
     minHeight: 48,
     padding: 10,
   },
   columnCardSelected: {
-    borderColor: '#12312A',
+    borderColor: colors.spruce,
   },
   radio: {
     alignItems: 'center',
-    borderColor: '#536B63',
+    borderColor: colors.textMuted,
     borderRadius: 9,
     borderWidth: 2,
     height: 18,
@@ -175,10 +178,10 @@ const styles = StyleSheet.create({
     width: 18,
   },
   radioSelected: {
-    borderColor: '#12312A',
+    borderColor: colors.spruce,
   },
   radioDot: {
-    backgroundColor: '#12312A',
+    backgroundColor: colors.spruce,
     borderRadius: 5,
     height: 10,
     width: 10,
@@ -188,7 +191,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   columnLabel: {
-    color: '#17352F',
+    color: colors.text,
     fontSize: 15,
     lineHeight: 21,
   },

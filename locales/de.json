@@ -2,9 +2,7 @@
   "home": {
     "title": "PsittaWell",
     "description": "Offline-Hilfe für das Wohlbefinden von Begleitpapageien mit lokalen Daten auf diesem Gerät.",
-    "databaseOpening": "Lokale Datenbank wird geöffnet...",
-    "databaseReady": "Lokale Datenbank bereit. Schemaversion %{version}.",
-    "databaseUnavailable": "Lokale Datenbank konnte nicht geöffnet werden.",
+    "databaseUnavailable": "Die App konnte ihren lokalen Speicher nicht öffnen. Bitte starten Sie die App neu.",
     "startAssessment": "Assessment starten"
   },
   "assessment": {
@@ -15,9 +13,24 @@
     "doneForNow": "Für jetzt fertig",
     "sectionUnavailable": "Abschnitt nicht verfügbar",
     "unavailable": "Dieser Assessment-Abschnitt konnte nicht geöffnet werden.",
-    "imagePlaceholder": "Bildplatzhalter",
-    "imagePlaceholderAccessibility": "Bildplatzhalter für %{label}",
+    "imageReferenceCaption": "Referenzillustration im gedruckten Leitfaden.",
+    "imageReferenceAccessibility": "Platzhalter für eine Referenzillustration. Es ist kein Foto eingebettet.",
     "matrixRowAccessibility": "Optionen für %{row}",
+    "legend": {
+      "title": "So interpretieren Sie Ihre Antworten",
+      "goodDirection": "↑ Wahrscheinlichkeit für gutes Wohlbefinden",
+      "riskDirection": "↑ Risiko für beeinträchtigtes Wohlbefinden",
+      "gradientAccessibility": "Fünfstufiger Wohlbefindensverlauf von optimal bis hohes Risiko.",
+      "orderingNote": "Antwortoptionen mit Symbolen sind stets von optimal bis am wenigsten erwünscht angeordnet, von oben nach unten.",
+      "markersTitle": "Marker in diesem Abschnitt"
+    },
+    "welfareLevelShort": {
+      "optimal": "Optimal",
+      "good": "Gut",
+      "moderate": "Moderat",
+      "elevated_risk": "Erhöht",
+      "high_risk": "Hohes Risiko"
+    },
     "welfareLevels": {
       "optimal": "Wohlbefindensindikator: optimal",
       "good": "Wohlbefindensindikator: gut",
@@ -28,23 +41,28 @@
     "flags": {
       "vet_concern": {
         "text": "Tierarzt",
-        "accessibilityLabel": "Tierarzt: möglicherweise abklärungsbedürftig"
+        "accessibilityLabel": "Tierarzt: möglicherweise abklärungsbedürftig",
+        "definition": "Möglicherweise tierärztlich abklärungsbedürftig."
       },
       "vet_urgent": {
         "text": "Tierarzt dringend",
-        "accessibilityLabel": "Tierarzt: dringend"
+        "accessibilityLabel": "Tierarzt dringend: sofortige tierärztliche Abklärung",
+        "definition": "Sofortige tierärztliche Abklärung."
       },
       "behaviour_urgent": {
         "text": "Verhalten dringend",
-        "accessibilityLabel": "Verhaltensberatung: dringend"
+        "accessibilityLabel": "Verhalten dringend: sofortige Verhaltensberatung",
+        "definition": "Sofortige Abklärung durch eine Verhaltensberatung."
       },
       "dont_know": {
         "text": "🔍 Beobachten",
-        "accessibilityLabel": "Mehr beobachten"
+        "accessibilityLabel": "Beobachten: mehr lernen und Ihren Papagei beobachten",
+        "definition": "Mehr lernen und Ihren Papagei beobachten."
       },
       "context_dependent": {
         "text": "Kommt darauf an",
-        "accessibilityLabel": "Hängt von Ihrem Papagei ab"
+        "accessibilityLabel": "Hängt von Ihrem Papagei ab",
+        "definition": "Diese Antwort im Kontext der Bedürfnisse Ihres Papageis interpretieren."
       }
     }
   }

@@ -1,15 +1,18 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SectionHeader } from '../components/SectionHeader';
 import { psittawelContentPack } from '../content/psittawel';
 import { createDraftAssessment } from '../lib/assessments';
 import { getSchemaVersion } from '../lib/db';
 import { t } from '../lib/i18n';
+import { colors } from '../lib/theme';
 
 type DatabaseState =
   | { status: 'opening' }
-  | { status: 'ready'; schemaVersion: number }
+  | { status: 'ready' }
   | { status: 'unavailable' };
 
 export default function HomeScreen() {
@@ -24,7 +27,8 @@ export default function HomeScreen() {
       }
 
       try {
-        setDatabaseState({ status: 'ready', schemaVersion: getSchemaVersion() });
+        getSchemaVersion();
+        setDatabaseState({ status: 'ready' });
       } catch {
         setDatabaseState({ status: 'unavailable' });
       }
@@ -36,14 +40,16 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.content}>
-        <Text accessibilityRole="header" style={styles.title}>
-          {t('home.title')}
-        </Text>
-        <Text style={styles.description}>{t('home.description')}</Text>
-        <Text style={styles.status}>{getDatabaseStatusText(databaseState)}</Text>
+    <SafeAreaView style={styles.screen}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <SectionHeader description={t('home.description')} title={t('home.title')} />
+        {databaseState.status === 'unavailable' ? (
+          <View accessibilityRole="alert" style={styles.errorBanner}>
+            <Text style={styles.errorText}>{t('home.databaseUnavailable')}</Text>
+          </View>
+        ) : null}
         <Pressable
+          accessibilityLabel={t('home.startAssessment')}
           accessibilityRole="button"
           disabled={databaseState.status !== 'ready'}
           onPress={() => startAssessment(setDatabaseState)}
@@ -54,8 +60,8 @@ export default function HomeScreen() {
         >
           <Text style={styles.startButtonText}>{t('home.startAssessment')}</Text>
         </Pressable>
-      </View>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -72,64 +78,46 @@ function startAssessment(setDatabaseState: (state: DatabaseState) => void) {
   }
 }
 
-function getDatabaseStatusText(databaseState: DatabaseState) {
-  if (databaseState.status === 'ready') {
-    return t('home.databaseReady', { version: databaseState.schemaVersion });
-  }
-
-  if (databaseState.status === 'unavailable') {
-    return t('home.databaseUnavailable');
-  }
-
-  return t('home.databaseOpening');
-}
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#F7FAF9',
+    backgroundColor: colors.mintSoft,
   },
   content: {
-    flex: 1,
+    flexGrow: 1,
+    gap: 20,
     justifyContent: 'center',
-    paddingHorizontal: 28,
+    padding: 20,
   },
-  title: {
-    color: '#12312A',
-    fontSize: 34,
-    fontWeight: '700',
-    lineHeight: 40,
-    marginBottom: 14,
+  errorBanner: {
+    backgroundColor: '#FBE7E1',
+    borderColor: '#E7B3A6',
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: 14,
   },
-  description: {
-    color: '#33524A',
-    fontSize: 17,
-    lineHeight: 24,
-    marginBottom: 24,
-    maxWidth: 520,
-  },
-  status: {
-    color: '#26413B',
-    fontSize: 14,
-    lineHeight: 20,
+  errorText: {
+    color: '#8A2C18',
+    fontSize: 15,
+    fontWeight: '600',
+    lineHeight: 21,
   },
   startButton: {
     alignItems: 'center',
-    alignSelf: 'flex-start',
-    backgroundColor: '#12312A',
-    borderRadius: 8,
+    alignSelf: 'stretch',
+    backgroundColor: colors.spruce,
+    borderRadius: 10,
     justifyContent: 'center',
-    marginTop: 24,
-    minHeight: 48,
-    paddingHorizontal: 18,
+    minHeight: 52,
+    paddingHorizontal: 20,
   },
   startButtonDisabled: {
-    backgroundColor: '#7F918B',
+    backgroundColor: '#7A8C85',
   },
   startButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '700',
+    color: colors.paper,
+    fontSize: 17,
+    fontWeight: '800',
     lineHeight: 22,
   },
 });

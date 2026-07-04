@@ -14,11 +14,12 @@ type FlagBadgesProps = {
 
 export function IndicatorBadge({ welfareLevel, indicatorIcon }: IndicatorBadgeProps) {
   if (welfareLevel === null) {
-    return null;
+    return <View accessible={false} style={styles.indicatorSpacer} />;
   }
 
   return (
     <View
+      accessible
       accessibilityLabel={t(`assessment.welfareLevels.${welfareLevel}`)}
       accessibilityRole="image"
       style={[
@@ -41,17 +42,23 @@ export function FlagBadges({ flags }: FlagBadgesProps) {
   return (
     <View style={styles.flags}>
       {flags.map((flag) => (
-        <View
-          accessibilityLabel={getFlagAccessibilityLabel(flag)}
-          key={flag}
-          style={[styles.flag, flagStyles[flag]]}
-        >
-          <View style={[styles.flagDot, flagDotStyles[flag]]} />
-          <Text numberOfLines={1} style={[styles.flagText, flagTextStyles[flag]]}>
-            {t(`assessment.flags.${flag}.text`)}
-          </Text>
-        </View>
+        <FlagBadge flag={flag} key={flag} />
       ))}
+    </View>
+  );
+}
+
+export function FlagBadge({ flag }: { flag: OptionFlag }) {
+  return (
+    <View
+      accessible
+      accessibilityLabel={getFlagAccessibilityLabel(flag)}
+      style={[styles.flag, flagStyles[flag]]}
+    >
+      {flag === 'dont_know' ? null : <View style={[styles.flagDot, flagDotStyles[flag]]} />}
+      <Text numberOfLines={1} style={[styles.flagText, flagTextStyles[flag]]}>
+        {t(`assessment.flags.${flag}.text`)}
+      </Text>
     </View>
   );
 }
@@ -79,7 +86,7 @@ export function getFlagAccessibilityLabel(flag: OptionFlag) {
   return t(`assessment.flags.${flag}.accessibilityLabel`);
 }
 
-const welfareLevelColors: Record<WelfareLevel, string> = {
+export const welfareLevelColors: Record<WelfareLevel, string> = {
   optimal: '#146C43',
   good: '#6FAF4F',
   moderate: '#C28A00',
@@ -100,17 +107,13 @@ const indicatorShapes = StyleSheet.create({
     borderRadius: 8,
   },
   parrot: {
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 5,
+    borderRadius: 3,
   },
   house: {
     borderRadius: 3,
   },
   hand: {
-    borderRadius: 2,
-    transform: [{ rotate: '45deg' }],
+    borderRadius: 3,
   },
 });
 
@@ -156,6 +159,10 @@ const flagTextStyles = StyleSheet.create({
 const styles = StyleSheet.create({
   indicator: {
     borderWidth: 1,
+    height: 16,
+    width: 16,
+  },
+  indicatorSpacer: {
     height: 16,
     width: 16,
   },

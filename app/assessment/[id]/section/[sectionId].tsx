@@ -3,6 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SectionHeader } from '../../../../components/SectionHeader';
+import { SectionLegend } from '../../../../components/SectionLegend';
 import { FreeTextQuestion } from '../../../../components/questions/FreeTextQuestion';
 import { MatrixQuestion } from '../../../../components/questions/MatrixQuestion';
 import { ScaleQuestion } from '../../../../components/questions/ScaleQuestion';
@@ -24,6 +26,7 @@ import {
 } from '../../../../lib/assessments';
 import { isQuestionVisible } from '../../../../lib/conditionals';
 import { t } from '../../../../lib/i18n';
+import { colors } from '../../../../lib/theme';
 
 type LocalAnswer = {
   optionIds: string[];
@@ -97,7 +100,7 @@ export default function AssessmentSectionScreen() {
     return (
       <SafeAreaView style={styles.screen}>
         <View style={styles.emptyState}>
-          <Text style={styles.title}>{title}</Text>
+          <SectionHeader title={title} />
           <Text style={styles.statusText}>{t('assessment.unavailable')}</Text>
           <Footer />
         </View>
@@ -162,10 +165,8 @@ export default function AssessmentSectionScreen() {
   return (
     <SafeAreaView style={styles.screen}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text accessibilityRole="header" style={styles.title}>
-          {title}
-        </Text>
-        <Text style={styles.interpretation}>{section.interpretation}</Text>
+        <SectionHeader title={title} />
+        <SectionLegend section={section} />
         {visibleQuestions.map((question, index) => {
           const answer = answers[question.id] ?? { optionIds: [], freeText: '' };
 
@@ -275,7 +276,7 @@ function mapAnswersByQuestion(rows: Answer[]): AnswerState {
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: '#F7FAF9',
+    backgroundColor: colors.mintSoft,
     flex: 1,
   },
   content: {
@@ -289,77 +290,63 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 24,
   },
-  title: {
-    color: '#12312A',
-    fontSize: 28,
-    fontWeight: '700',
-    lineHeight: 34,
-  },
   statusText: {
-    color: '#3F5750',
+    color: colors.textMuted,
     fontSize: 16,
     lineHeight: 22,
   },
-  interpretation: {
-    backgroundColor: '#E9EFEC',
-    borderRadius: 8,
-    color: '#354F48',
-    fontSize: 14,
-    lineHeight: 21,
-    padding: 14,
-  },
   questionBlock: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#D9E4DF',
+    backgroundColor: colors.paper,
+    borderColor: colors.line,
     borderRadius: 8,
     borderWidth: 1,
     gap: 12,
     padding: 16,
   },
   progress: {
-    color: '#536B63',
+    color: colors.textMuted,
     fontSize: 13,
-    fontWeight: '700',
+    fontWeight: '800',
     lineHeight: 18,
   },
   footer: {
-    backgroundColor: '#EFF5F2',
-    borderColor: '#D2DDD8',
+    backgroundColor: colors.mint,
+    borderColor: colors.line,
     borderTopWidth: 1,
     gap: 12,
     padding: 16,
   },
   consultNote: {
-    color: '#2F4C44',
+    color: colors.slate,
     fontSize: 14,
     lineHeight: 20,
   },
   nextButton: {
     alignItems: 'center',
-    backgroundColor: '#2F6658',
+    backgroundColor: colors.spruce,
     borderRadius: 8,
     justifyContent: 'center',
     minHeight: 48,
     paddingHorizontal: 18,
   },
   nextButtonText: {
-    color: '#FFFFFF',
+    color: colors.paper,
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: '800',
     lineHeight: 22,
   },
   doneButton: {
     alignItems: 'center',
-    backgroundColor: '#12312A',
+    backgroundColor: colors.spruceDark,
     borderRadius: 8,
     minHeight: 48,
     justifyContent: 'center',
     paddingHorizontal: 18,
   },
   doneButtonText: {
-    color: '#FFFFFF',
+    color: colors.paper,
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: '800',
     lineHeight: 22,
   },
 });
