@@ -43,6 +43,7 @@ export function GridQuestion({
   return (
     <View style={styles.container}>
       <Text style={styles.prompt}>{question.prompt}</Text>
+      <FlagBadges flags={question.flags ?? []} />
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
       {question.note ? <Text style={styles.note}>{question.note}</Text> : null}
       {question.image_ref ? <ImagePlaceholder /> : null}
@@ -99,11 +100,20 @@ function GridRowCard({
   disabled,
 }: GridRowCardProps) {
   const selectedColumns = new Set(selectedColumnIds);
-  const showRowTextInput = question.selection === 'multi' && row.allow_text && selectedColumnIds.length > 0;
+  const isRowSelected =
+    question.selection === 'multi'
+      ? selectedColumnIds.length > 0
+      : question.column_groups.some(
+          (columnGroup) => selectedColumnIdForGroup(row.id, columnGroup.id) !== null,
+        );
+  const showRowTextInput = row.allow_text && isRowSelected;
 
   return (
     <View style={styles.rowCard}>
-      <Text style={styles.rowLabel}>{row.label}</Text>
+      <View style={styles.rowHeader}>
+        <Text style={styles.rowLabel}>{row.label}</Text>
+        <FlagBadges flags={row.flags ?? []} />
+      </View>
       {row.help ? <Text style={styles.rowHelp}>{row.help}</Text> : null}
       {row.image_ref ? <ImagePlaceholder /> : null}
       {question.column_groups.map((columnGroup) => (
@@ -322,6 +332,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     gap: 10,
     padding: 12,
+  },
+  rowHeader: {
+    gap: 2,
   },
   rowLabel: {
     color: colors.text,

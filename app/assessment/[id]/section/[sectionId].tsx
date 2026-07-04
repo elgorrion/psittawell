@@ -319,7 +319,7 @@ export default function AssessmentSectionScreen() {
     rowId: string,
     value: string,
   ) {
-    if (isReadOnly || question.selection !== 'multi') {
+    if (isReadOnly) {
       return;
     }
 

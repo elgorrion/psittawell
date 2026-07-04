@@ -29,6 +29,7 @@ export function MatrixQuestion({
   return (
     <View style={styles.container}>
       <Text style={styles.prompt}>{question.prompt}</Text>
+      <FlagBadges flags={question.flags ?? []} />
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
       {question.note ? <Text style={styles.note}>{question.note}</Text> : null}
       {question.image_ref ? <ImagePlaceholder /> : null}
@@ -112,6 +113,7 @@ function MatrixRow({
               />
               <View style={styles.columnContent}>
                 <Text style={styles.columnLabel}>{column.label}</Text>
+                {column.help ? <Text style={styles.columnHelp}>{column.help}</Text> : null}
                 <FlagBadges flags={column.flags} />
               </View>
             </Pressable>
@@ -217,5 +219,11 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: 15,
     lineHeight: 21,
+  },
+  columnHelp: {
+    color: colors.textMuted,
+    fontSize: 13,
+    lineHeight: 18,
+    marginTop: 2,
   },
 });

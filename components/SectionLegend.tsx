@@ -80,6 +80,10 @@ export function getSectionLegendFlags(section: Section): OptionFlag[] {
   const usedFlags = new Set<OptionFlag>();
 
   for (const question of section.questions) {
+    for (const flag of question.flags ?? []) {
+      usedFlags.add(flag);
+    }
+
     if (question.type === 'free_text') {
       continue;
     }
@@ -102,6 +106,12 @@ export function getSectionLegendFlags(section: Section): OptionFlag[] {
           for (const flag of column.flags) {
             usedFlags.add(flag);
           }
+        }
+      }
+
+      for (const row of question.rows) {
+        for (const flag of row.flags ?? []) {
+          usedFlags.add(flag);
         }
       }
 

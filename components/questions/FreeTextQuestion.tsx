@@ -2,6 +2,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 import type { FreeTextQuestion as FreeTextQuestionContent } from '../../content/schema';
 import { colors } from '../../lib/theme';
+import { FlagBadges } from './Badges';
 
 type Props = {
   question: FreeTextQuestionContent;
@@ -14,6 +15,7 @@ export function FreeTextQuestion({ question, value, onChangeText, disabled = fal
   return (
     <View style={styles.container}>
       <Text style={styles.prompt}>{question.prompt}</Text>
+      <FlagBadges flags={question.flags ?? []} />
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
       {question.note ? <Text style={styles.note}>{question.note}</Text> : null}
       <TextInput

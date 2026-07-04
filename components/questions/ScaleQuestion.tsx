@@ -27,6 +27,7 @@ export function ScaleQuestion({
   return (
     <View style={styles.container}>
       <Text style={styles.prompt}>{question.prompt}</Text>
+      <FlagBadges flags={question.flags ?? []} />
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
       {question.note ? <Text style={styles.note}>{question.note}</Text> : null}
       {question.image_ref ? <ImagePlaceholder /> : null}

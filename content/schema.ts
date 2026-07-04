@@ -58,6 +58,7 @@ export type BaseQuestion = {
   help?: string | null;
   note?: string | null;
   image_ref?: string | null;
+  flags?: OptionFlag[];
   demographic: boolean;
   conditional_on?: ConditionalOn | null;
   indicator_icon?: IndicatorIcon;
@@ -160,6 +161,7 @@ export type Row = {
 
 export type GridRow = Row & {
   allow_text: boolean;
+  flags?: OptionFlag[];
 };
 
 export function validateContentPack(pack: ContentPack): void {
@@ -186,6 +188,10 @@ export function validateContentPack(pack: ContentPack): void {
 
       if (question.indicator_icon !== undefined) {
         assertEnum(question.indicator_icon, indicatorIcons, `question ${question.id} indicator_icon`);
+      }
+
+      if (question.flags !== undefined) {
+        validateFlags(question.flags, `question ${question.id} flags`);
       }
 
       if (question.type === 'free_text') {
@@ -360,6 +366,10 @@ function validateGridQuestion(question: GridQuestion) {
 
     if (typeof row.allow_text !== 'boolean') {
       throw new Error(`Question ${question.id} row ${row.id} allow_text must be a boolean.`);
+    }
+
+    if (row.flags !== undefined) {
+      validateFlags(row.flags, `question ${question.id} row ${row.id} flags`);
     }
   }
 }

@@ -14,10 +14,12 @@ describe('content pack', () => {
     expect(() => validateContentPack(psittawelContentPack)).not.toThrow();
     expect(psittawelContentPack.instrument).toBe('PsittaWel');
     expect(psittawelContentPack.instrument_version).toBe('1');
-    expect(psittawelContentPack.sections).toHaveLength(3);
+    expect(psittawelContentPack.sections).toHaveLength(5);
     expect(psittawelContentPack.sections[0].questions).toHaveLength(10);
     expect(psittawelContentPack.sections[1].questions).toHaveLength(7);
     expect(psittawelContentPack.sections[2].questions).toHaveLength(23);
+    expect(psittawelContentPack.sections[3].questions).toHaveLength(8);
+    expect(psittawelContentPack.sections[4].questions).toHaveLength(11);
   });
 
   it('keeps Section 1 authored order and welfare mappings', () => {
@@ -218,6 +220,155 @@ describe('content pack', () => {
     ]);
   });
 
+  it('keeps Section 4 authored order, matrix row orders, and special flags', () => {
+    const section = psittawelContentPack.sections[3];
+    const frequency = matrixQuestion(section.questions[0]);
+    const interaction = matrixQuestion(section.questions[1]);
+    const foragingTime = choiceQuestion(section.questions[4]);
+    const unfamiliarObjects = choiceQuestion(section.questions[6]);
+    const alertness = choiceQuestion(section.questions[7]);
+
+    expect(section.id).toBe('s4_enrichment');
+    expect(section.indicator_icon).toBe('house');
+    expect(section.questions.map((question) => question.id)).toEqual([
+      'q_s4_enrichment_frequency',
+      'q_s4_enrichment_interaction',
+      'q_s4_toy_range',
+      'q_s4_foraging_provision',
+      'q_s4_foraging_time',
+      'q_s4_toy_replacement',
+      'q_s4_unfamiliar_objects',
+      'q_s4_alertness',
+    ]);
+    expect(frequency.row_groups[0].columns.map((column) => column.welfare_level)).toEqual([
+      'optimal',
+      'moderate',
+      'elevated_risk',
+      'high_risk',
+    ]);
+    expect(frequency.row_groups[0].rows.map((row) => row.label)).toEqual([
+      'Multiple food stations',
+      'Certified chewable toys, cardboard or paper without ink, natural, not toxic and untreated cork and branches that can be safely chewed and destroyed',
+      'Puzzles and problem-solving games',
+      'Larger chunks of food or whole food items (with or without skewers)',
+      'Scatter feeding (for example, foraging mat, spreading food out in various locations) and foraging tray or box (food mixed with inedible items)',
+      'Non destructible puzzle feeders/foraging toys',
+      'Destructible foraging toys',
+      'Visual enrichment (for example, view out of the window)',
+      'Auditory enrichment (for example, recordings of natural sounds)',
+      'Interactive toys that make sounds and/or move',
+    ]);
+    expect(interaction.indicator_icon).toBe('parrot');
+    expect(interaction.row_groups[0].rows.map((row) => row.label)).toEqual([
+      'Certified chewable toys, cardboard or paper without ink, natural, not toxic and untreated cork and branches that can be safely chewed and destroyed',
+      'Puzzles and problem-solving games',
+      'Multiple food stations',
+      'Larger chunks of food or whole food items (with or without skewers)',
+      'Scatter feeding (for example, foraging mat, spreading food out in various locations) and foraging tray or box (food mixed with inedible items)',
+      'Non destructible puzzle feeders/foraging toys',
+      'Destructible foraging toys',
+      'Visual enrichment (for example, view out of the window)',
+      'Auditory enrichment (for example, recordings of natural sounds)',
+      'Interactive toys that make sounds and/or move',
+    ]);
+    expect(interaction.row_groups[0].columns[3]).toMatchObject({
+      label: 'D',
+      help: "I don't know",
+      welfare_level: null,
+      flags: ['dont_know'],
+    });
+    expect(foragingTime.options.map((option) => option.welfare_level)).toEqual([
+      'optimal',
+      'good',
+      'elevated_risk',
+      'high_risk',
+      null,
+    ]);
+    expect(unfamiliarObjects.flags).toEqual(['context_dependent']);
+    expect(alertness.options[2]).toMatchObject({
+      label: 'My parrot is mostly inactive or lethargic, shows little interest in its surroundings and does not respond much to things happening around it',
+      welfare_level: null,
+      flags: ['vet_urgent'],
+    });
+  });
+
+  it('keeps Section 5 authored order, non-welfare tables, and special flags', () => {
+    const section = psittawelContentPack.sections[4];
+    const foodsProvided = matrixQuestion(section.questions[0]);
+    const sleepTimes = multiChoiceQuestion(section.questions[4]);
+    const foodWaterChange = choiceQuestion(section.questions[5]);
+    const bathingProvision = gridQuestion(section.questions[7]);
+
+    expect(section.id).toBe('s5_nutrition');
+    expect(section.indicator_icon).toBe('house');
+    expect(section.questions.map((question) => question.id)).toEqual([
+      'q_s5_foods_provided',
+      'q_s5_eats_all',
+      'q_s5_diet_checked',
+      'q_s5_water_refill',
+      'q_s5_sleep_times',
+      'q_s5_food_water_change',
+      'q_s5_sleep_change',
+      'q_s5_bathing_provision',
+      'q_s5_bathing_behaviour',
+      'q_s5_beak_maintenance',
+      'q_s5_preening_change',
+    ]);
+    expect(foodsProvided.row_groups[0].columns.map((column) => column.label)).toEqual([
+      'Main component of the diet',
+      'Moderate to small quantities',
+      'As treat, training reward or vehicle for medications',
+      'Not provided',
+    ]);
+    expect(foodsProvided.row_groups[0].columns.map((column) => column.welfare_level)).toEqual([
+      null,
+      null,
+      null,
+      null,
+    ]);
+    expect(foodsProvided.row_groups[0].rows.map((row) => row.label)).toEqual([
+      'Pellet and/or other formulated food',
+      'Fresh vegetables',
+      'Fresh fruits',
+      'Fresh grass or sprouted seeds',
+      'Grains',
+      'Legumes',
+      '🚩 - Other plant-based proteins (for example unsalted tofu)',
+      '🦜 - Nectar',
+      '🦜 - Seed mix',
+      '🚩 - Nuts',
+      '🚩 – Fresh eggs or dried fortified egg food',
+      '🚩 - Dairy products',
+      '⛔ - Other animal-based protein',
+      '⛔ - Processed food specifically designed for human consumption',
+    ]);
+    expect(sleepTimes.options.map((option) => option.label)).toEqual([
+      'Morning',
+      'Midday',
+      'Afternoon',
+      'Evening',
+      'Night',
+      "I don't know",
+    ]);
+    expect(foodWaterChange.indicator_icon).toBe('parrot');
+    expect(foodWaterChange.options[1]).toMatchObject({
+      label: 'Yes',
+      welfare_level: null,
+      flags: ['vet_concern'],
+    });
+    expect(bathingProvision.selection).toBe('single_per_group');
+    expect(bathingProvision.column_groups[0].columns.map((column) => column.welfare_level)).toEqual([
+      null,
+      null,
+      null,
+    ]);
+    expect(bathingProvision.rows[3]).toMatchObject({
+      label: 'Other:',
+      allow_text: true,
+      flags: ['dont_know'],
+    });
+  });
+
   it('rejects duplicate section ids', () => {
     const pack = clonePack();
 
@@ -336,6 +487,17 @@ describe('content pack', () => {
     expect(() => validateContentPack(pack)).toThrow('Unknown column col_signs_acute_no flags');
   });
 
+  it('rejects unknown question-level flags', () => {
+    const pack = clonePack();
+    const question = choiceQuestion(pack.sections[3].questions[6]);
+
+    question.flags = ['unknown' as never];
+
+    expect(() => validateContentPack(pack)).toThrow(
+      'Unknown question q_s4_unfamiliar_objects flags',
+    );
+  });
+
   it('accepts both grid selection modes', () => {
     const pack = clonePack();
 
@@ -374,6 +536,17 @@ describe('content pack', () => {
 
     expect(() => validateContentPack(pack)).toThrow(
       'Question q_s3_enclosure_location row row_s3_location_living_room allow_text must be a boolean.',
+    );
+  });
+
+  it('rejects unknown grid row flags', () => {
+    const pack = clonePack();
+    const question = gridQuestion(pack.sections[4].questions[7]);
+
+    question.rows[3].flags = ['unknown' as never];
+
+    expect(() => validateContentPack(pack)).toThrow(
+      'Unknown question q_s5_bathing_provision row row_s5_bathing_other flags',
     );
   });
 });

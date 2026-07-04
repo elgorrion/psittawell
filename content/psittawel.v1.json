@@ -300,7 +300,9 @@
               "id": "opt_s1_vet_avian_dont_know",
               "label": "I don't know",
               "welfare_level": null,
-              "flags": ["dont_know"],
+              "flags": [
+                "dont_know"
+              ],
               "allow_text": false
             }
           ]
@@ -335,7 +337,10 @@
               "label": "Mildly damaged or plucked: coverts and/or down feathers are missing in focal areas, but most of the feathers are still intact (though some of these may show signs of damage).",
               "image_ref": "img_s2_plumage_mild",
               "welfare_level": null,
-              "flags": ["vet_concern", "behaviour_urgent"],
+              "flags": [
+                "vet_concern",
+                "behaviour_urgent"
+              ],
               "allow_text": false
             },
             {
@@ -343,7 +348,10 @@
               "label": "Moderately damaged or plucked: coverts and/or down feathers are missing in several areas of the body leaving a patchy distribution or coverts are missing but down is still mostly or completely present.",
               "image_ref": "img_s2_plumage_moderate",
               "welfare_level": null,
-              "flags": ["vet_concern", "behaviour_urgent"],
+              "flags": [
+                "vet_concern",
+                "behaviour_urgent"
+              ],
               "allow_text": false
             },
             {
@@ -351,7 +359,10 @@
               "label": "Severely damaged: large areas of the body lack both coverts and down feathers, resulting in bare skin being clearly visible over multiple regions.",
               "image_ref": "img_s2_plumage_severe",
               "welfare_level": null,
-              "flags": ["vet_concern", "behaviour_urgent"],
+              "flags": [
+                "vet_concern",
+                "behaviour_urgent"
+              ],
               "allow_text": false
             }
           ]
@@ -365,7 +376,9 @@
           "conditional_on": {
             "question_id": "q_s2_plumage",
             "operator": "not_in",
-            "option_ids": ["opt_s2_plumage_intact"]
+            "option_ids": [
+              "opt_s2_plumage_intact"
+            ]
           },
           "indicator_icon": "parrot",
           "options": [
@@ -415,21 +428,27 @@
               "id": "opt_s2_droppings_abnormal",
               "label": "My parrot's droppings are abnormal most of the times with frequent changes in colour, odour, consistency and/or number that do not correspond to diet change and/or contain undigested food particles.",
               "welfare_level": null,
-              "flags": ["vet_concern"],
+              "flags": [
+                "vet_concern"
+              ],
               "allow_text": false
             },
             {
               "id": "opt_s2_droppings_scant_blood",
               "label": "My parrot's droppings are scant in number and/or volume and contain fresh blood or have a tar-like, black appearance.",
               "welfare_level": null,
-              "flags": ["vet_urgent"],
+              "flags": [
+                "vet_urgent"
+              ],
               "allow_text": false
             },
             {
               "id": "opt_s2_droppings_dont_check",
               "label": "I don't check droppings",
               "welfare_level": null,
-              "flags": ["dont_know"],
+              "flags": [
+                "dont_know"
+              ],
               "allow_text": false
             }
           ]
@@ -448,7 +467,9 @@
               "label": "I can't calculate the score because my parrot doesn't accept handling and I don't feel comfortable insisting.",
               "detail": null,
               "welfare_level": null,
-              "flags": ["vet_concern"],
+              "flags": [
+                "vet_concern"
+              ],
               "allow_text": false
             },
             {
@@ -456,7 +477,9 @@
               "label": "1",
               "detail": "Breast bone is very sharp to the touch · Loss of breast muscle and no fat cover",
               "welfare_level": null,
-              "flags": ["vet_urgent"],
+              "flags": [
+                "vet_urgent"
+              ],
               "allow_text": false
             },
             {
@@ -545,13 +568,17 @@
                   "id": "col_signs_acute_yes_undx",
                   "label": "Yes, not diagnosed by a veterinarian",
                   "welfare_level": null,
-                  "flags": ["vet_urgent"]
+                  "flags": [
+                    "vet_urgent"
+                  ]
                 },
                 {
                   "id": "col_signs_acute_unsure",
                   "label": "I am not sure",
                   "welfare_level": null,
-                  "flags": ["vet_urgent"]
+                  "flags": [
+                    "vet_urgent"
+                  ]
                 }
               ],
               "rows": [
@@ -641,13 +668,17 @@
                   "id": "col_signs_chronic_yes_undx",
                   "label": "Yes, not diagnosed by a veterinarian",
                   "welfare_level": null,
-                  "flags": ["vet_concern"]
+                  "flags": [
+                    "vet_concern"
+                  ]
                 },
                 {
                   "id": "col_signs_chronic_unsure",
                   "label": "I am not sure",
                   "welfare_level": null,
-                  "flags": ["vet_concern"]
+                  "flags": [
+                    "vet_concern"
+                  ]
                 }
               ],
               "rows": [
@@ -741,14 +772,18 @@
               "id": "opt_s2_medication_no_otc",
               "label": "No, my parrot has not been seen by a veterinarian, but my it is receiving over-the-counter medications or other types of care interventions (without consultation of a veterinarian)",
               "welfare_level": null,
-              "flags": ["vet_concern"],
+              "flags": [
+                "vet_concern"
+              ],
               "allow_text": false
             },
             {
               "id": "opt_s2_medication_no_none",
               "label": "No, my parrot is not receiving any medication",
               "welfare_level": null,
-              "flags": ["vet_concern"],
+              "flags": [
+                "vet_concern"
+              ],
               "allow_text": false
             }
           ]
@@ -984,14 +1019,18 @@
               "id": "opt_s3_material_dont_know",
               "label": "I don't know",
               "welfare_level": null,
-              "flags": ["dont_know"],
+              "flags": [
+                "dont_know"
+              ],
               "allow_text": false
             },
             {
               "id": "opt_s3_material_other",
               "label": "Other:",
               "welfare_level": null,
-              "flags": ["dont_know"],
+              "flags": [
+                "dont_know"
+              ],
               "allow_text": true
             }
           ]
@@ -1637,7 +1676,9 @@
               "id": "opt_s3_daily_movement_dont_know",
               "label": "I don't know",
               "welfare_level": null,
-              "flags": ["dont_know"],
+              "flags": [
+                "dont_know"
+              ],
               "allow_text": false
             }
           ]
@@ -1786,7 +1827,9 @@
               "id": "opt_s3_flight_ability_dont_know",
               "label": "I don't know",
               "welfare_level": null,
-              "flags": ["dont_know"],
+              "flags": [
+                "dont_know"
+              ],
               "allow_text": false
             }
           ]
@@ -1854,6 +1897,1017 @@
               "image_ref": "img_s3_trim_deflighted",
               "welfare_level": "high_risk",
               "flags": [],
+              "allow_text": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s4_enrichment",
+      "number": 4,
+      "title": "Provision of enrichment and exploration",
+      "indicator_icon": "house",
+      "interpretation": "How to interpret your answers: ↑ likelihood for good welfare (top/left) → ↑ risk for compromised welfare (bottom/right). For colourblind people, the answer options accompanied with icons are arranged in order from most optimal to least desired, either from top to bottom or from left to right. This section uses house icons for environment-based indicators and parrot icons for animal-based indicators. The badges below mean: 'Vet urgent' — Health problem that requires immediate veterinary intervention. 'Context dependent' — Question reflecting a behaviour that depends on the parrot's characteristics (e.g., personality, species, rearing history, prior life experiences) or husbandry practices or types of interaction whose benefits vary according to these characteristics. '🔍 Observe' — an opportunity to learn more about your parrot's behaviours and needs by observing your bird in daily life (directly or via camera) and reflecting on the care, environment, and daily interactions you provide. An avian veterinarian or a certified parrot behavioural consultant can help review your assessment results and, if needed, develop an effective plan to improve your parrot's welfare.",
+      "questions": [
+        {
+          "id": "q_s4_enrichment_frequency",
+          "type": "matrix",
+          "prompt": "How often do you provide the following types of enrichment?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "row_groups": [
+            {
+              "columns": [
+                {
+                  "id": "col_s4_frequency_every_day",
+                  "label": "Every day",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s4_frequency_weekly",
+                  "label": "Weekly",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s4_frequency_monthly",
+                  "label": "Monthly",
+                  "welfare_level": "elevated_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s4_frequency_never",
+                  "label": "Never",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s4_frequency_stations",
+                  "label": "Multiple food stations",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s4_frequency_chewable",
+                  "label": "Certified chewable toys, cardboard or paper without ink, natural, not toxic and untreated cork and branches that can be safely chewed and destroyed",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s4_frequency_puzzles",
+                  "label": "Puzzles and problem-solving games",
+                  "help": null,
+                  "image_ref": "img_s4_puzzles"
+                },
+                {
+                  "id": "row_s4_frequency_chunks",
+                  "label": "Larger chunks of food or whole food items (with or without skewers)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s4_frequency_scatter",
+                  "label": "Scatter feeding (for example, foraging mat, spreading food out in various locations) and foraging tray or box (food mixed with inedible items)",
+                  "help": null,
+                  "image_ref": "img_s4_scatter"
+                },
+                {
+                  "id": "row_s4_frequency_nondestructible",
+                  "label": "Non destructible puzzle feeders/foraging toys",
+                  "help": null,
+                  "image_ref": "img_s4_nondestructible"
+                },
+                {
+                  "id": "row_s4_frequency_destructible",
+                  "label": "Destructible foraging toys",
+                  "help": null,
+                  "image_ref": "img_s4_destructible"
+                },
+                {
+                  "id": "row_s4_frequency_visual",
+                  "label": "Visual enrichment (for example, view out of the window)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s4_frequency_auditory",
+                  "label": "Auditory enrichment (for example, recordings of natural sounds)",
+                  "help": "It should be played at a low volume and avoided when the bird is sleeping or resting",
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s4_frequency_interactive",
+                  "label": "Interactive toys that make sounds and/or move",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s4_enrichment_interaction",
+          "type": "matrix",
+          "prompt": "How does your parrot interact with the enrichment provided?",
+          "help": "Examples of interaction: manipulation with beak and/or feet (for example, chewing, grasping, exploring) or reactions to sound and visual cues.",
+          "note": "Please answer only for the types of enrichment that you currently provide.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "row_groups": [
+            {
+              "columns": [
+                {
+                  "id": "col_s4_interaction_a",
+                  "label": "A",
+                  "help": "Frequently and repeatedly uses the enrichment, explores and/or manipulates it extensively",
+                  "welfare_level": "optimal",
+                  "flags": []
+                },
+                {
+                  "id": "col_s4_interaction_b",
+                  "label": "B",
+                  "help": "Occasionally interacts with the enrichment, explores and/or manipulates it briefly but ignores it at other times",
+                  "welfare_level": "moderate",
+                  "flags": []
+                },
+                {
+                  "id": "col_s4_interaction_c",
+                  "label": "C",
+                  "help": "Does not use or interact with the enrichment at all, either ignoring it completely or actively avoiding it",
+                  "welfare_level": "high_risk",
+                  "flags": []
+                },
+                {
+                  "id": "col_s4_interaction_d",
+                  "label": "D",
+                  "help": "I don't know",
+                  "welfare_level": null,
+                  "flags": [
+                    "dont_know"
+                  ]
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s4_interaction_chewable",
+                  "label": "Certified chewable toys, cardboard or paper without ink, natural, not toxic and untreated cork and branches that can be safely chewed and destroyed",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s4_interaction_puzzles",
+                  "label": "Puzzles and problem-solving games",
+                  "help": null,
+                  "image_ref": "img_s4_puzzles"
+                },
+                {
+                  "id": "row_s4_interaction_stations",
+                  "label": "Multiple food stations",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s4_interaction_chunks",
+                  "label": "Larger chunks of food or whole food items (with or without skewers)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s4_interaction_scatter",
+                  "label": "Scatter feeding (for example, foraging mat, spreading food out in various locations) and foraging tray or box (food mixed with inedible items)",
+                  "help": null,
+                  "image_ref": "img_s4_scatter"
+                },
+                {
+                  "id": "row_s4_interaction_nondestructible",
+                  "label": "Non destructible puzzle feeders/foraging toys",
+                  "help": null,
+                  "image_ref": "img_s4_nondestructible"
+                },
+                {
+                  "id": "row_s4_interaction_destructible",
+                  "label": "Destructible foraging toys",
+                  "help": null,
+                  "image_ref": "img_s4_destructible"
+                },
+                {
+                  "id": "row_s4_interaction_visual",
+                  "label": "Visual enrichment (for example, view out of the window)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s4_interaction_auditory",
+                  "label": "Auditory enrichment (for example, recordings of natural sounds)",
+                  "help": "It should be played at a low volume and avoided when the bird is sleeping or resting",
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s4_interaction_interactive",
+                  "label": "Interactive toys that make sounds and/or move",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s4_toy_range",
+          "type": "yes_no",
+          "prompt": "Is your parrot offered a range of toys that differ in shape, size, and colour, allowing it to choose which ones to interact with?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s4_toy_range_yes",
+              "label": "Yes",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_toy_range_no",
+              "label": "No",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s4_foraging_provision",
+          "type": "single_choice",
+          "prompt": "How do you provide foraging enrichment to your parrot?",
+          "help": "Foraging enrichment includes toys, devices, or other opportunities that encourage natural behaviours such as searching, procuring, and extracting food (see tables above for examples).",
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s4_foraging_provision_majority",
+              "label": "For treats and for the majority to the entire daily food ration",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_foraging_provision_less_than_half",
+              "label": "For treats and for less than half of the daily food ration",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_foraging_provision_treats_only",
+              "label": "Only for treats",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_foraging_provision_not_provided",
+              "label": "Foraging enrichment not provided",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s4_foraging_time",
+          "type": "single_choice",
+          "prompt": "How much time does your parrot spend daily foraging (i.e searching for, procuring, and extracting food from enrichment that you provide)?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s4_foraging_time_4h_or_more",
+              "label": "4 hours or more",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_foraging_time_1_to_4h",
+              "label": "Between 1 and 4 hours",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_foraging_time_less_than_1h",
+              "label": "Less than 1 hour",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_foraging_time_none",
+              "label": "My parrot does not forage",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_foraging_time_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": [
+                "dont_know"
+              ],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s4_toy_replacement",
+          "type": "single_choice",
+          "prompt": "How often do you replace toys/chewable items/climbing enrichment by introducing new different one/s?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s4_toy_replacement_every_day",
+              "label": "Every day",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_toy_replacement_weekly",
+              "label": "Weekly",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_toy_replacement_monthly",
+              "label": "Monthly",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_toy_replacement_never",
+              "label": "Never",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s4_unfamiliar_objects",
+          "type": "single_choice",
+          "prompt": "How does your parrot generally react towards unfamiliar objects (for example, new toys, new home decoration) in its proximity?",
+          "help": "Please note that the behavioural response could be linked to your parrot's personality. A negative behavioural response may not change, but you can help prevent it by avoiding the situations that trigger it.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "flags": [
+            "context_dependent"
+          ],
+          "options": [
+            {
+              "id": "opt_s4_unfamiliar_objects_approaches",
+              "label": "My parrot actively approaches an unfamiliar object and touches, chews and manipulates it; some objects could trigger freezing or withdrawing responses.",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_unfamiliar_objects_cautiously_approach",
+              "label": "My parrot appears interested and looks at the unfamiliar object, then cautiously approach it; some objects could trigger freezing or withdrawing responses.",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_unfamiliar_objects_withdraws_freezes",
+              "label": "My parrot withdraws or freezes to most unfamiliar objects; the freeze or withdrawal response may be more intense with certain objects.",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_unfamiliar_objects_screams_frantic",
+              "label": "When confronted with any type of unfamiliar object, my parrot screams excessively or incessantly, displays frantic movements, flies away and/or falls of the perch.",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_unfamiliar_objects_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": [
+                "dont_know"
+              ],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s4_alertness",
+          "type": "single_choice",
+          "prompt": "What is your parrot's current alertness level?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s4_alertness_active_curious",
+              "label": "My parrot is active and curious. It eagerly explores new objects, interacts frequently with people and toys, and responds quickly to its surroundings",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_alertness_needs_encouragement",
+              "label": "My parrot reacts occasionally but needs encouragement to engage with new objects, toys and people. It shows some interest in its surroundings and sometimes participates in activities.",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_alertness_inactive_lethargic",
+              "label": "My parrot is mostly inactive or lethargic, shows little interest in its surroundings and does not respond much to things happening around it",
+              "welfare_level": null,
+              "flags": [
+                "vet_urgent"
+              ],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s4_alertness_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": [
+                "dont_know"
+              ],
+              "allow_text": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s5_nutrition",
+      "number": 5,
+      "title": "Nutrition and maintenance behaviours",
+      "indicator_icon": "house",
+      "interpretation": "How to interpret your answers: ↑ likelihood for good welfare (top/left) → ↑ risk for compromised welfare (bottom/right). For colourblind people, the answer options accompanied with icons are arranged in order from most optimal to least desired, either from top to bottom or from left to right. This section uses house icons for environment-based indicators and parrot icons for animal-based indicators. The badges below mean: 'Vet' — Health problem that is concerning and may require veterinary intervention. '🔍 Observe' — an opportunity to learn more about your parrot's behaviours and needs by observing your bird in daily life (directly or via camera) and reflecting on the care, environment, and daily interactions you provide. An avian veterinarian or a certified parrot behavioural consultant can help review your assessment results and, if needed, develop an effective plan to improve your parrot's welfare.",
+      "questions": [
+        {
+          "id": "q_s5_foods_provided",
+          "type": "matrix",
+          "prompt": "Which of the following foods do you provide?",
+          "help": "Please note that the appropriate amount of food listed depends greatly on your parrot's species, age and individual needs.\n\nThis table provides an overview of many different types of foods that can be included in a parrot's diet and may serve as a useful tool to discuss dietary choices with your veterinarian. Always consult a qualified avian veterinarian to determine the most appropriate diet for your parrot.\n\n🚩: Foods that should be offered only in limited amounts.\n🦜: Foods appropriate for consumption in moderate to large quantities only by certain species.\n⛔: Foods that should be avoided.",
+          "demographic": false,
+          "conditional_on": null,
+          "row_groups": [
+            {
+              "columns": [
+                {
+                  "id": "col_s5_foods_main",
+                  "label": "Main component of the diet",
+                  "welfare_level": null,
+                  "flags": []
+                },
+                {
+                  "id": "col_s5_foods_moderate_small",
+                  "label": "Moderate to small quantities",
+                  "welfare_level": null,
+                  "flags": []
+                },
+                {
+                  "id": "col_s5_foods_treat_reward_medication",
+                  "label": "As treat, training reward or vehicle for medications",
+                  "welfare_level": null,
+                  "flags": []
+                },
+                {
+                  "id": "col_s5_foods_not_provided",
+                  "label": "Not provided",
+                  "welfare_level": null,
+                  "flags": []
+                }
+              ],
+              "rows": [
+                {
+                  "id": "row_s5_foods_pellet",
+                  "label": "Pellet and/or other formulated food",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_vegetables",
+                  "label": "Fresh vegetables",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_fruits",
+                  "label": "Fresh fruits",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_grass_sprouted",
+                  "label": "Fresh grass or sprouted seeds",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_grains",
+                  "label": "Grains",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_legumes",
+                  "label": "Legumes",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_other_plant_proteins",
+                  "label": "🚩 - Other plant-based proteins (for example unsalted tofu)",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_nectar",
+                  "label": "🦜 - Nectar",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_seed_mix",
+                  "label": "🦜 - Seed mix",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_nuts",
+                  "label": "🚩 - Nuts",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_eggs",
+                  "label": "🚩 – Fresh eggs or dried fortified egg food",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_dairy",
+                  "label": "🚩 - Dairy products",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_other_animal_protein",
+                  "label": "⛔ - Other animal-based protein",
+                  "help": null,
+                  "image_ref": null
+                },
+                {
+                  "id": "row_s5_foods_processed_human",
+                  "label": "⛔ - Processed food specifically designed for human consumption",
+                  "help": null,
+                  "image_ref": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s5_eats_all",
+          "type": "single_choice",
+          "prompt": "Does your parrot eat all types of food that you provide?",
+          "help": "Observing the animal while it eats is preferable, but checking the food bowl can also provide valuable insight.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s5_eats_all_yes",
+              "label": "Yes",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_eats_all_no",
+              "label": "No",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_eats_all_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": [
+                "dont_know"
+              ],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s5_diet_checked",
+          "type": "single_choice",
+          "prompt": "Have you checked whether the diet you provide is balanced and appropriate for your parrot's species?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s5_diet_checked_vet",
+              "label": "Yes, I consulted my veterinarian or a behavioural consultant",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_diet_checked_researched",
+              "label": "Yes, I researched by myself online, in books or magazines or it is advertised by the food manufacturer for my parrot species",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_diet_checked_no",
+              "label": "No",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s5_water_refill",
+          "type": "single_choice",
+          "prompt": "How often do you empty and refill your parrot's water bowl with fresh water?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s5_water_refill_more_than_twice",
+              "label": "More than twice a day or as needed throughout the day",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_water_refill_twice",
+              "label": "Twice a day",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_water_refill_once",
+              "label": "Once a day",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_water_refill_less_than_once",
+              "label": "Less than once per day",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s5_sleep_times",
+          "type": "multi_choice",
+          "prompt": "What time of day does your parrot sleep/rest?",
+          "note": "Check all answers that apply",
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s5_sleep_times_morning",
+              "label": "Morning",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_sleep_times_midday",
+              "label": "Midday",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_sleep_times_afternoon",
+              "label": "Afternoon",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_sleep_times_evening",
+              "label": "Evening",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_sleep_times_night",
+              "label": "Night",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_sleep_times_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": [
+                "dont_know"
+              ],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s5_food_water_change",
+          "type": "single_choice",
+          "prompt": "Have you observed a change in food or water intake by your parrot in the last two weeks?",
+          "help": "i.e. you observed these changes directly observing the parrot's behaviour or by checking the amount of food or water consumed.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s5_food_water_change_no",
+              "label": "No",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_food_water_change_yes",
+              "label": "Yes",
+              "welfare_level": null,
+              "flags": [
+                "vet_concern"
+              ],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_food_water_change_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": [
+                "dont_know"
+              ],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s5_sleep_change",
+          "type": "single_choice",
+          "prompt": "Have you noticed any changes in the sleeping pattern of your parrot in the last two weeks?",
+          "help": "For example, sleeping more than usual or at times of the day when it typically does not sleep.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s5_sleep_change_no",
+              "label": "No",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_sleep_change_yes",
+              "label": "Yes",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_sleep_change_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": [
+                "dont_know"
+              ],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s5_bathing_provision",
+          "type": "grid",
+          "selection": "single_per_group",
+          "prompt": "Please indicate how often you provide the following bathing opportunities for your parrot",
+          "help": "Please note that the frequency of bathing varies greatly depending on the species and the season.",
+          "demographic": false,
+          "conditional_on": null,
+          "column_groups": [
+            {
+              "id": "group_s5_bathing_frequency",
+              "label": "",
+              "help": null,
+              "columns": [
+                {
+                  "id": "col_s5_bathing_1_3_weekly",
+                  "label": "1-3 times per week",
+                  "welfare_level": null,
+                  "flags": []
+                },
+                {
+                  "id": "col_s5_bathing_less_than_weekly",
+                  "label": "Less than weekly",
+                  "welfare_level": null,
+                  "flags": []
+                },
+                {
+                  "id": "col_s5_bathing_never",
+                  "label": "Never",
+                  "welfare_level": null,
+                  "flags": []
+                }
+              ]
+            }
+          ],
+          "rows": [
+            {
+              "id": "row_s5_bathing_mist",
+              "label": "Mist",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s5_bathing_shower",
+              "label": "Shower",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s5_bathing_shallow_dish",
+              "label": "Shallow dish or tray containing water",
+              "help": null,
+              "image_ref": null,
+              "allow_text": false
+            },
+            {
+              "id": "row_s5_bathing_other",
+              "label": "Other:",
+              "help": null,
+              "image_ref": null,
+              "allow_text": true,
+              "flags": [
+                "dont_know"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "q_s5_bathing_behaviour",
+          "type": "single_choice",
+          "prompt": "How does your parrot bathe when you provide the opportunity to do so?",
+          "note": "Please answer only if you provide bathing opportunities.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s5_bathing_behaviour_always_own",
+              "label": "My parrot always bathes on its own.",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_bathing_behaviour_sometimes_encouragement",
+              "label": "My parrot bathes on its own but sometimes needs encouragement to do so.",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_bathing_behaviour_always_encouragement",
+              "label": "My parrot always needs encouragement to bathe.",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_bathing_behaviour_doesnt_bathe",
+              "label": "My parrot doesn't bathe, and I don't try to change that.",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_bathing_behaviour_avoid_make_sure",
+              "label": "My parrot tries to avoid bathing, but I make sure it gets bathed anyway.",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_bathing_behaviour_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": [
+                "dont_know"
+              ],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s5_beak_maintenance",
+          "type": "single_choice",
+          "prompt": "Does your parrot engage in self-maintenance behaviours for its beak?",
+          "help": "For example, rubbing it against hard objects, grinding it by making a rhythmic motion with the upper and lower mandibles, or using bars or other objects to clean the inside of its beak.",
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s5_beak_maintenance_yes",
+              "label": "Yes",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_beak_maintenance_no",
+              "label": "No",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_beak_maintenance_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": [
+                "dont_know"
+              ],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s5_preening_change",
+          "type": "single_choice",
+          "prompt": "Have you noticed any changes in your parrot's self-preening behaviour (such as using its beak to clean, arrange, or maintain its feathers) over the past month?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "indicator_icon": "parrot",
+          "options": [
+            {
+              "id": "opt_s5_preening_change_no",
+              "label": "No",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_preening_change_yes",
+              "label": "Yes",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s5_preening_change_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": [
+                "dont_know"
+              ],
               "allow_text": false
             }
           ]
