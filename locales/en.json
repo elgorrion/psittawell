@@ -47,6 +47,37 @@
         "answered": "Answered"
       }
     },
+    "results": {
+      "title": "A welfare overview",
+      "namedTitle": "A welfare overview for %{name}",
+      "loading": "Preparing this welfare overview...",
+      "unavailableTitle": "Welfare overview unavailable",
+      "unavailable": "The welfare overview is available after an assessment has been completed.",
+      "viewButton": "View your welfare overview",
+      "disclaimer": "This is a general overview of the answers in this completed assessment. It is not a diagnosis, and it does not prescribe treatment or husbandry changes. Every parrot is an individual, so review concerns with a qualified professional before deciding what to change.",
+      "consult": {
+        "title": "Review this with a professional",
+        "description": "Use the indicators below as topics for professional guidance."
+      },
+      "urgent": {
+        "title": "Please review with a professional soon",
+        "description": "These answered indicators carry a professional-review marker. They are items to discuss, not diagnoses."
+      },
+      "attention": {
+        "title": "Areas that could be improved",
+        "description": "These answered indicators landed toward the compromised-welfare end of their individual scale.",
+        "empty": "No answered indicators are listed in this area."
+      },
+      "observe": {
+        "title": "🔍 Learn more and observe",
+        "description": "These answers point to topics to observe more closely or interpret in context."
+      },
+      "reviewed": {
+        "title": "Sections reviewed",
+        "description": "The overview was built across the assessment sections below."
+      },
+      "monthlyNote": "You can repeat the assessment monthly to monitor changes over time."
+    },
     "imageReferenceCaption": "Reference illustration in the printed guide.",
     "imageReferenceAccessibility": "Reference illustration placeholder. No photo is embedded.",
     "instrumentImageAccessibility": "Reference illustration.",

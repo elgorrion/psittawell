@@ -183,6 +183,21 @@ export default function AssessmentOverviewScreen() {
             <Text style={styles.completedTitle}>{t('assessment.overview.completedTitle')}</Text>
             <Text style={styles.completedText}>{t('assessment.overview.completedMessage')}</Text>
             <Text style={styles.consultNote}>{t('assessment.consultNote')}</Text>
+            <Pressable
+              accessibilityLabel={t('assessment.results.viewButton')}
+              accessibilityRole="button"
+              onPress={() =>
+                router.push({
+                  pathname: '/assessment/[id]/results',
+                  params: { id: String(assessment.id) },
+                })
+              }
+              style={styles.resultsButton}
+            >
+              <Text style={styles.resultsButtonText}>
+                {t('assessment.results.viewButton')}
+              </Text>
+            </Pressable>
           </View>
         ) : null}
 
@@ -318,6 +333,20 @@ const styles = StyleSheet.create({
     color: colors.slate,
     fontSize: 14,
     lineHeight: 20,
+  },
+  resultsButton: {
+    alignItems: 'center',
+    backgroundColor: colors.spruce,
+    borderRadius: 8,
+    justifyContent: 'center',
+    minHeight: 48,
+    paddingHorizontal: 18,
+  },
+  resultsButtonText: {
+    color: colors.paper,
+    fontSize: 16,
+    fontWeight: '800',
+    lineHeight: 22,
   },
   sectionList: {
     gap: 10,

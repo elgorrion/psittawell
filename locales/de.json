@@ -47,6 +47,37 @@
         "answered": "Beantwortet"
       }
     },
+    "results": {
+      "title": "Wohlbefindensübersicht",
+      "namedTitle": "Wohlbefindensübersicht für %{name}",
+      "loading": "Die Wohlbefindensübersicht wird vorbereitet...",
+      "unavailableTitle": "Wohlbefindensübersicht nicht verfügbar",
+      "unavailable": "Die Wohlbefindensübersicht ist verfügbar, nachdem ein Assessment abgeschlossen wurde.",
+      "viewButton": "Wohlbefindensübersicht ansehen",
+      "disclaimer": "Dies ist eine allgemeine Übersicht der Antworten in diesem abgeschlossenen Assessment. Sie ist keine Diagnose und gibt keine Behandlung oder Haltungsänderung vor. Jeder Papagei ist individuell; besprechen Sie Bedenken daher mit einer qualifizierten Fachperson, bevor Sie Änderungen entscheiden.",
+      "consult": {
+        "title": "Mit einer Fachperson besprechen",
+        "description": "Nutzen Sie die unten aufgeführten Indikatoren als Themen für fachliche Beratung."
+      },
+      "urgent": {
+        "title": "Bitte bald mit einer Fachperson prüfen",
+        "description": "Diese beantworteten Indikatoren tragen einen Marker für professionelle Abklärung. Sie sind Einträge zum Besprechen, keine Diagnosen."
+      },
+      "attention": {
+        "title": "Bereiche, die verbessert werden könnten",
+        "description": "Diese beantworteten Indikatoren liegen am eher beeinträchtigten Ende ihrer jeweiligen Einzelskala.",
+        "empty": "In diesem Bereich werden keine beantworteten Indikatoren aufgeführt."
+      },
+      "observe": {
+        "title": "🔍 Mehr lernen und beobachten",
+        "description": "Diese Antworten weisen auf Themen hin, die genauer beobachtet oder im Kontext interpretiert werden sollten."
+      },
+      "reviewed": {
+        "title": "Geprüfte Abschnitte",
+        "description": "Die Übersicht wurde über die unten aufgeführten Assessment-Abschnitte aufgebaut."
+      },
+      "monthlyNote": "Sie können das Assessment monatlich wiederholen, um Veränderungen im Zeitverlauf zu beobachten."
+    },
     "imageReferenceCaption": "Referenzillustration im gedruckten Leitfaden.",
     "imageReferenceAccessibility": "Platzhalter für eine Referenzillustration. Es ist kein Foto eingebettet.",
     "instrumentImageAccessibility": "Referenzillustration.",
