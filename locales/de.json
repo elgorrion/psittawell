@@ -4,6 +4,15 @@
     "description": "Offline-Hilfe für das Wohlbefinden von Begleitpapageien mit lokalen Daten auf diesem Gerät.",
     "databaseOpening": "Lokale Datenbank wird geöffnet...",
     "databaseReady": "Lokale Datenbank bereit. Schemaversion %{version}.",
-    "databaseUnavailable": "Lokale Datenbank konnte nicht geöffnet werden."
+    "databaseUnavailable": "Lokale Datenbank konnte nicht geöffnet werden.",
+    "startAssessment": "Assessment starten"
+  },
+  "assessment": {
+    "sectionTitle": "Abschnitt %{number}: %{title}",
+    "questionProgress": "Frage %{current} von %{total}",
+    "consultNote": "Wenden Sie sich bei Bedenken an eine vogelkundige Tierarztpraxis oder eine zertifizierte Beratung für Papageienverhalten.",
+    "doneForNow": "Für jetzt fertig",
+    "sectionUnavailable": "Abschnitt nicht verfügbar",
+    "unavailable": "Dieser Assessment-Abschnitt konnte nicht geöffnet werden."
   }
 }

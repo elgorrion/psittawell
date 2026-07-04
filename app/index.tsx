@@ -1,6 +1,9 @@
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { psittawelContentPack } from '../content/psittawel';
+import { createDraftAssessment } from '../lib/assessments';
 import { getSchemaVersion } from '../lib/db';
 import { t } from '../lib/i18n';
 
@@ -40,9 +43,33 @@ export default function HomeScreen() {
         </Text>
         <Text style={styles.description}>{t('home.description')}</Text>
         <Text style={styles.status}>{getDatabaseStatusText(databaseState)}</Text>
+        <Pressable
+          accessibilityRole="button"
+          disabled={databaseState.status !== 'ready'}
+          onPress={() => startAssessment(setDatabaseState)}
+          style={[
+            styles.startButton,
+            databaseState.status !== 'ready' ? styles.startButtonDisabled : null,
+          ]}
+        >
+          <Text style={styles.startButtonText}>{t('home.startAssessment')}</Text>
+        </Pressable>
       </View>
     </View>
   );
+}
+
+function startAssessment(setDatabaseState: (state: DatabaseState) => void) {
+  try {
+    const assessmentId = createDraftAssessment(psittawelContentPack.instrument_version);
+
+    router.push({
+      pathname: '/assessment/[id]/section/[sectionId]',
+      params: { id: String(assessmentId), sectionId: 's1_general' },
+    });
+  } catch {
+    setDatabaseState({ status: 'unavailable' });
+  }
 }
 
 function getDatabaseStatusText(databaseState: DatabaseState) {
@@ -85,5 +112,24 @@ const styles = StyleSheet.create({
     color: '#26413B',
     fontSize: 14,
     lineHeight: 20,
+  },
+  startButton: {
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    backgroundColor: '#12312A',
+    borderRadius: 8,
+    justifyContent: 'center',
+    marginTop: 24,
+    minHeight: 48,
+    paddingHorizontal: 18,
+  },
+  startButtonDisabled: {
+    backgroundColor: '#7F918B',
+  },
+  startButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+    lineHeight: 22,
   },
 });

@@ -1,5 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
+import { migration2Sql } from './assessmentSchema';
 import { type Migration, runMigrations } from './migrations';
 
 const databaseName = 'psittawell.db';
@@ -20,6 +21,12 @@ const migrations: readonly Migration<SQLite.SQLiteDatabase>[] = [
           updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         );
       `);
+    },
+  },
+  {
+    version: 2,
+    up(database) {
+      database.execSync(migration2Sql);
     },
   },
 ];

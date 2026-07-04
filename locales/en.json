@@ -4,6 +4,15 @@
     "description": "Offline companion-parrot welfare support with local data kept on this device.",
     "databaseOpening": "Opening local database...",
     "databaseReady": "Local database ready. Schema version %{version}.",
-    "databaseUnavailable": "Local database could not be opened."
+    "databaseUnavailable": "Local database could not be opened.",
+    "startAssessment": "Start assessment"
+  },
+  "assessment": {
+    "sectionTitle": "Section %{number}: %{title}",
+    "questionProgress": "Question %{current} of %{total}",
+    "consultNote": "For any concern, consult an avian vet or a certified parrot behaviour consultant.",
+    "doneForNow": "Done for now",
+    "sectionUnavailable": "Section unavailable",
+    "unavailable": "This assessment section could not be opened."
   }
 }

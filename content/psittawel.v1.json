@@ -1,0 +1,311 @@
+{
+  "instrument": "PsittaWel",
+  "instrument_version": "1",
+  "source": {
+    "citation": "Piseddu A, van Zeeland Y, Hemsworth L, Rault J-L (2026). PsittaWel: A welfare assessment tool for companion parrots. Animal Welfare 35, e34.",
+    "doi": "10.1017/awf.2026.10089",
+    "url": "https://www.vetmeduni.ac.at/psittawel",
+    "content_licence": "© Piseddu, van Zeeland & Rault 2026. All rights reserved, non-commercial use only. Used with permission. Not covered by the code licence."
+  },
+  "sections": [
+    {
+      "id": "s1_general",
+      "number": 1,
+      "title": "General information",
+      "indicator_icon": "circle",
+      "interpretation": "How to interpret your answers: ↑ likelihood for good welfare (left/top) → ↑ risk for compromised welfare (right/bottom). For colourblind people, the answer options accompanied with icons are arranged in order from most optimal to least desired, either from top to bottom or from left to right. 🔍 : Opportunity to learn more about your parrot's behaviours and needs… An avian veterinarian or a certified parrot behavioural consultant can help review your assessment results and, if needed, develop an effective plan to improve your parrot's welfare.",
+      "questions": [
+        {
+          "id": "q_s1_name",
+          "type": "free_text",
+          "prompt": "Name of your parrot",
+          "help": null,
+          "demographic": true,
+          "conditional_on": null,
+          "input": {
+            "multiline": false,
+            "keyboard": "default"
+          }
+        },
+        {
+          "id": "q_s1_species",
+          "type": "free_text",
+          "prompt": "Species of your parrot",
+          "help": null,
+          "demographic": true,
+          "conditional_on": null,
+          "input": {
+            "multiline": false,
+            "keyboard": "default"
+          }
+        },
+        {
+          "id": "q_s1_sex",
+          "type": "single_choice",
+          "prompt": "Sex",
+          "help": null,
+          "demographic": true,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s1_sex_female",
+              "label": "Female",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_sex_male",
+              "label": "Male",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_sex_unknown",
+              "label": "Unknown",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s1_age",
+          "type": "free_text",
+          "prompt": "How old is your parrot?",
+          "help": null,
+          "demographic": true,
+          "conditional_on": null,
+          "input": {
+            "multiline": false,
+            "keyboard": "default"
+          }
+        },
+        {
+          "id": "q_s1_duration",
+          "type": "free_text",
+          "prompt": "How long have you been living with your parrot?",
+          "help": null,
+          "demographic": true,
+          "conditional_on": null,
+          "input": {
+            "multiline": false,
+            "keyboard": "default"
+          }
+        },
+        {
+          "id": "q_s1_rearing",
+          "type": "single_choice",
+          "prompt": "Please select the option that best describes your parrot's rearing history.",
+          "help": "Rearing: process of raising chicks from hatching to independence, encompassing feeding, providing protection and warmth, and stimulating development of normal (social) behaviours. It can be carried out by the parents (parent-rearing), by humans (hand-rearing), or through a combination of both.",
+          "demographic": true,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s1_rearing_parent_brief_socialised",
+              "label": "Parent-reared and briefly socialised with humans for short amounts of time each week",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_rearing_parent",
+              "label": "Parent-reared",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_rearing_parent_then_hand",
+              "label": "Initially parent-reared and later hand-reared",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_rearing_hand_with_siblings",
+              "label": "Hand-reared with siblings or socialised with other parrots as soon as weaned",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_rearing_hand_without_siblings",
+              "label": "Hand-reared without siblings",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_rearing_captive_unknown",
+              "label": "Captive-bred but rearing history unknown",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_rearing_wild_caught",
+              "label": "Wild-caught",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s1_obtained_from",
+          "type": "single_choice",
+          "prompt": "Where did you obtain your parrot from?",
+          "help": null,
+          "demographic": true,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s1_obtained_pet_store",
+              "label": "Pet store",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_obtained_breeder",
+              "label": "Breeder",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_obtained_rehome_org",
+              "label": "Organisation that helps re-home parrots",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_obtained_private_person",
+              "label": "Private person",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_obtained_other",
+              "label": "Other:",
+              "welfare_level": null,
+              "flags": [],
+              "allow_text": true
+            }
+          ]
+        },
+        {
+          "id": "q_s1_observe_frequency",
+          "type": "single_choice",
+          "prompt": "How often do you have the opportunity to observe your parrot's behaviour?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s1_observe_4plus",
+              "label": "Several times (4+) throughout the day",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_observe_2_3_daily",
+              "label": "2-3 times per day",
+              "welfare_level": "good",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_observe_daily",
+              "label": "Once a day",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_observe_few_weekly",
+              "label": "A few times per week",
+              "welfare_level": "elevated_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_observe_weekly_or_less",
+              "label": "Once a week or less",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s1_vet_checkup_frequency",
+          "type": "single_choice",
+          "prompt": "How often do you take your parrot to a veterinarian for general health check-up?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s1_vet_checkup_yearly_or_more",
+              "label": "Once or more times per year",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_vet_checkup_less_than_yearly",
+              "label": "Less than once per year",
+              "welfare_level": "moderate",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_vet_checkup_never",
+              "label": "Never went for a general check-up",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            }
+          ]
+        },
+        {
+          "id": "q_s1_vet_avian_specialised",
+          "type": "single_choice",
+          "prompt": "Is the veterinarian who examines your parrot specialized in avian medicine?",
+          "help": null,
+          "demographic": false,
+          "conditional_on": null,
+          "options": [
+            {
+              "id": "opt_s1_vet_avian_yes",
+              "label": "Yes",
+              "welfare_level": "optimal",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_vet_avian_no",
+              "label": "No",
+              "welfare_level": "high_risk",
+              "flags": [],
+              "allow_text": false
+            },
+            {
+              "id": "opt_s1_vet_avian_dont_know",
+              "label": "I don't know",
+              "welfare_level": null,
+              "flags": ["dont_know"],
+              "allow_text": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
