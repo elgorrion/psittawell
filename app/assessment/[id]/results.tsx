@@ -205,7 +205,9 @@ export default function AssessmentResultsScreen() {
             <View style={styles.sectionAttentionList}>
               {results.attention.map((section) => (
                 <View key={section.sectionId} style={styles.sectionAttentionCard}>
-                  <Text style={styles.sectionAttentionTitle}>{section.sectionTitle}</Text>
+                  <Text accessibilityRole="header" style={styles.sectionAttentionTitle}>
+                    {section.sectionTitle}
+                  </Text>
                   <View style={styles.itemList}>
                     {section.items.map((item, index) => (
                       <AttentionResultItem item={item} key={`${item.questionId}-${index}`} />
@@ -400,7 +402,9 @@ function WelfareMarker({ welfareLevel }: { welfareLevel: WelfareLevel }) {
 function ConsultPanel({ prominent = false }: { prominent?: boolean }) {
   return (
     <View style={[styles.consultPanel, prominent ? styles.consultPanelProminent : null]}>
-      <Text style={styles.consultTitle}>{t('assessment.results.consult.title')}</Text>
+      <Text accessibilityRole="header" style={styles.consultTitle}>
+        {t('assessment.results.consult.title')}
+      </Text>
       <Text style={styles.consultText}>{t('assessment.consultNote')}</Text>
       <Text style={styles.consultText}>{t('assessment.results.consult.description')}</Text>
     </View>

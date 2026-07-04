@@ -138,7 +138,9 @@ export default function AssessmentTrendsScreen() {
         <SectionHeader description={t('assessment.trends.description')} title={title} />
 
         <View style={styles.consultPanel}>
-          <Text style={styles.consultTitle}>{t('assessment.results.consult.title')}</Text>
+          <Text accessibilityRole="header" style={styles.consultTitle}>
+            {t('assessment.results.consult.title')}
+          </Text>
           <Text style={styles.consultText}>{t('assessment.consultNote')}</Text>
           <Text style={styles.consultText}>{t('assessment.trends.consultDescription')}</Text>
         </View>

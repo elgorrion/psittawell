@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   markerBadgeColumn: {
-    width: 132,
+    minWidth: 132,
   },
   markerDefinition: {
     color: colors.textMuted,

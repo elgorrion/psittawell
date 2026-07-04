@@ -196,8 +196,10 @@ export default function AssessmentOverviewScreen() {
         </SectionHeader>
 
         {isCompleted ? (
-          <View accessibilityRole="text" style={styles.completedPanel}>
-            <Text style={styles.completedTitle}>{t('assessment.overview.completedTitle')}</Text>
+          <View style={styles.completedPanel}>
+            <Text accessibilityRole="header" style={styles.completedTitle}>
+              {t('assessment.overview.completedTitle')}
+            </Text>
             <Text style={styles.completedText}>{t('assessment.overview.completedMessage')}</Text>
             <Text style={styles.consultNote}>{t('assessment.consultNote')}</Text>
             <View style={styles.completedActions}>
