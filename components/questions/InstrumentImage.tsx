@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     lineHeight: 17,
   },
   viewerBackdrop: {
-    backgroundColor: 'rgba(8, 20, 16, 0.96)',
+    backgroundColor: '#081410',
     flex: 1,
     justifyContent: 'center',
     padding: 16,

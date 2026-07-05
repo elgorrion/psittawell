@@ -1,5 +1,5 @@
 import { router, Stack, useFocusEffect } from 'expo-router';
-import { Check, Globe, Info, Trash2 } from 'lucide-react-native';
+import { Globe, Info, Trash2 } from 'lucide-react-native';
 import { useCallback, useMemo, useState } from 'react';
 import {
   Alert,
@@ -462,7 +462,6 @@ function LanguageOption({
         <Text style={styles.languageOptionLabel}>{label}</Text>
         {hint ? <Text style={styles.languageOptionHint}>{hint}</Text> : null}
       </View>
-      {isSelected ? <Check color={colors.spruceDark} size={20} strokeWidth={2.4} /> : null}
     </Pressable>
   );
 }
@@ -537,9 +536,9 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     alignItems: 'center',
-    alignSelf: 'center',
+    alignSelf: 'stretch',
     borderColor: colors.spruce,
-    borderRadius: 8,
+    borderRadius: 10,
     borderWidth: 1,
     justifyContent: 'center',
     minHeight: 46,
@@ -611,7 +610,7 @@ const styles = StyleSheet.create({
   deleteButton: {
     alignItems: 'center',
     alignSelf: 'center',
-    borderColor: colors.dangerBorder,
+    borderColor: colors.line,
     borderRadius: 8,
     borderWidth: 1,
     justifyContent: 'center',

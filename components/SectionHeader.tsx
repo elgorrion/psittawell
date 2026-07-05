@@ -10,7 +10,6 @@ type Props = {
 export function SectionHeader({ title, description }: Props) {
   return (
     <View style={styles.band}>
-      <View style={styles.accent} />
       <Text accessibilityRole="header" aria-level={1} style={styles.title}>
         {title}
       </Text>
@@ -25,12 +24,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     gap: 8,
     padding: 14,
-  },
-  accent: {
-    backgroundColor: colors.mint,
-    borderRadius: 2,
-    height: 4,
-    width: 58,
   },
   title: {
     color: colors.paper,
