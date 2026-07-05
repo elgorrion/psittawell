@@ -22,6 +22,16 @@
     "deleteCompletedMessageUnnamed": "It will be removed from this parrot's change-over-time history. This cannot be undone.",
     "deleteConfirmCancel": "Cancel",
     "deleteConfirmDelete": "Delete",
+    "language": {
+      "buttonAccessibility": "Change app language. Current language: %{language}",
+      "title": "Language / Sprache",
+      "close": "Cancel",
+      "system": "System default",
+      "systemResolved": "Currently %{language}",
+      "english": "English",
+      "german": "Deutsch",
+      "optionAccessibility": "%{option}. %{detail}"
+    },
     "assessmentStatus": {
       "draft": "Draft",
       "completed": "Completed"

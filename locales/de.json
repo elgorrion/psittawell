@@ -22,6 +22,16 @@
     "deleteCompletedMessageUnnamed": "Es wird aus dem Verlauf dieses Papageis für Veränderungen im Zeitverlauf entfernt. Das kann nicht rückgängig gemacht werden.",
     "deleteConfirmCancel": "Abbrechen",
     "deleteConfirmDelete": "Löschen",
+    "language": {
+      "buttonAccessibility": "App-Sprache ändern. Aktuelle Sprache: %{language}",
+      "title": "Language / Sprache",
+      "close": "Abbrechen",
+      "system": "Systemstandard",
+      "systemResolved": "Aktuell: %{language}",
+      "english": "English",
+      "german": "Deutsch",
+      "optionAccessibility": "%{option}. %{detail}"
+    },
     "assessmentStatus": {
       "draft": "Entwurf",
       "completed": "Abgeschlossen"

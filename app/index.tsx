@@ -1,8 +1,16 @@
-import { getLocales } from 'expo-localization';
 import { router, Stack, useFocusEffect } from 'expo-router';
-import { Info, Trash2 } from 'lucide-react-native';
+import { Check, Globe, Info, Trash2 } from 'lucide-react-native';
 import { useCallback, useMemo, useState } from 'react';
-import { Alert, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  Alert,
+  Modal,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { SectionHeader } from '../components/SectionHeader';
@@ -17,7 +25,18 @@ import {
   type AssessmentSummary,
 } from '../lib/assessments';
 import { getSchemaVersion } from '../lib/db';
-import { t } from '../lib/i18n';
+import {
+  applyLanguagePreference,
+  getAppLocale,
+  resolveLocalePreference,
+  t,
+} from '../lib/i18n';
+import {
+  getLanguagePreference,
+  languagePreferenceValues,
+  setLanguagePreference,
+  type LanguagePreference,
+} from '../lib/preferences';
 import { colors } from '../lib/theme';
 
 type DatabaseState =
@@ -30,17 +49,22 @@ export default function HomeScreen() {
   const [assessments, setAssessments] = useState<AssessmentSummary[]>([]);
   const [latestCompletedAssessment, setLatestCompletedAssessment] =
     useState<AssessmentSummary | null>(null);
+  const [languagePreference, setLanguagePreferenceState] =
+    useState<LanguagePreference>('system');
+  const [isLanguageDialogVisible, setIsLanguageDialogVisible] = useState(false);
+  const localeCode = getAppLocale();
   const dateFormatter = useMemo(
     () =>
-      new Intl.DateTimeFormat(getDeviceLocale(), {
+      new Intl.DateTimeFormat(localeCode, {
         dateStyle: 'medium',
       }),
-    [],
+    [localeCode],
   );
 
   const refreshAssessments = useCallback(() => {
     setAssessments(listAssessments());
     setLatestCompletedAssessment(getLatestCompletedAssessment());
+    setLanguagePreferenceState(getLanguagePreference());
   }, []);
 
   useFocusEffect(
@@ -142,16 +166,50 @@ export default function HomeScreen() {
             ))}
           </View>
         ) : null}
-        <Pressable
-          accessibilityLabel={t('about.homeLinkAccessibility')}
-          accessibilityRole="button"
-          onPress={() => router.push('/about')}
-          style={styles.aboutLink}
-        >
-          <Info color={colors.spruceDark} size={16} strokeWidth={2.2} />
-          <Text style={styles.aboutLinkText}>{t('about.linkLabel')}</Text>
-        </Pressable>
+        <View style={styles.footerActions}>
+          <Pressable
+            accessibilityLabel={t('about.homeLinkAccessibility')}
+            accessibilityRole="button"
+            onPress={() => router.push('/about')}
+            style={styles.footerButton}
+          >
+            <Info color={colors.spruceDark} size={16} strokeWidth={2.2} />
+            <Text numberOfLines={2} style={styles.footerButtonText}>
+              {t('about.linkLabel')}
+            </Text>
+          </Pressable>
+          <Pressable
+            accessibilityLabel={t('home.language.buttonAccessibility', {
+              language: getLanguageButtonLabel(languagePreference, localeCode),
+            })}
+            accessibilityRole="button"
+            onPress={() => setIsLanguageDialogVisible(true)}
+            style={styles.footerButton}
+          >
+            <Globe color={colors.spruceDark} size={16} strokeWidth={2.2} />
+            <Text numberOfLines={2} style={styles.footerButtonText}>
+              {getLanguageButtonLabel(languagePreference, localeCode)}
+            </Text>
+          </Pressable>
+        </View>
       </ScrollView>
+      <LanguageDialog
+        isVisible={isLanguageDialogVisible}
+        localeCode={resolveLocalePreference('system')}
+        onClose={() => setIsLanguageDialogVisible(false)}
+        onSelect={(preference) => {
+          try {
+            setLanguagePreference(preference);
+            setLanguagePreferenceState(preference);
+            applyLanguagePreference(preference);
+            setIsLanguageDialogVisible(false);
+          } catch {
+            setDatabaseState({ status: 'unavailable' });
+            setIsLanguageDialogVisible(false);
+          }
+        }}
+        selectedPreference={languagePreference}
+      />
     </SafeAreaView>
   );
 }
@@ -297,10 +355,140 @@ function getDeleteMessage(assessment: AssessmentSummary, name: string) {
     : t('home.deleteCompletedMessageUnnamed');
 }
 
-function getDeviceLocale() {
-  const [locale] = getLocales();
+type LanguageDialogProps = {
+  isVisible: boolean;
+  localeCode: string;
+  onClose: () => void;
+  onSelect: (preference: LanguagePreference) => void;
+  selectedPreference: LanguagePreference;
+};
 
-  return locale?.languageTag ?? locale?.languageCode ?? undefined;
+function LanguageDialog({
+  isVisible,
+  localeCode,
+  onClose,
+  onSelect,
+  selectedPreference,
+}: LanguageDialogProps) {
+  return (
+    <Modal
+      animationType="slide"
+      onRequestClose={onClose}
+      transparent
+      visible={isVisible}
+    >
+      <Pressable
+        accessibilityLabel={t('home.language.close')}
+        accessibilityRole="button"
+        onPress={onClose}
+        style={styles.modalScrim}
+      >
+        <Pressable
+          accessibilityViewIsModal
+          onPress={(event) => event.stopPropagation()}
+          style={styles.languageSheet}
+        >
+          <View style={styles.languageSheetHeader}>
+            <Text accessibilityRole="header" aria-level={2} style={styles.languageTitle}>
+              {t('home.language.title')}
+            </Text>
+            <Pressable
+              accessibilityLabel={t('home.language.close')}
+              accessibilityRole="button"
+              onPress={onClose}
+              style={styles.languageCloseButton}
+            >
+              <Text style={styles.languageCloseText}>{t('home.language.close')}</Text>
+            </Pressable>
+          </View>
+          <View accessibilityRole="radiogroup" style={styles.languageOptions}>
+            {languagePreferenceValues.map((preference) => (
+              <LanguageOption
+                key={preference}
+                localeCode={localeCode}
+                onSelect={onSelect}
+                preference={preference}
+                selectedPreference={selectedPreference}
+              />
+            ))}
+          </View>
+        </Pressable>
+      </Pressable>
+    </Modal>
+  );
+}
+
+type LanguageOptionProps = {
+  localeCode: string;
+  onSelect: (preference: LanguagePreference) => void;
+  preference: LanguagePreference;
+  selectedPreference: LanguagePreference;
+};
+
+function LanguageOption({
+  localeCode,
+  onSelect,
+  preference,
+  selectedPreference,
+}: LanguageOptionProps) {
+  const isSelected = preference === selectedPreference;
+  const label = getLanguageOptionLabel(preference);
+  const hint =
+    preference === 'system'
+      ? t('home.language.systemResolved', {
+          language: getResolvedLanguageName(localeCode),
+        })
+      : undefined;
+  const accessibilityLabel = hint
+    ? t('home.language.optionAccessibility', { option: label, detail: hint })
+    : label;
+
+  return (
+    <Pressable
+      accessibilityLabel={accessibilityLabel}
+      accessibilityRole="radio"
+      accessibilityState={{ checked: isSelected }}
+      onPress={() => onSelect(preference)}
+      style={[styles.languageOption, isSelected ? styles.languageOptionSelected : null]}
+    >
+      <View
+        style={[styles.radioOuter, isSelected ? styles.radioOuterSelected : null]}
+      >
+        {isSelected ? (
+          <View style={styles.radioInner} />
+        ) : null}
+      </View>
+      <View style={styles.languageOptionText}>
+        <Text style={styles.languageOptionLabel}>{label}</Text>
+        {hint ? <Text style={styles.languageOptionHint}>{hint}</Text> : null}
+      </View>
+      {isSelected ? <Check color={colors.spruceDark} size={20} strokeWidth={2.4} /> : null}
+    </Pressable>
+  );
+}
+
+export function getLanguageButtonLabel(
+  preference: LanguagePreference,
+  localeCode: string,
+) {
+  return preference === 'system'
+    ? getResolvedLanguageName(localeCode)
+    : getLanguageOptionLabel(preference);
+}
+
+function getLanguageOptionLabel(preference: LanguagePreference) {
+  switch (preference) {
+    case 'system':
+      return t('home.language.system');
+    case 'de':
+      return t('home.language.german');
+    case 'en':
+      return t('home.language.english');
+  }
+}
+
+function getResolvedLanguageName(localeCode: string) {
+  return localeCode === 'de' ? t('home.language.german') : t('home.language.english');
 }
 
 const styles = StyleSheet.create({
@@ -430,22 +618,123 @@ const styles = StyleSheet.create({
     minHeight: 44,
     minWidth: 44,
   },
-  aboutLink: {
+  footerActions: {
     alignItems: 'center',
     alignSelf: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    justifyContent: 'center',
+    marginTop: 2,
+  },
+  footerButton: {
+    alignItems: 'center',
     borderColor: colors.lineStrong,
     borderRadius: 8,
     borderWidth: 1,
     flexDirection: 'row',
     gap: 6,
-    marginTop: 2,
+    justifyContent: 'center',
+    minHeight: 44,
+    minWidth: 132,
     paddingHorizontal: 14,
     paddingVertical: 10,
   },
-  aboutLinkText: {
+  footerButtonText: {
     color: colors.spruceDark,
     fontSize: 15,
     fontWeight: '800',
     lineHeight: 20,
+    textAlign: 'center',
+  },
+  modalScrim: {
+    backgroundColor: 'rgba(18, 49, 42, 0.42)',
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  languageSheet: {
+    backgroundColor: colors.paper,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    gap: 14,
+    padding: 20,
+    paddingBottom: 28,
+  },
+  languageSheetHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 12,
+    justifyContent: 'space-between',
+  },
+  languageTitle: {
+    color: colors.text,
+    flex: 1,
+    fontSize: 20,
+    fontWeight: '800',
+    lineHeight: 26,
+  },
+  languageCloseButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 44,
+    minWidth: 44,
+  },
+  languageCloseText: {
+    color: colors.spruceDark,
+    fontSize: 15,
+    fontWeight: '800',
+    lineHeight: 20,
+  },
+  languageOptions: {
+    gap: 8,
+  },
+  languageOption: {
+    alignItems: 'center',
+    borderColor: colors.line,
+    borderRadius: 8,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: 12,
+    minHeight: 56,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+  },
+  languageOptionSelected: {
+    backgroundColor: colors.help,
+    borderColor: colors.spruce,
+  },
+  radioOuter: {
+    alignItems: 'center',
+    borderColor: colors.lineStrong,
+    borderRadius: 10,
+    borderWidth: 2,
+    height: 20,
+    justifyContent: 'center',
+    width: 20,
+  },
+  radioOuterSelected: {
+    borderColor: colors.spruceDark,
+  },
+  radioInner: {
+    backgroundColor: colors.spruceDark,
+    borderRadius: 5,
+    height: 10,
+    width: 10,
+  },
+  languageOptionText: {
+    flex: 1,
+    gap: 2,
+    minWidth: 0,
+  },
+  languageOptionLabel: {
+    color: colors.text,
+    fontSize: 16,
+    fontWeight: '800',
+    lineHeight: 22,
+  },
+  languageOptionHint: {
+    color: colors.textMuted,
+    fontSize: 13,
+    lineHeight: 18,
   },
 });

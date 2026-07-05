@@ -28,7 +28,7 @@ import {
   isResultsReportSharingAvailable,
   shareResultsReport,
 } from '../../../lib/exportReport';
-import { t } from '../../../lib/i18n';
+import { getAppLocale, t } from '../../../lib/i18n';
 import {
   buildAssessmentResults,
   type AssessmentResults,
@@ -486,7 +486,7 @@ function firstParam(value: string | string[] | undefined) {
 }
 
 function formatGeneratedAtLabel(date: Date) {
-  return new Intl.DateTimeFormat(undefined, {
+  return new Intl.DateTimeFormat(getAppLocale(), {
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',

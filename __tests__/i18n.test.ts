@@ -1,4 +1,4 @@
-import { createTranslator, normalizeLocale } from '../lib/i18n';
+import { createTranslator, normalizeLocale, resolveLocalePreference } from '../lib/i18n';
 import de from '../locales/de.json';
 import en from '../locales/en.json';
 import { flagGlyphs } from '../components/questions/Badges';
@@ -27,6 +27,13 @@ describe('i18n', () => {
 
     expect(translator.t('sample.shared')).toBe('Deutsch geteilt');
     expect(translator.t('sample.fallbackOnly')).toBe('English fallback');
+  });
+
+  it('resolves language preferences against the supported app locales', () => {
+    expect(resolveLocalePreference('system', 'de-AT')).toBe('de');
+    expect(resolveLocalePreference('system', 'nl-NL')).toBe('en');
+    expect(resolveLocalePreference('en', 'de-AT')).toBe('en');
+    expect(resolveLocalePreference('de', 'en-US')).toBe('de');
   });
 
   it('keeps English and German UI catalogs on identical key sets', () => {
@@ -106,4 +113,3 @@ function readCatalogValue(value: object, path: string): string {
 
   return result;
 }
-

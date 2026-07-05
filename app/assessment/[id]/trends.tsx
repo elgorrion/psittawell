@@ -1,4 +1,3 @@
-import { getLocales } from 'expo-localization';
 import { Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import {
@@ -21,7 +20,7 @@ import {
   mapAnswersByQuestion,
   parrotNameQuestionId,
 } from '../../../lib/assessments';
-import { t } from '../../../lib/i18n';
+import { getAppLocale, t } from '../../../lib/i18n';
 import { buildAssessmentResults } from '../../../lib/results';
 import {
   buildParrotTimeline,
@@ -147,7 +146,7 @@ export default function AssessmentTrendsScreen() {
       ? t('assessment.trends.namedTitle', { name: parrotName })
       : t('assessment.trends.title');
   const groups = groupIndicatorsBySection(timeline.indicators);
-  const dateLabels = buildParrotTimelineDateLabels(timeline.dates, getDeviceLocale());
+  const dateLabels = buildParrotTimelineDateLabels(timeline.dates, getAppLocale());
 
   return (
     <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
@@ -371,12 +370,6 @@ function flagsToAccessibilityText(flags: readonly OptionFlag[]): string {
 
 function firstParam(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
-}
-
-function getDeviceLocale() {
-  const [locale] = getLocales();
-
-  return locale?.languageTag ?? locale?.languageCode ?? undefined;
 }
 
 const welfareLevelFills: Record<WelfareLevel, string> = {
