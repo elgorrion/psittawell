@@ -141,6 +141,19 @@
       "unavailable": "Das Teilen des Berichts ist auf diesem Gerät nicht verfügbar.",
       "error": "Der Bericht konnte nicht geteilt werden. Bitte versuchen Sie es erneut."
     },
+    "formReport": {
+      "title": "Ausgefülltes %{instrument}-Assessmentformular",
+      "parrotNameLabel": "Papagei",
+      "completedLabel": "Abgeschlossen",
+      "appVersionLabel": "App",
+      "appVersionValue": "%{appName} %{version}",
+      "shareButton": "Ausgefülltes Formular exportieren (PDF)",
+      "sharing": "Ausgefülltes Formular wird vorbereitet...",
+      "shareDialogTitle": "Ausgefülltes Assessmentformular teilen",
+      "unavailable": "Der Export des ausgefüllten Formulars ist auf diesem Gerät nicht verfügbar.",
+      "error": "Das ausgefüllte Formular konnte nicht exportiert werden. Bitte versuchen Sie es erneut.",
+      "legendMarkersTitle": "Marker in diesem Formular"
+    },
     "imageReferenceCaption": "Referenzillustration im gedruckten Leitfaden.",
     "imageReferenceAccessibility": "Platzhalter für eine Referenzillustration. Es ist kein Foto eingebettet.",
     "instrumentImageAccessibility": "Referenzillustration.",

@@ -1,4 +1,5 @@
 import { welfareLevelColors, withFlagGlyph } from '../components/questions/Badges';
+import { escapeHtml } from './html';
 import type { OptionFlag, WelfareLevel } from '../content/schema';
 import { t } from './i18n';
 import type {
@@ -262,14 +263,3 @@ function flagText(flag: OptionFlag): string {
   return withFlagGlyph(flag, t(`assessment.flags.${flag}.text`));
 }
 
-function escapeHtml(value: string | number): string {
-  return String(value).replace(/[&<>"']/g, (character) => htmlEntities[character]);
-}
-
-const htmlEntities: Record<string, string> = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;',
-};

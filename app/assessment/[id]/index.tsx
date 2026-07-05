@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import appConfig from '../../../app.json';
 import { psittawelContentPack } from '../../../content/psittawel';
 import {
   completeAssessment,
@@ -13,13 +14,20 @@ import {
   getAssessment,
   mapAnswersByQuestion,
   parrotNameQuestionId,
+  parseSqliteTimestamp,
   type AnswerLookup,
   type Assessment,
   type SectionAnswerProgress,
 } from '../../../lib/assessments';
-import { t } from '../../../lib/i18n';
+import { buildAssessmentFormHtml } from '../../../lib/assessmentFormReport';
+import { getAppLocale, t } from '../../../lib/i18n';
 import { colors } from '../../../lib/theme';
 import { getCompleteConfirmMessage } from '../../../lib/completion';
+import {
+  buildAssessmentFormReportFilename,
+  isPdfReportSharingAvailable,
+  sharePdfReport,
+} from '../../../lib/exportReport';
 import {
   assessmentOverviewRoute,
   assessmentResultsRoute,
@@ -40,6 +48,8 @@ type OverviewState =
     }
   | { status: 'unavailable' };
 
+type FormShareStatus = 'idle' | 'sharing' | 'unavailable' | 'error';
+
 type SectionCardState = {
   sectionId: string;
   number: number;
@@ -52,6 +62,8 @@ export default function AssessmentOverviewScreen() {
   const params = useLocalSearchParams();
   const assessmentId = Number(firstParam(params.id));
   const [overviewState, setOverviewState] = useState<OverviewState>({ status: 'loading' });
+  const [isFormShareAvailable, setIsFormShareAvailable] = useState(false);
+  const [formShareStatus, setFormShareStatus] = useState<FormShareStatus>('idle');
 
   useFocusEffect(
     useCallback(() => {
@@ -89,6 +101,35 @@ export default function AssessmentOverviewScreen() {
         isMounted = false;
       };
     }, [assessmentId]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      let isMounted = true;
+
+      setFormShareStatus('idle');
+      setIsFormShareAvailable(false);
+
+      isPdfReportSharingAvailable()
+        .then((isAvailable) => {
+          if (!isMounted) {
+            return;
+          }
+
+          setIsFormShareAvailable(isAvailable);
+          setFormShareStatus(isAvailable ? 'idle' : 'unavailable');
+        })
+        .catch(() => {
+          if (isMounted) {
+            setIsFormShareAvailable(false);
+            setFormShareStatus('unavailable');
+          }
+        });
+
+      return () => {
+        isMounted = false;
+      };
+    }, []),
   );
 
   const sectionCards = useMemo<SectionCardState[]>(() => {
@@ -133,6 +174,12 @@ export default function AssessmentOverviewScreen() {
     parrotName.length > 0
       ? t('assessment.overview.namedTitle', { name: parrotName })
       : t('assessment.overview.title');
+  const shouldShowFormExportAction =
+    isCompleted &&
+    (isFormShareAvailable ||
+      formShareStatus === 'sharing' ||
+      formShareStatus === 'unavailable' ||
+      formShareStatus === 'error');
 
   function handleCompleteAssessment() {
     const unansweredCount = countUnansweredVisibleQuestions(
@@ -191,6 +238,39 @@ export default function AssessmentOverviewScreen() {
     }
   }
 
+  async function handleShareFilledForm() {
+    if (formShareStatus === 'sharing') {
+      return;
+    }
+
+    setFormShareStatus('sharing');
+
+    try {
+      const completedDate = parseSqliteTimestamp(assessment.completedAt ?? assessment.startedAt);
+      const html = buildAssessmentFormHtml({
+        answers,
+        appName: appConfig.expo.name,
+        appVersion: appConfig.expo.version,
+        completedAtLabel: formatCompletedAtLabel(completedDate),
+        parrotName,
+      });
+      const outcome = await sharePdfReport(html, {
+        dialogTitle: t('assessment.formReport.shareDialogTitle'),
+        filename: buildAssessmentFormReportFilename(parrotName, completedDate),
+      });
+
+      if (outcome === 'unavailable') {
+        setIsFormShareAvailable(false);
+        setFormShareStatus('unavailable');
+        return;
+      }
+
+      setFormShareStatus('idle');
+    } catch (error) {
+      setFormShareStatus(isShareCancellation(error) ? 'idle' : 'error');
+    }
+  }
+
   return (
     <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
       <Stack.Screen options={{ title, headerLeft }} />
@@ -225,6 +305,12 @@ export default function AssessmentOverviewScreen() {
                   {t('assessment.results.viewButton')}
                 </Text>
               </Pressable>
+              {shouldShowFormExportAction ? (
+                <ExportFilledFormAction
+                  onPress={handleShareFilledForm}
+                  status={formShareStatus}
+                />
+              ) : null}
               <Pressable
                 accessibilityLabel={t('assessment.trends.viewButton')}
                 accessibilityRole="button"
@@ -307,6 +393,19 @@ function firstParam(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
 
+function formatCompletedAtLabel(date: Date) {
+  return new Intl.DateTimeFormat(getAppLocale(), {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(date);
+}
+
+function isShareCancellation(error: unknown) {
+  const message = error instanceof Error ? error.message : String(error ?? '');
+
+  return /cancel|dismiss/i.test(message);
+}
+
 function getSectionStatusLabel(progress: SectionAnswerProgress, completed: boolean): string {
   if (completed) {
     return '';
@@ -321,6 +420,42 @@ function getSectionStatusLabel(progress: SectionAnswerProgress, completed: boole
   }
 
   return t('assessment.overview.status.inProgress');
+}
+
+function ExportFilledFormAction({
+  onPress,
+  status,
+}: {
+  onPress: () => void;
+  status: FormShareStatus;
+}) {
+  const isDisabled = status === 'sharing' || status === 'unavailable';
+
+  return (
+    <View style={styles.formExportPanel}>
+      <Pressable
+        accessibilityLabel={t('assessment.formReport.shareButton')}
+        accessibilityRole="button"
+        disabled={isDisabled}
+        onPress={onPress}
+        style={[styles.followUpButton, isDisabled ? styles.actionButtonDisabled : null]}
+      >
+        <Text style={styles.followUpButtonText}>
+          {status === 'sharing'
+            ? t('assessment.formReport.sharing')
+            : t('assessment.formReport.shareButton')}
+        </Text>
+      </Pressable>
+      {status === 'unavailable' ? (
+        <Text style={styles.actionMessage}>{t('assessment.formReport.unavailable')}</Text>
+      ) : null}
+      {status === 'error' ? (
+        <Text accessibilityRole="alert" style={styles.actionError}>
+          {t('assessment.formReport.error')}
+        </Text>
+      ) : null}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -398,6 +533,9 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingTop: 4,
   },
+  formExportPanel: {
+    gap: 8,
+  },
   resultsButton: {
     alignItems: 'center',
     backgroundColor: colors.spruce,
@@ -427,6 +565,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '800',
     lineHeight: 22,
+  },
+  actionButtonDisabled: {
+    opacity: 0.55,
+  },
+  actionMessage: {
+    color: colors.textMuted,
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  actionError: {
+    color: colors.danger,
+    fontSize: 14,
+    fontWeight: '700',
+    lineHeight: 20,
   },
   sectionList: {
     gap: 10,
