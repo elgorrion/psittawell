@@ -17,6 +17,7 @@ import {
   getMatrixRowAnswerQuestionId,
   listCompletedAssessmentsForParrot,
   listAssessments,
+  upsertAnswer,
 } from '../lib/assessments';
 
 jest.mock('../lib/db', () => ({
@@ -155,6 +156,43 @@ describe('completeAssessment', () => {
       status: 'completed',
       completedAt: '2026-07-04 09:30:00',
     });
+  });
+});
+
+describe('upsertAnswer', () => {
+  it('does not write answers into a completed assessment', () => {
+    fakeDatabase.assessments = [
+      assessmentRow({
+        id: 1,
+        status: 'completed',
+        completed_at: '2026-07-04 09:30:00',
+      }),
+    ];
+    fakeDatabase.answers = [
+      answerRow({
+        id: 1,
+        assessment_id: 1,
+        question_id: 'q_s1_name',
+        free_text: 'Mango',
+        welfare_snapshot: '{}',
+      }),
+    ];
+
+    upsertAnswer(1, 'q_s1_name', {
+      freeText: 'Kiwi',
+      optionIds: null,
+      welfareSnapshot: {},
+    });
+
+    expect(fakeDatabase.answers).toEqual([
+      expect.objectContaining({
+        assessment_id: 1,
+        answered_at: '2026-07-04 09:00:00',
+        free_text: 'Mango',
+        question_id: 'q_s1_name',
+        welfare_snapshot: '{}',
+      }),
+    ]);
   });
 });
 

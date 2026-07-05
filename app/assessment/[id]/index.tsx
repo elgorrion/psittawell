@@ -26,6 +26,7 @@ import { getCompleteConfirmMessage } from '../../../lib/completion';
 import {
   buildAssessmentFormReportFilename,
   isPdfReportSharingAvailable,
+  isShareCancellation,
   sharePdfReport,
 } from '../../../lib/exportReport';
 import {
@@ -398,12 +399,6 @@ function formatCompletedAtLabel(date: Date) {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(date);
-}
-
-function isShareCancellation(error: unknown) {
-  const message = error instanceof Error ? error.message : String(error ?? '');
-
-  return /cancel|dismiss/i.test(message);
 }
 
 function getSectionStatusLabel(progress: SectionAnswerProgress, completed: boolean): string {

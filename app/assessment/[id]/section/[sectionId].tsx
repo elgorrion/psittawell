@@ -33,6 +33,7 @@ import {
   getAnswers,
   upsertAnswer,
   type Answer,
+  type AnswerInput,
 } from '../../../../lib/assessments';
 import { isQuestionVisible } from '../../../../lib/conditionals';
 import { t } from '../../../../lib/i18n';
@@ -186,6 +187,33 @@ export default function AssessmentSectionScreen() {
     );
   }
 
+  function persistAnswer(
+    answerQuestionId: string,
+    nextAnswer: LocalAnswer,
+    answerInput: AnswerInput,
+  ) {
+    const previousAnswer = answers[answerQuestionId];
+
+    setAnswers((current) => ({ ...current, [answerQuestionId]: nextAnswer }));
+
+    try {
+      upsertAnswer(assessmentId, answerQuestionId, answerInput);
+    } catch {
+      setAnswers((current) => {
+        const revertedAnswers = { ...current };
+
+        if (previousAnswer === undefined) {
+          delete revertedAnswers[answerQuestionId];
+        } else {
+          revertedAnswers[answerQuestionId] = previousAnswer;
+        }
+
+        return revertedAnswers;
+      });
+      setIsUnavailable(true);
+    }
+  }
+
   function handleFreeTextChange(question: FreeTextContent, value: string) {
     if (isReadOnly) {
       return;
@@ -193,8 +221,7 @@ export default function AssessmentSectionScreen() {
 
     const nextAnswer = { optionIds: [], freeText: value };
 
-    setAnswers((current) => ({ ...current, [question.id]: nextAnswer }));
-    upsertAnswer(assessmentId, question.id, {
+    persistAnswer(question.id, nextAnswer, {
       freeText: value,
       optionIds: null,
       welfareSnapshot: {},
@@ -215,8 +242,7 @@ export default function AssessmentSectionScreen() {
     const optionIds = [optionId];
     const nextAnswer = { optionIds, freeText: nextFreeText };
 
-    setAnswers((current) => ({ ...current, [question.id]: nextAnswer }));
-    upsertAnswer(assessmentId, question.id, {
+    persistAnswer(question.id, nextAnswer, {
       optionIds,
       freeText: nextFreeText.length > 0 ? nextFreeText : null,
       welfareSnapshot: buildWelfareSnapshot(question, optionIds),
@@ -231,8 +257,7 @@ export default function AssessmentSectionScreen() {
     const optionIds = answers[question.id]?.optionIds ?? [];
     const nextAnswer = { optionIds, freeText: value };
 
-    setAnswers((current) => ({ ...current, [question.id]: nextAnswer }));
-    upsertAnswer(assessmentId, question.id, {
+    persistAnswer(question.id, nextAnswer, {
       optionIds,
       freeText: value,
       welfareSnapshot: buildWelfareSnapshot(question, optionIds),
@@ -260,8 +285,7 @@ export default function AssessmentSectionScreen() {
     const nextFreeText = keepsText ? answers[question.id]?.freeText ?? '' : '';
     const nextAnswer = { optionIds, freeText: nextFreeText };
 
-    setAnswers((current) => ({ ...current, [question.id]: nextAnswer }));
-    upsertAnswer(assessmentId, question.id, {
+    persistAnswer(question.id, nextAnswer, {
       optionIds,
       freeText: nextFreeText.length > 0 ? nextFreeText : null,
       welfareSnapshot: buildWelfareSnapshot(question, optionIds),
@@ -276,8 +300,7 @@ export default function AssessmentSectionScreen() {
     const optionIds = answers[question.id]?.optionIds ?? [];
     const nextAnswer = { optionIds, freeText: value };
 
-    setAnswers((current) => ({ ...current, [question.id]: nextAnswer }));
-    upsertAnswer(assessmentId, question.id, {
+    persistAnswer(question.id, nextAnswer, {
       optionIds,
       freeText: value,
       welfareSnapshot: buildWelfareSnapshot(question, optionIds),
@@ -293,8 +316,7 @@ export default function AssessmentSectionScreen() {
     const optionIds = [columnId];
     const nextAnswer = { optionIds, freeText: '' };
 
-    setAnswers((current) => ({ ...current, [answerQuestionId]: nextAnswer }));
-    upsertAnswer(assessmentId, answerQuestionId, {
+    persistAnswer(answerQuestionId, nextAnswer, {
       optionIds,
       freeText: null,
       welfareSnapshot: buildWelfareSnapshot(question, optionIds),
@@ -323,8 +345,7 @@ export default function AssessmentSectionScreen() {
         : '';
     const nextAnswer = { optionIds, freeText: nextFreeText };
 
-    setAnswers((current) => ({ ...current, [answerQuestionId]: nextAnswer }));
-    upsertAnswer(assessmentId, answerQuestionId, {
+    persistAnswer(answerQuestionId, nextAnswer, {
       optionIds,
       freeText: nextFreeText.length > 0 ? nextFreeText : null,
       welfareSnapshot: buildWelfareSnapshot(question, optionIds),
@@ -345,8 +366,7 @@ export default function AssessmentSectionScreen() {
     const optionIds = [columnId];
     const nextAnswer = { optionIds, freeText: '' };
 
-    setAnswers((current) => ({ ...current, [answerQuestionId]: nextAnswer }));
-    upsertAnswer(assessmentId, answerQuestionId, {
+    persistAnswer(answerQuestionId, nextAnswer, {
       optionIds,
       freeText: null,
       welfareSnapshot: buildWelfareSnapshot(question, optionIds),
@@ -366,8 +386,7 @@ export default function AssessmentSectionScreen() {
     const optionIds = answers[answerQuestionId]?.optionIds ?? [];
     const nextAnswer = { optionIds, freeText: value };
 
-    setAnswers((current) => ({ ...current, [answerQuestionId]: nextAnswer }));
-    upsertAnswer(assessmentId, answerQuestionId, {
+    persistAnswer(answerQuestionId, nextAnswer, {
       optionIds,
       freeText: value,
       welfareSnapshot: buildWelfareSnapshot(question, optionIds),

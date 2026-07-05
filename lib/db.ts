@@ -38,12 +38,32 @@ const migrations: readonly Migration<SQLite.SQLiteDatabase>[] = [
 ];
 
 let database: SQLite.SQLiteDatabase | null = null;
+let hasLoggedDatabaseOpenFailure = false;
+
+export class DatabaseUnavailableError extends Error {
+  readonly cause: unknown;
+
+  constructor(cause: unknown) {
+    super('Local database could not be opened.');
+    this.name = 'DatabaseUnavailableError';
+    this.cause = cause;
+  }
+}
 
 export function getDatabase() {
   if (database === null) {
-    const nextDatabase = SQLite.openDatabaseSync(databaseName);
-    runDatabaseMigrations(nextDatabase);
-    database = nextDatabase;
+    try {
+      const nextDatabase = SQLite.openDatabaseSync(databaseName);
+      runDatabaseMigrations(nextDatabase);
+      database = nextDatabase;
+    } catch (error) {
+      if (!hasLoggedDatabaseOpenFailure) {
+        console.error('PsittaWell local database could not be opened.', error);
+        hasLoggedDatabaseOpenFailure = true;
+      }
+
+      throw new DatabaseUnavailableError(error);
+    }
   }
 
   return database;

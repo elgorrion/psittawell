@@ -34,10 +34,13 @@ jest.mock('expo-sharing', () => ({
 const {
   buildAssessmentFormReportFilename,
   buildResultsReportFilename,
+  isShareCancellation,
   sanitizeReportFilenameSegment,
   sharePdfReport,
   shareResultsReport,
 } = require('../lib/exportReport') as typeof import('../lib/exportReport');
+const { Platform } = require('react-native') as typeof import('react-native');
+const originalPlatformOS = Platform.OS;
 
 describe('report export filenames', () => {
   beforeEach(() => {
@@ -45,6 +48,11 @@ describe('report export filenames', () => {
     mockPrintToFileAsync.mockReset();
     mockShareAsync.mockReset();
     mockIsAvailableAsync.mockReset();
+    setPlatformOS('android');
+  });
+
+  afterAll(() => {
+    setPlatformOS(originalPlatformOS);
   });
 
   it('builds a locale-neutral human PDF filename with a sanitized parrot name', () => {
@@ -133,4 +141,60 @@ describe('report export filenames', () => {
       }),
     );
   });
+
+  it('returns unavailable on web without printing or opening the share API', async () => {
+    setPlatformOS('web');
+
+    await expect(
+      sharePdfReport('<html></html>', {
+        dialogTitle: 'Share report',
+        filename: 'PsittaWell-Kiwi-2026-07-05.pdf',
+      }),
+    ).resolves.toBe('unavailable');
+
+    expect(mockIsAvailableAsync).not.toHaveBeenCalled();
+    expect(mockPrintToFileAsync).not.toHaveBeenCalled();
+    expect(mockShareAsync).not.toHaveBeenCalled();
+  });
+
+  it('returns unavailable when native sharing is unavailable', async () => {
+    mockIsAvailableAsync.mockResolvedValue(false);
+
+    await expect(
+      sharePdfReport('<html></html>', {
+        dialogTitle: 'Share report',
+        filename: 'PsittaWell-Kiwi-2026-07-05.pdf',
+      }),
+    ).resolves.toBe('unavailable');
+
+    expect(mockPrintToFileAsync).not.toHaveBeenCalled();
+    expect(mockShareAsync).not.toHaveBeenCalled();
+  });
+
+  it('propagates print failures without opening the share sheet', async () => {
+    mockIsAvailableAsync.mockResolvedValue(true);
+    mockPrintToFileAsync.mockRejectedValue(new Error('print failed'));
+
+    await expect(
+      sharePdfReport('<html></html>', {
+        dialogTitle: 'Share report',
+        filename: 'PsittaWell-Kiwi-2026-07-05.pdf',
+      }),
+    ).rejects.toThrow('print failed');
+
+    expect(mockShareAsync).not.toHaveBeenCalled();
+  });
+
+  it('detects share cancellation by error code before falling back to message text', () => {
+    expect(isShareCancellation({ code: 'ERR_USER_CANCELLED', message: 'ignored' })).toBe(true);
+    expect(isShareCancellation({ code: 'SharingFailedException', message: 'cancelled' })).toBe(false);
+    expect(isShareCancellation(new Error('User dismissed the share sheet'))).toBe(true);
+  });
 });
+
+function setPlatformOS(platformOS: string) {
+  Object.defineProperty(Platform, 'OS', {
+    configurable: true,
+    value: platformOS,
+  });
+}

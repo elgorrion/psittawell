@@ -26,6 +26,7 @@ import {
 } from '../../../lib/assessments';
 import {
   isResultsReportSharingAvailable,
+  isShareCancellation,
   shareResultsReport,
 } from '../../../lib/exportReport';
 import { getAppLocale, t } from '../../../lib/i18n';
@@ -493,12 +494,6 @@ function formatGeneratedAtLabel(date: Date) {
     month: 'short',
     year: 'numeric',
   }).format(date);
-}
-
-function isShareCancellation(error: unknown) {
-  const message = error instanceof Error ? error.message : String(error ?? '');
-
-  return /cancel|dismiss/i.test(message);
 }
 
 const styles = StyleSheet.create({

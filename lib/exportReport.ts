@@ -8,6 +8,19 @@ import { t } from './i18n';
 export type SharePdfReportOutcome = 'shared' | 'unavailable';
 export type ShareResultsReportOutcome = SharePdfReportOutcome;
 
+const shareCancellationCodes = new Set([
+  'ACTION_DISMISSED',
+  'E_CANCELED',
+  'E_CANCELLED',
+  'ERR_CANCELED',
+  'ERR_CANCELLED',
+  'ERR_USER_CANCELED',
+  'ERR_USER_CANCELLED',
+  'USER_CANCELED',
+  'USER_CANCELLED',
+]);
+const shareCancellationPattern = /cancel|dismiss/i;
+
 type ShareResultsReportOptions = {
   now?: Date;
   parrotName?: string;
@@ -71,6 +84,23 @@ export async function sharePdfReport(
   return 'shared';
 }
 
+export function isShareCancellation(error: unknown): boolean {
+  const code = getErrorStringProperty(error, 'code');
+
+  if (code !== null) {
+    const normalizedCode = code.toUpperCase();
+
+    return shareCancellationCodes.has(normalizedCode) || shareCancellationPattern.test(code);
+  }
+
+  const message =
+    error instanceof Error
+      ? error.message
+      : getErrorStringProperty(error, 'message') ?? String(error ?? '');
+
+  return shareCancellationPattern.test(message);
+}
+
 export function buildResultsReportFilename(parrotName: string, date: Date): string {
   const sanitizedName = sanitizeReportFilenameSegment(parrotName);
   const namePart = sanitizedName.length > 0 ? sanitizedName : 'report';
@@ -101,4 +131,14 @@ function formatFilenameDate(date: Date): string {
   const day = String(date.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
+}
+
+function getErrorStringProperty(error: unknown, property: 'code' | 'message'): string | null {
+  if (error === null || typeof error !== 'object' || !(property in error)) {
+    return null;
+  }
+
+  const value = (error as Record<string, unknown>)[property];
+
+  return typeof value === 'string' && value.length > 0 ? value : null;
 }
