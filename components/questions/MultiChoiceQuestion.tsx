@@ -61,7 +61,7 @@ export function MultiChoiceQuestion({
               >
                 <View style={styles.optionRow}>
                   <View style={[styles.checkbox, checked ? styles.checkboxSelected : null]}>
-                    {checked ? <View style={styles.checkboxMark} /> : null}
+                    {checked ? <Text style={styles.checkboxMark}>✓</Text> : null}
                   </View>
                   <IndicatorBadge
                     indicatorIcon={indicatorIcon}
@@ -167,8 +167,13 @@ const styles = StyleSheet.create({
   checkboxMark: {
     backgroundColor: colors.spruce,
     borderRadius: 2,
-    height: 10,
-    width: 10,
+    color: colors.paper,
+    fontSize: 12,
+    fontWeight: '800',
+    height: 14,
+    lineHeight: 14,
+    textAlign: 'center',
+    width: 14,
   },
   optionContent: {
     flex: 1,

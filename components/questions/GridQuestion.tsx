@@ -39,6 +39,15 @@ export function GridQuestion({
   const hasIndicators = question.column_groups.some((group) =>
     group.columns.some((column) => column.welfare_level !== null),
   );
+  const columnHelpDefinitions = question.column_groups.flatMap((group) =>
+    group.columns
+      .filter((column) => column.help)
+      .map((column) => ({
+        id: `${group.id}:${column.id}`,
+        label: column.label,
+        help: column.help as string,
+      })),
+  );
 
   return (
     <View style={styles.container}>
@@ -47,6 +56,18 @@ export function GridQuestion({
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
       {question.note ? <Text style={styles.note}>{question.note}</Text> : null}
       {question.image_ref ? <InstrumentImage imageRef={question.image_ref} /> : null}
+      {columnHelpDefinitions.length > 0 ? (
+        <View style={styles.columnDefinitions}>
+          {columnHelpDefinitions.map((definition) => (
+            <View key={definition.id} style={styles.columnDefinitionLine}>
+              <Text style={[styles.columnDefinitionText, styles.columnDefinitionLabel]}>
+                {definition.label}
+              </Text>
+              <Text style={styles.columnDefinitionText}>{definition.help}</Text>
+            </View>
+          ))}
+        </View>
+      ) : null}
       <View style={styles.rows}>
         {question.rows.map((row) => (
           <GridRowCard
@@ -244,8 +265,8 @@ function GridColumnOption({
   disabled,
 }: GridColumnOptionProps) {
   const accessibilityParts = columnGroup.label.length > 0
-    ? [row.label, columnGroup.label]
-    : [row.label];
+    ? [column.help ?? '', row.label, columnGroup.label]
+    : [column.help ?? '', row.label];
 
   return (
     <Pressable
@@ -277,9 +298,11 @@ function GridColumnOption({
         ]}
       >
         {selected ? (
-          <View
-            style={selection === 'single_per_group' ? styles.radioDot : styles.checkboxMark}
-          />
+          selection === 'single_per_group' ? (
+            <View style={styles.radioDot} />
+          ) : (
+            <Text style={styles.checkboxMark}>✓</Text>
+          )
         ) : null}
       </View>
       <IndicatorBadge
@@ -289,7 +312,6 @@ function GridColumnOption({
       />
       <View style={styles.columnContent}>
         <Text style={styles.columnLabel}>{column.label}</Text>
-        {column.help ? <Text style={styles.columnHelp}>{column.help}</Text> : null}
         <FlagBadges flags={column.flags} />
       </View>
     </Pressable>
@@ -321,6 +343,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontStyle: 'italic',
     lineHeight: 20,
+  },
+  columnDefinitions: {
+    gap: 6,
+  },
+  columnDefinitionLine: {
+    alignItems: 'baseline',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  columnDefinitionText: {
+    color: colors.textMuted,
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  columnDefinitionLabel: {
+    fontWeight: '800',
   },
   rows: {
     gap: 12,
@@ -405,8 +444,13 @@ const styles = StyleSheet.create({
   checkboxMark: {
     backgroundColor: colors.spruce,
     borderRadius: 2,
-    height: 10,
-    width: 10,
+    color: colors.paper,
+    fontSize: 12,
+    fontWeight: '800',
+    height: 14,
+    lineHeight: 14,
+    textAlign: 'center',
+    width: 14,
   },
   controlSelected: {
     borderColor: colors.spruce,
@@ -419,12 +463,6 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: 15,
     lineHeight: 21,
-  },
-  columnHelp: {
-    color: colors.textMuted,
-    fontSize: 13,
-    lineHeight: 18,
-    marginTop: 2,
   },
   rowTextInput: {
     backgroundColor: colors.paper,

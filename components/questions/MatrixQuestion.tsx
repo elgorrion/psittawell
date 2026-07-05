@@ -26,6 +26,8 @@ export function MatrixQuestion({
   onSelectColumn,
   disabled = false,
 }: Props) {
+  const columnHelpDefinitions = getColumnHelpDefinitions(question);
+
   return (
     <View style={styles.container}>
       <Text style={styles.prompt}>{question.prompt}</Text>
@@ -33,6 +35,18 @@ export function MatrixQuestion({
       {question.help ? <Text style={styles.help}>{question.help}</Text> : null}
       {question.note ? <Text style={styles.note}>{question.note}</Text> : null}
       {question.image_ref ? <InstrumentImage imageRef={question.image_ref} /> : null}
+      {columnHelpDefinitions.length > 0 ? (
+        <View style={styles.columnDefinitions}>
+          {columnHelpDefinitions.map((definition) => (
+            <View key={definition.id} style={styles.columnDefinitionLine}>
+              <Text style={[styles.columnDefinitionText, styles.columnDefinitionLabel]}>
+                {definition.label}
+              </Text>
+              <Text style={styles.columnDefinitionText}>{definition.help}</Text>
+            </View>
+          ))}
+        </View>
+      ) : null}
       {question.row_groups.map((rowGroup, groupIndex) => (
         <View key={groupIndex} style={styles.group}>
           {rowGroup.label ? <Text style={styles.groupLabel}>{rowGroup.label}</Text> : null}
@@ -91,7 +105,7 @@ function MatrixRow({
                 column.label,
                 column.welfare_level,
                 column.flags,
-                [row.label],
+                [column.help ?? '', row.label],
               )}
               accessibilityRole="radio"
               accessibilityState={{ disabled, selected }}
@@ -114,7 +128,6 @@ function MatrixRow({
               />
               <View style={styles.columnContent}>
                 <Text style={styles.columnLabel}>{column.label}</Text>
-                {column.help ? <Text style={styles.columnHelp}>{column.help}</Text> : null}
                 <FlagBadges flags={column.flags} />
               </View>
             </Pressable>
@@ -123,6 +136,33 @@ function MatrixRow({
       </View>
     </View>
   );
+}
+
+function getColumnHelpDefinitions(question: MatrixQuestionContent) {
+  const seen = new Set<string>();
+  const definitions: { id: string; label: string; help: string }[] = [];
+
+  for (const rowGroup of question.row_groups) {
+    for (const column of rowGroup.columns) {
+      if (!column.help) {
+        continue;
+      }
+
+      const key = JSON.stringify([column.label, column.help]);
+      if (seen.has(key)) {
+        continue;
+      }
+
+      seen.add(key);
+      definitions.push({
+        id: `${column.id}:${definitions.length}`,
+        label: column.label,
+        help: column.help,
+      });
+    }
+  }
+
+  return definitions;
 }
 
 const styles = StyleSheet.create({
@@ -150,6 +190,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontStyle: 'italic',
     lineHeight: 20,
+  },
+  columnDefinitions: {
+    gap: 6,
+  },
+  columnDefinitionLine: {
+    alignItems: 'baseline',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  columnDefinitionText: {
+    color: colors.textMuted,
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  columnDefinitionLabel: {
+    fontWeight: '800',
   },
   group: {
     gap: 12,
@@ -226,11 +283,5 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: 15,
     lineHeight: 21,
-  },
-  columnHelp: {
-    color: colors.textMuted,
-    fontSize: 13,
-    lineHeight: 18,
-    marginTop: 2,
   },
 });

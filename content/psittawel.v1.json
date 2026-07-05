@@ -802,8 +802,8 @@
           "type": "grid",
           "selection": "multi",
           "prompt": "Where is your parrot's enclosure located?",
-          "help": "If your parrot has select enclosures, please specify all locations. Enclosure: space where the parrot sleeps, eats, drinks, and stays when it can't be supervised.",
-          "note": "Please select only the answer options that apply to your parrot and leave the remaining ones blank.",
+          "help": "If your parrot has select enclosures, please specify all locations.",
+          "note": "Please select only the answer options that apply to your parrot and leave the remaining ones blank.\nEnclosure: space where the parrot sleeps, eats, drinks, and stays when it can't be supervised.",
           "demographic": false,
           "conditional_on": null,
           "column_groups": [
@@ -2925,7 +2925,7 @@
           "id": "q_s6_social_possibilities",
           "type": "single_choice",
           "prompt": "Please select the option that best describes your parrot's possibilities to socially interact with other parrots.",
-          "help": "Please note that parrots are highly social animals, and living in group is important for their welfare. However, introducing new individuals should always be carefully evaluated with an expert to ensure it is suitable and safe for all parrots involved.",
+          "note": "Please note that parrots are highly social animals, and living in group is important for their welfare. However, introducing new individuals should always be carefully evaluated with an expert to ensure it is suitable and safe for all parrots involved.",
           "flags": [
             "context_dependent"
           ],
@@ -4508,7 +4508,7 @@
           "id": "q_s8_abnormal_behaviours",
           "type": "matrix",
           "prompt": "Does your parrot exhibit any of the following behaviours?",
-          "help": "Please note that interpreting abnormal behaviours can be challenging. Whether these reflect a welfare issue depends highly on species, context and frequency with which these occur. If you observe any of these behaviours in the table, seeking expert guidance is highly recommended.",
+          "note": "Please note that interpreting abnormal behaviours can be challenging. Whether these reflect a welfare issue depends highly on species, context and frequency with which these occur. If you observe any of these behaviours in the table, seeking expert guidance is highly recommended.",
           "demographic": false,
           "conditional_on": null,
           "indicator_icon": "parrot",

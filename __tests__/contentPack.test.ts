@@ -157,6 +157,18 @@ describe('content pack', () => {
       'Main enclosure',
       'Secondary enclosure(s)',
     ]);
+    expect(enclosureLocation.help).toBe(
+      'If your parrot has select enclosures, please specify all locations.',
+    );
+    expect(enclosureLocation.note).toBe(
+      "Please select only the answer options that apply to your parrot and leave the remaining ones blank.\nEnclosure: space where the parrot sleeps, eats, drinks, and stays when it can't be supervised.",
+    );
+    expect(enclosureLocation.note).toContain(
+      'Please select only the answer options that apply to your parrot and leave the remaining ones blank.',
+    );
+    expect(enclosureLocation.note).toContain(
+      "Enclosure: space where the parrot sleeps, eats, drinks, and stays when it can't be supervised.",
+    );
     expect(enclosureLocation.rows[9]).toMatchObject({
       id: 'row_s3_location_other',
       label: 'Other:',
@@ -387,6 +399,10 @@ describe('content pack', () => {
       'q_s6_behaviours',
     ]);
     expect(possibilities.flags).toEqual(['context_dependent']);
+    expect(possibilities.help).toBeUndefined();
+    expect(possibilities.note).toBe(
+      'Please note that parrots are highly social animals, and living in group is important for their welfare. However, introducing new individuals should always be carefully evaluated with an expert to ensure it is suitable and safe for all parrots involved.',
+    );
     expect(possibilities.options.map((option) => option.welfare_level)).toEqual([
       null,
       null,
@@ -581,6 +597,10 @@ describe('content pack', () => {
       ],
     ]);
     expect(abnormalBehaviours.row_groups).toHaveLength(2);
+    expect(abnormalBehaviours.help).toBeUndefined();
+    expect(abnormalBehaviours.note).toBe(
+      'Please note that interpreting abnormal behaviours can be challenging. Whether these reflect a welfare issue depends highly on species, context and frequency with which these occur. If you observe any of these behaviours in the table, seeking expert guidance is highly recommended.',
+    );
     expect(abnormalBehaviours.row_groups[0].rows).toHaveLength(9);
     expect(abnormalBehaviours.row_groups[1].rows).toHaveLength(3);
     expect(abnormalBehaviours.row_groups[0].columns[1]).toMatchObject({
