@@ -1,6 +1,13 @@
 import { router, Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  type ColorValue,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FlagBadge, FlagBadges, welfareLevelColors } from '../../../components/questions/Badges';
@@ -38,6 +45,12 @@ type ResultsState =
   | { status: 'unavailable' };
 
 type ReportShareStatus = 'idle' | 'sharing' | 'unavailable' | 'error';
+
+const headerTitle = ({ children, tintColor }: { children: string; tintColor?: ColorValue }) => (
+  <Text numberOfLines={1} style={[styles.navigationTitle, tintColor ? { color: tintColor } : null]}>
+    {children}
+  </Text>
+);
 
 export default function AssessmentResultsScreen() {
   const params = useLocalSearchParams();
@@ -119,13 +132,14 @@ export default function AssessmentResultsScreen() {
         <Stack.Screen
           options={{
             title: t('assessment.results.headerTitle'),
-            headerLeft: ({ tintColor }: { tintColor?: import('react-native').ColorValue }) => (
+            headerTitle,
+            headerLeft: ({ tintColor }: { tintColor?: ColorValue }) => (
               <AssessmentHeaderUpButton assessmentId={assessmentId} tintColor={tintColor} />
             ),
           }}
         />
         <View style={styles.emptyState}>
-          <Text accessibilityRole="header" style={styles.emptyTitle}>
+          <Text accessibilityRole="header" aria-level={1} style={styles.emptyTitle}>
             {resultsState.status === 'loading'
               ? t('assessment.results.headerTitle')
               : t('assessment.results.unavailableTitle')}
@@ -182,14 +196,15 @@ export default function AssessmentResultsScreen() {
       <Stack.Screen
         options={{
           title: t('assessment.results.headerTitle'),
-          headerLeft: ({ tintColor }: { tintColor?: import('react-native').ColorValue }) => (
+          headerTitle,
+          headerLeft: ({ tintColor }: { tintColor?: ColorValue }) => (
             <AssessmentHeaderUpButton assessmentId={assessmentId} tintColor={tintColor} />
           ),
         }}
       />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.introPanel}>
-          <Text accessibilityRole="header" style={styles.introTitle}>
+          <Text accessibilityRole="header" aria-level={1} style={styles.introTitle}>
             {title}
           </Text>
           <Text style={styles.introText}>{t('assessment.results.disclaimer')}</Text>
@@ -205,7 +220,7 @@ export default function AssessmentResultsScreen() {
 
         {hasUrgentItems ? (
           <View style={styles.panel}>
-            <Text accessibilityRole="header" style={styles.panelTitle}>
+            <Text accessibilityRole="header" aria-level={2} style={styles.panelTitle}>
               {t('assessment.results.urgent.title')}
             </Text>
             <Text style={styles.panelDescription}>
@@ -220,7 +235,7 @@ export default function AssessmentResultsScreen() {
         ) : null}
 
         <View style={styles.panel}>
-          <Text accessibilityRole="header" style={styles.panelTitle}>
+          <Text accessibilityRole="header" aria-level={2} style={styles.panelTitle}>
             {t('assessment.results.attention.title')}
           </Text>
           <Text style={styles.panelDescription}>
@@ -230,7 +245,11 @@ export default function AssessmentResultsScreen() {
             <View style={styles.sectionAttentionList}>
               {results.attention.map((section) => (
                 <View key={section.sectionId} style={styles.sectionAttentionCard}>
-                  <Text accessibilityRole="header" style={styles.sectionAttentionTitle}>
+                  <Text
+                    accessibilityRole="header"
+                    aria-level={2}
+                    style={styles.sectionAttentionTitle}
+                  >
                     {section.sectionTitle}
                   </Text>
                   <View style={styles.itemList}>
@@ -248,7 +267,7 @@ export default function AssessmentResultsScreen() {
 
         {results.observe.length > 0 ? (
           <View style={styles.panel}>
-            <Text accessibilityRole="header" style={styles.panelTitle}>
+            <Text accessibilityRole="header" aria-level={2} style={styles.panelTitle}>
               {t('assessment.results.observe.title')}
             </Text>
             <Text style={styles.panelDescription}>
@@ -263,7 +282,7 @@ export default function AssessmentResultsScreen() {
         ) : null}
 
         <View style={styles.reviewedPanel}>
-          <Text accessibilityRole="header" style={styles.reviewedTitle}>
+          <Text accessibilityRole="header" aria-level={2} style={styles.reviewedTitle}>
             {t('assessment.results.reviewed.title')}
           </Text>
           <Text style={styles.reviewedDescription}>
@@ -431,7 +450,7 @@ function WelfareMarker({ welfareLevel }: { welfareLevel: WelfareLevel }) {
 function ConsultPanel({ prominent = false }: { prominent?: boolean }) {
   return (
     <View style={[styles.consultPanel, prominent ? styles.consultPanelProminent : null]}>
-      <Text accessibilityRole="header" style={styles.consultTitle}>
+      <Text accessibilityRole="header" aria-level={2} style={styles.consultTitle}>
         {t('assessment.results.consult.title')}
       </Text>
       <Text style={styles.consultText}>{t('assessment.consultNote')}</Text>
@@ -482,6 +501,12 @@ const styles = StyleSheet.create({
     gap: 18,
     padding: 20,
     paddingBottom: 32,
+  },
+  navigationTitle: {
+    color: colors.paper,
+    fontSize: 17,
+    fontWeight: '800',
+    lineHeight: 22,
   },
   emptyState: {
     flex: 1,

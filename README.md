@@ -26,7 +26,7 @@ Faithful to the published instrument · private and offline · accessible and fr
 
 ## Platform
 
-Built with Expo (React Native), TypeScript, expo-router, and on-device `expo-sqlite` storage for iOS and Android, with web as a bonus.
+Built with Expo (React Native), TypeScript, expo-router, and on-device `expo-sqlite` storage for iOS and Android. The web build is a limited preview (About page only): assessments need on-device storage, which browsers do not support yet.
 
 ## Licensing
 

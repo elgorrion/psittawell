@@ -1,13 +1,23 @@
 import { Pressable, Text } from 'react-native';
 import type { ReactElement, ReactNode } from 'react';
 
-import { AssessmentRow, getFollowUpCtaLabel } from '../app/index';
+import {
+  AssessmentRow,
+  getDatabaseUnavailableMessageKey,
+  getFollowUpCtaLabel,
+} from '../app/index';
 import type { AssessmentSummary } from '../lib/assessments';
 
 describe('home screen helpers', () => {
   it('builds the smart follow-up CTA label from the latest completed assessment', () => {
     expect(getFollowUpCtaLabel('Mango')).toBe("Start Mango's next check");
     expect(getFollowUpCtaLabel(null)).toBe('Start the next check');
+  });
+
+  it('uses browser-specific local storage copy on web', () => {
+    expect(getDatabaseUnavailableMessageKey('web')).toBe('home.databaseUnavailableWeb');
+    expect(getDatabaseUnavailableMessageKey('android')).toBe('home.databaseUnavailable');
+    expect(getDatabaseUnavailableMessageKey('ios')).toBe('home.databaseUnavailable');
   });
 
   it('renders a visible accessible delete button on assessment rows', () => {

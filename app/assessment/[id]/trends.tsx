@@ -1,7 +1,14 @@
 import { getLocales } from 'expo-localization';
 import { Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  type ColorValue,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FlagBadges, welfareLevelColors } from '../../../components/questions/Badges';
@@ -43,6 +50,12 @@ type IndicatorGroup = {
 
 const dateCellWidth = 136;
 const indicatorCellWidth = 220;
+
+const headerTitle = ({ children, tintColor }: { children: string; tintColor?: ColorValue }) => (
+  <Text numberOfLines={1} style={[styles.navigationTitle, tintColor ? { color: tintColor } : null]}>
+    {children}
+  </Text>
+);
 
 export default function AssessmentTrendsScreen() {
   const params = useLocalSearchParams();
@@ -107,13 +120,14 @@ export default function AssessmentTrendsScreen() {
         <Stack.Screen
           options={{
             title: t('assessment.trends.headerTitle'),
-            headerLeft: ({ tintColor }: { tintColor?: import('react-native').ColorValue }) => (
+            headerTitle,
+            headerLeft: ({ tintColor }: { tintColor?: ColorValue }) => (
               <AssessmentHeaderUpButton assessmentId={assessmentId} tintColor={tintColor} />
             ),
           }}
         />
         <View style={styles.emptyState}>
-          <Text accessibilityRole="header" style={styles.emptyTitle}>
+          <Text accessibilityRole="header" aria-level={1} style={styles.emptyTitle}>
             {t('assessment.trends.unavailableTitle')}
           </Text>
           <Text style={styles.statusText}>
@@ -140,21 +154,22 @@ export default function AssessmentTrendsScreen() {
       <Stack.Screen
         options={{
           title: t('assessment.trends.headerTitle'),
-          headerLeft: ({ tintColor }: { tintColor?: import('react-native').ColorValue }) => (
+          headerTitle,
+          headerLeft: ({ tintColor }: { tintColor?: ColorValue }) => (
             <AssessmentHeaderUpButton assessmentId={assessmentId} tintColor={tintColor} />
           ),
         }}
       />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.introPanel}>
-          <Text accessibilityRole="header" style={styles.introTitle}>
+          <Text accessibilityRole="header" aria-level={1} style={styles.introTitle}>
             {title}
           </Text>
           <Text style={styles.introText}>{t('assessment.trends.description')}</Text>
         </View>
 
         <View style={styles.consultPanel}>
-          <Text accessibilityRole="header" style={styles.consultTitle}>
+          <Text accessibilityRole="header" aria-level={2} style={styles.consultTitle}>
             {t('assessment.results.consult.title')}
           </Text>
           <Text style={styles.consultText}>{t('assessment.consultNote')}</Text>
@@ -163,7 +178,7 @@ export default function AssessmentTrendsScreen() {
 
         {timeline.dates.length < 2 || timeline.indicators.length === 0 ? (
           <View style={styles.panel}>
-            <Text accessibilityRole="header" style={styles.panelTitle}>
+            <Text accessibilityRole="header" aria-level={2} style={styles.panelTitle}>
               {t('assessment.trends.emptyTitle')}
             </Text>
             <Text style={styles.panelDescription}>
@@ -174,7 +189,7 @@ export default function AssessmentTrendsScreen() {
           <View style={styles.groupList}>
             {groups.map((group) => (
               <View key={group.sectionId} style={styles.panel}>
-                <Text accessibilityRole="header" style={styles.panelTitle}>
+                <Text accessibilityRole="header" aria-level={2} style={styles.panelTitle}>
                   {group.sectionTitle}
                 </Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator>
@@ -381,6 +396,12 @@ const styles = StyleSheet.create({
     gap: 18,
     padding: 20,
     paddingBottom: 32,
+  },
+  navigationTitle: {
+    color: colors.paper,
+    fontSize: 17,
+    fontWeight: '800',
+    lineHeight: 22,
   },
   emptyState: {
     flex: 1,

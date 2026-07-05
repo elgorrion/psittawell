@@ -86,7 +86,7 @@ type AboutPanelProps = {
 function AboutPanel({ title, children }: AboutPanelProps) {
   return (
     <View style={styles.panel}>
-      <Text accessibilityRole="header" style={styles.panelTitle}>
+      <Text accessibilityRole="header" aria-level={2} style={styles.panelTitle}>
         {title}
       </Text>
       {children}

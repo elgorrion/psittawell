@@ -3,6 +3,7 @@
     "title": "PsittaWell",
     "description": "Offline-Hilfe für das Wohlbefinden von Begleitpapageien mit lokalen Daten auf diesem Gerät.",
     "databaseUnavailable": "Die App konnte ihren lokalen Speicher nicht öffnen. Bitte starten Sie die App neu.",
+    "databaseUnavailableWeb": "Assessments benötigen lokalen Gerätespeicher, der in diesem Browser noch nicht unterstützt wird. PsittaWell läuft vollständig auf Android und iOS.",
     "startAssessment": "Assessment starten",
     "startNextCheckNamed": "%{name}s nächsten Check starten",
     "startNextCheckUnnamed": "Nächsten Check starten",

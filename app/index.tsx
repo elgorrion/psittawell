@@ -1,7 +1,7 @@
 import { getLocales } from 'expo-localization';
 import { router, Stack, useFocusEffect } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { SectionHeader } from '../components/SectionHeader';
@@ -84,7 +84,9 @@ export default function HomeScreen() {
         <SectionHeader description={t('home.description')} title={t('home.title')} />
         {databaseState.status === 'unavailable' ? (
           <View accessibilityRole="alert" style={styles.errorBanner}>
-            <Text style={styles.errorText}>{t('home.databaseUnavailable')}</Text>
+            <Text style={styles.errorText}>
+              {t(getDatabaseUnavailableMessageKey(Platform.OS))}
+            </Text>
           </View>
         ) : null}
         <Pressable
@@ -124,7 +126,7 @@ export default function HomeScreen() {
         ) : null}
         {assessments.length > 0 ? (
           <View style={styles.assessmentList}>
-            <Text accessibilityRole="header" style={styles.assessmentListTitle}>
+            <Text accessibilityRole="header" aria-level={2} style={styles.assessmentListTitle}>
               {t('home.savedAssessments')}
             </Text>
             {assessments.map((assessment) => (
@@ -193,6 +195,12 @@ export function getFollowUpCtaLabel(parrotName: string | null) {
   return parrotName
     ? t('home.startNextCheckNamed', { name: parrotName })
     : t('home.startNextCheckUnnamed');
+}
+
+export function getDatabaseUnavailableMessageKey(platformOS: typeof Platform.OS) {
+  return platformOS === 'web'
+    ? 'home.databaseUnavailableWeb'
+    : 'home.databaseUnavailable';
 }
 
 type AssessmentRowProps = {

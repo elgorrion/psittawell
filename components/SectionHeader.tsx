@@ -11,7 +11,7 @@ export function SectionHeader({ title, description }: Props) {
   return (
     <View style={styles.band}>
       <View style={styles.accent} />
-      <Text accessibilityRole="header" style={styles.title}>
+      <Text accessibilityRole="header" aria-level={1} style={styles.title}>
         {title}
       </Text>
       {description ? <Text style={styles.description}>{description}</Text> : null}

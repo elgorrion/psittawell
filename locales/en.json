@@ -3,6 +3,7 @@
     "title": "PsittaWell",
     "description": "Offline companion-parrot welfare support with local data kept on this device.",
     "databaseUnavailable": "The app could not open its local storage. Please restart the app.",
+    "databaseUnavailableWeb": "Assessments need on-device storage, which is not supported in this browser yet. PsittaWell runs fully on Android and iOS.",
     "startAssessment": "Start assessment",
     "startNextCheckNamed": "Start %{name}'s next check",
     "startNextCheckUnnamed": "Start the next check",
