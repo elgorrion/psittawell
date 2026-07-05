@@ -47,6 +47,11 @@ export type ParrotTimeline = {
   indicators: ParrotTimelineIndicator[];
 };
 
+export type ParrotTimelineDateLabel = {
+  assessmentId: number;
+  label: string;
+};
+
 export type ResultsByAssessmentId = Readonly<Record<number, AssessmentResults | undefined>>;
 
 const timelineWelfareLevels = new Set<WelfareLevel>([
@@ -130,6 +135,36 @@ export function buildParrotTimeline(
   };
 }
 
+export function buildParrotTimelineDateLabels(
+  dates: readonly ParrotTimelineDate[],
+  locale: string | undefined,
+): ParrotTimelineDateLabel[] {
+  const dateFormatter = new Intl.DateTimeFormat(locale, timelineDateFormatOptions);
+  const timeFormatter = new Intl.DateTimeFormat(locale, timelineTimeFormatOptions);
+  const labels = dates.map((date) => {
+    const completedAt = parseTimelineTimestamp(date.date);
+
+    return {
+      assessmentId: date.assessmentId,
+      dateLabel: dateFormatter.format(completedAt),
+      completedAt,
+    };
+  });
+  const dateLabelCounts = labels.reduce((counts, label) => {
+    counts.set(label.dateLabel, (counts.get(label.dateLabel) ?? 0) + 1);
+
+    return counts;
+  }, new Map<string, number>());
+
+  return labels.map((label) => ({
+    assessmentId: label.assessmentId,
+    label:
+      (dateLabelCounts.get(label.dateLabel) ?? 0) > 1
+        ? `${label.dateLabel}, ${timeFormatter.format(label.completedAt)}`
+        : label.dateLabel,
+  }));
+}
+
 function buildTimelineEntry({
   assessment,
   indicator,
@@ -206,3 +241,18 @@ function isConcernIndicator(indicator: ResultIndicator): boolean {
 function getTimelineFlags(indicator: ResultIndicator): OptionFlag[] {
   return indicator.flags.filter((flag) => timelineFlagSet.has(flag));
 }
+
+function parseTimelineTimestamp(value: string) {
+  return new Date(`${value.replace(' ', 'T')}Z`);
+}
+
+const timelineDateFormatOptions = {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+} satisfies Intl.DateTimeFormatOptions;
+
+const timelineTimeFormatOptions = {
+  hour: '2-digit',
+  minute: '2-digit',
+} satisfies Intl.DateTimeFormatOptions;

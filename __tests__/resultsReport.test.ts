@@ -19,6 +19,10 @@ describe('buildResultsReportHtml', () => {
     expect(html).toContain(
       'For any concern, consult an avian vet or a certified parrot behaviour consultant.',
     );
+    expect(
+      html.match(/Use the indicators in this report as topics for professional guidance\./g),
+    ).toHaveLength(2);
+    expect(html).not.toContain('Use the indicators below as topics for professional guidance.');
   });
 
   it('does not render aggregate judgement language', () => {

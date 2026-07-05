@@ -443,12 +443,12 @@ function ConsultPanel({ prominent = false }: { prominent?: boolean }) {
 function BackToOverviewButton({ assessmentId }: { assessmentId: number }) {
   return (
     <Pressable
-      accessibilityLabel={t('assessment.backToOverview')}
+      accessibilityLabel={t('assessment.backToAssessment')}
       accessibilityRole="button"
       onPress={() => navigateUpToAssessmentOverview(assessmentId)}
       style={styles.backButton}
     >
-      <Text style={styles.backButtonText}>{t('assessment.backToOverview')}</Text>
+      <Text style={styles.backButtonText}>{t('assessment.backToAssessment')}</Text>
     </Pressable>
   );
 }

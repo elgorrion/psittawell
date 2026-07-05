@@ -1,6 +1,6 @@
 import { getLocales } from 'expo-localization';
 import { Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -18,6 +18,7 @@ import { t } from '../../../lib/i18n';
 import { buildAssessmentResults } from '../../../lib/results';
 import {
   buildParrotTimeline,
+  buildParrotTimelineDateLabels,
   type ParrotTimeline,
   type ParrotTimelineEntry,
   type ParrotTimelineIndicator,
@@ -47,15 +48,6 @@ export default function AssessmentTrendsScreen() {
   const params = useLocalSearchParams();
   const assessmentId = Number(firstParam(params.id));
   const [trendsState, setTrendsState] = useState<TrendsState>({ status: 'loading' });
-  const dateFormatter = useMemo(
-    () =>
-      new Intl.DateTimeFormat(getDeviceLocale(), {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-      }),
-    [],
-  );
 
   useFocusEffect(
     useCallback(() => {
@@ -141,6 +133,7 @@ export default function AssessmentTrendsScreen() {
       ? t('assessment.trends.namedTitle', { name: parrotName })
       : t('assessment.trends.title');
   const groups = groupIndicatorsBySection(timeline.indicators);
+  const dateLabels = buildParrotTimelineDateLabels(timeline.dates, getDeviceLocale());
 
   return (
     <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
@@ -199,10 +192,10 @@ export default function AssessmentTrendsScreen() {
                           {t('assessment.trends.indicatorColumn')}
                         </Text>
                       </View>
-                      {timeline.dates.map((date) => (
+                      {timeline.dates.map((date, index) => (
                         <View key={date.assessmentId} style={styles.timelineHeaderCell}>
                           <Text style={styles.timelineHeaderText}>
-                            {dateFormatter.format(parseSqliteTimestamp(date.date))}
+                            {dateLabels[index]?.label ?? ''}
                           </Text>
                         </View>
                       ))}
@@ -301,12 +294,12 @@ function WelfareMarker({ welfareLevel }: { welfareLevel: WelfareLevel }) {
 function BackToOverviewButton({ assessmentId }: { assessmentId: number }) {
   return (
     <Pressable
-      accessibilityLabel={t('assessment.backToOverview')}
+      accessibilityLabel={t('assessment.backToAssessment')}
       accessibilityRole="button"
       onPress={() => navigateUpToAssessmentOverview(assessmentId)}
       style={styles.backButton}
     >
-      <Text style={styles.backButtonText}>{t('assessment.backToOverview')}</Text>
+      <Text style={styles.backButtonText}>{t('assessment.backToAssessment')}</Text>
     </Pressable>
   );
 }
@@ -369,10 +362,6 @@ function getDeviceLocale() {
   const [locale] = getLocales();
 
   return locale?.languageTag ?? locale?.languageCode ?? undefined;
-}
-
-function parseSqliteTimestamp(value: string) {
-  return new Date(`${value.replace(' ', 'T')}Z`);
 }
 
 const welfareLevelFills: Record<WelfareLevel, string> = {

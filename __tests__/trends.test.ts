@@ -1,7 +1,7 @@
 import type { Assessment } from '../lib/assessments';
 import type { OptionFlag, Section, WelfareLevel } from '../content/schema';
 import { buildAssessmentResults } from '../lib/results';
-import { buildParrotTimeline } from '../lib/trends';
+import { buildParrotTimeline, buildParrotTimelineDateLabels } from '../lib/trends';
 
 describe('buildParrotTimeline', () => {
   it('builds per-indicator entries across completed assessments only', () => {
@@ -136,6 +136,64 @@ describe('buildParrotTimeline', () => {
   });
 });
 
+describe('buildParrotTimelineDateLabels', () => {
+  it('adds time suffixes to same-day date collisions', () => {
+    const labels = buildParrotTimelineDateLabels(
+      [
+        { assessmentId: 1, date: '2026-07-04 10:00:00' },
+        { assessmentId: 2, date: '2026-07-04 14:30:00' },
+      ],
+      'en-GB',
+    );
+
+    expect(labels).toHaveLength(2);
+    expect(labels[0].label).toContain(formatDate('2026-07-04 10:00:00', 'en-GB'));
+    expect(labels[0].label).toContain(formatTime('2026-07-04 10:00:00', 'en-GB'));
+    expect(labels[1].label).toContain(formatDate('2026-07-04 14:30:00', 'en-GB'));
+    expect(labels[1].label).toContain(formatTime('2026-07-04 14:30:00', 'en-GB'));
+    expect(labels[0].label).not.toBe(labels[1].label);
+  });
+
+  it('keeps different-day labels date-only', () => {
+    expect(
+      buildParrotTimelineDateLabels(
+        [
+          { assessmentId: 1, date: '2026-07-04 10:00:00' },
+          { assessmentId: 2, date: '2026-07-05 10:00:00' },
+        ],
+        'en-GB',
+      ),
+    ).toEqual([
+      {
+        assessmentId: 1,
+        label: formatDate('2026-07-04 10:00:00', 'en-GB'),
+      },
+      {
+        assessmentId: 2,
+        label: formatDate('2026-07-05 10:00:00', 'en-GB'),
+      },
+    ]);
+  });
+
+  it('only adds times to the colliding labels in a mixed timeline', () => {
+    const labels = buildParrotTimelineDateLabels(
+      [
+        { assessmentId: 1, date: '2026-07-04 10:00:00' },
+        { assessmentId: 2, date: '2026-07-05 10:00:00' },
+        { assessmentId: 3, date: '2026-07-04 14:30:00' },
+      ],
+      'en-GB',
+    );
+
+    expect(labels[0].label).toContain(formatTime('2026-07-04 10:00:00', 'en-GB'));
+    expect(labels[1]).toEqual({
+      assessmentId: 2,
+      label: formatDate('2026-07-05 10:00:00', 'en-GB'),
+    });
+    expect(labels[2].label).toContain(formatTime('2026-07-04 14:30:00', 'en-GB'));
+  });
+});
+
 const fixtureSections = [
   {
     id: 's_health',
@@ -257,4 +315,23 @@ function collectKeys(value: unknown): string[] {
   }
 
   return [];
+}
+
+function formatDate(value: string, locale: string) {
+  return new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  }).format(parseTimestamp(value));
+}
+
+function formatTime(value: string, locale: string) {
+  return new Intl.DateTimeFormat(locale, {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(parseTimestamp(value));
+}
+
+function parseTimestamp(value: string) {
+  return new Date(`${value.replace(' ', 'T')}Z`);
 }

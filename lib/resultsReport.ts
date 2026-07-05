@@ -104,7 +104,7 @@ function renderConsultPanel(): string {
     `<h2 style="${textStyles.sectionTitle}">${escapeHtml(t('assessment.results.consult.title'))}</h2>`,
     `<p style="${textStyles.paragraph}">${escapeHtml(t('assessment.consultNote'))}</p>`,
     `<p style="${textStyles.paragraph}; margin-top:8px;">${escapeHtml(
-      t('assessment.results.consult.description'),
+      t('assessment.report.consultDescription'),
     )}</p>`,
     '</section>',
   ].join('');
