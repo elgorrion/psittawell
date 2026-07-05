@@ -459,6 +459,7 @@
           "type": "scale",
           "prompt": "Please select the appropriate Bird Size-O-Meter score that best reflects your parrot's current muscle condition.",
           "help": "Please calculate the score only if both you and your parrot feel comfortable while performing the assessment. The Bird Size-O-Meter has been developed by UK Pet Food (see https://www.ukpetfood.org/spotlight-on-obesity/how-to-identify-if-a-pet-needs-help/bird-size-o-meter-new.html for further details, including how to assess your bird's body shape). Note for colour-blind participants: In the following scale, the most favourable answer is in the middle (3). Scores decrease in welfare quality as you move toward 1 or 5.",
+          "image_ref": "img_s2_body_condition",
           "demographic": false,
           "conditional_on": null,
           "indicator_icon": "parrot",
