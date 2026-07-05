@@ -1,5 +1,6 @@
 import { getLocales } from 'expo-localization';
 import { router, Stack, useFocusEffect } from 'expo-router';
+import { Info, Trash2 } from 'lucide-react-native';
 import { useCallback, useMemo, useState } from 'react';
 import { Alert, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -147,6 +148,7 @@ export default function HomeScreen() {
           onPress={() => router.push('/about')}
           style={styles.aboutLink}
         >
+          <Info color={colors.spruceDark} size={16} strokeWidth={2.2} />
           <Text style={styles.aboutLinkText}>{t('about.linkLabel')}</Text>
         </Pressable>
       </ScrollView>
@@ -273,7 +275,7 @@ export function AssessmentRow({
         onPress={handleDelete}
         style={styles.deleteButton}
       >
-        <Text style={styles.deleteButtonText}>{t('home.deleteAssessment')}</Text>
+        <Trash2 color={colors.danger} size={19} strokeWidth={2.2} />
       </Pressable>
     </View>
   );
@@ -426,20 +428,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: 'center',
     minHeight: 44,
-    minWidth: 72,
-    paddingHorizontal: 10,
-  },
-  deleteButtonText: {
-    color: colors.danger,
-    fontSize: 14,
-    fontWeight: '800',
-    lineHeight: 20,
+    minWidth: 44,
   },
   aboutLink: {
+    alignItems: 'center',
     alignSelf: 'center',
     borderColor: colors.lineStrong,
     borderRadius: 8,
     borderWidth: 1,
+    flexDirection: 'row',
+    gap: 6,
     marginTop: 2,
     paddingHorizontal: 14,
     paddingVertical: 10,

@@ -1,4 +1,5 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { ChevronLeft, ChevronRight, CircleAlert } from 'lucide-react-native';
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -494,7 +495,7 @@ type FooterProps = {
   previousSectionId: string | null;
 };
 
-function Footer({
+export function Footer({
   assessmentId,
   forwardAction,
   onFinishAssessment,
@@ -506,41 +507,56 @@ function Footer({
 
   return (
     <View style={styles.footer}>
-      <Text style={styles.consultNote}>{t('assessment.consultNote')}</Text>
-      {previousSectionId ? (
-        <Pressable
-          accessibilityLabel={t('assessment.previousSection')}
-          accessibilityRole="button"
-          onPress={() =>
-            router.replace(assessmentSectionRoute(assessmentId, previousSectionId))
-          }
-          style={styles.secondaryButton}
-        >
-          <Text style={styles.secondaryButtonText}>{t('assessment.previousSection')}</Text>
-        </Pressable>
-      ) : null}
-      {forwardAction.kind === 'next' ? (
-        <Pressable
-          accessibilityLabel={t('assessment.nextSection')}
-          accessibilityRole="button"
-          onPress={() =>
-            router.replace(assessmentSectionRoute(assessmentId, forwardAction.sectionId))
-          }
-          style={styles.primaryButton}
-        >
-          <Text style={styles.primaryButtonText}>{t('assessment.nextSection')}</Text>
-        </Pressable>
-      ) : null}
-      {forwardAction.kind === 'finish' ? (
-        <Pressable
-          accessibilityLabel={t('assessment.finishAssessment')}
-          accessibilityRole="button"
-          onPress={onFinishAssessment}
-          style={styles.primaryButton}
-        >
-          <Text style={styles.primaryButtonText}>{t('assessment.finishAssessment')}</Text>
-        </Pressable>
-      ) : null}
+      <View style={styles.consultRow}>
+        <CircleAlert color={colors.textMuted} size={16} strokeWidth={2.1} />
+        <Text numberOfLines={3} style={styles.consultNote}>
+          {t('assessment.consultNote')}
+        </Text>
+      </View>
+      <View style={styles.footerActions} testID="section-footer-actions">
+        {previousSectionId ? (
+          <Pressable
+            accessibilityLabel={t('assessment.previousSection')}
+            accessibilityRole="button"
+            onPress={() =>
+              router.replace(assessmentSectionRoute(assessmentId, previousSectionId))
+            }
+            style={[styles.footerButton, styles.secondaryButton]}
+          >
+            <ChevronLeft color={colors.spruceDark} size={18} strokeWidth={2.4} />
+            <Text numberOfLines={1} style={styles.secondaryButtonText}>
+              {t('assessment.previousSectionShort')}
+            </Text>
+          </Pressable>
+        ) : null}
+        {forwardAction.kind === 'next' ? (
+          <Pressable
+            accessibilityLabel={t('assessment.nextSection')}
+            accessibilityRole="button"
+            onPress={() =>
+              router.replace(assessmentSectionRoute(assessmentId, forwardAction.sectionId))
+            }
+            style={[styles.footerButton, styles.primaryButton]}
+          >
+            <Text numberOfLines={1} style={styles.primaryButtonText}>
+              {t('assessment.nextSectionShort')}
+            </Text>
+            <ChevronRight color={colors.paper} size={18} strokeWidth={2.4} />
+          </Pressable>
+        ) : null}
+        {forwardAction.kind === 'finish' ? (
+          <Pressable
+            accessibilityLabel={t('assessment.finishAssessment')}
+            accessibilityRole="button"
+            onPress={onFinishAssessment}
+            style={[styles.footerButton, styles.primaryButton]}
+          >
+            <Text numberOfLines={1} style={styles.primaryButtonText}>
+              {t('assessment.finishAssessmentShort')}
+            </Text>
+          </Pressable>
+        ) : null}
+      </View>
     </View>
   );
 }
@@ -612,42 +628,60 @@ const styles = StyleSheet.create({
     backgroundColor: colors.mint,
     borderColor: colors.line,
     borderTopWidth: 1,
-    gap: 12,
-    padding: 16,
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+  },
+  consultRow: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    gap: 6,
   },
   consultNote: {
-    color: colors.slate,
-    fontSize: 14,
-    lineHeight: 20,
+    color: colors.textMuted,
+    flex: 1,
+    flexShrink: 1,
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  footerActions: {
+    flexDirection: 'row',
+    gap: 10,
+    minHeight: 44,
+  },
+  footerButton: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    gap: 4,
+    justifyContent: 'center',
+    minHeight: 44,
+    minWidth: 0,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
   primaryButton: {
-    alignItems: 'center',
     backgroundColor: colors.spruce,
     borderRadius: 8,
-    justifyContent: 'center',
-    minHeight: 48,
-    paddingHorizontal: 18,
   },
   primaryButtonText: {
     color: colors.paper,
-    fontSize: 16,
+    flexShrink: 1,
+    fontSize: 15,
     fontWeight: '800',
-    lineHeight: 22,
+    lineHeight: 20,
   },
   secondaryButton: {
-    alignItems: 'center',
     backgroundColor: colors.paper,
     borderColor: colors.spruce,
     borderRadius: 8,
     borderWidth: 1,
-    minHeight: 48,
-    justifyContent: 'center',
-    paddingHorizontal: 18,
   },
   secondaryButtonText: {
     color: colors.spruceDark,
-    fontSize: 16,
+    flexShrink: 1,
+    fontSize: 15,
     fontWeight: '800',
-    lineHeight: 22,
+    lineHeight: 20,
   },
 });

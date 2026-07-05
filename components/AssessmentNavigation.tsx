@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
+import { ChevronLeft } from 'lucide-react-native';
 import type { ColorValue } from 'react-native';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 
 import { t } from '../lib/i18n';
 
@@ -62,9 +63,7 @@ function HeaderUpButton({
       onPress={onPress}
       style={styles.headerBackButton}
     >
-      <Text style={[styles.headerBackGlyph, tintColor ? { color: tintColor } : null]}>
-        {'\u2039'}
-      </Text>
+      <ChevronLeft color={tintColor} size={28} strokeWidth={2.4} />
     </Pressable>
   );
 }
@@ -105,10 +104,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 44,
     minWidth: 44,
-  },
-  headerBackGlyph: {
-    fontSize: 38,
-    fontWeight: '400',
-    lineHeight: 40,
   },
 });

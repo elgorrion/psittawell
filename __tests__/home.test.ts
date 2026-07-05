@@ -20,7 +20,7 @@ describe('home screen helpers', () => {
     expect(getDatabaseUnavailableMessageKey('ios')).toBe('home.databaseUnavailable');
   });
 
-  it('renders a visible accessible delete button on assessment rows', () => {
+  it('renders an icon-only accessible delete button on assessment rows', () => {
     const element = AssessmentRow({
       assessment: assessmentSummary({
         id: 7,
@@ -32,7 +32,7 @@ describe('home screen helpers', () => {
       onUnavailable: jest.fn(),
     }) as ReactElement;
 
-    expect(collectText(element)).toContain('Delete');
+    expect(collectText(element)).not.toContain('Delete');
     expect(collectAccessibilityLabels(element)).toContain('Delete Mango, Completed');
   });
 });
