@@ -62,7 +62,7 @@ export function FlagBadge({ flag }: { flag: OptionFlag }) {
     >
       {flag === 'dont_know' ? null : <View style={[styles.flagDot, flagDotStyles[flag]]} />}
       <Text numberOfLines={1} style={[styles.flagText, flagTextStyles[flag]]}>
-        {t(`assessment.flags.${flag}.text`)}
+        {withFlagGlyph(flag, t(`assessment.flags.${flag}.text`))}
       </Text>
     </View>
   );
@@ -98,6 +98,16 @@ export const welfareLevelColors: Record<WelfareLevel, string> = {
   elevated_risk: '#C95D00',
   high_risk: '#A52714',
 };
+
+export const flagGlyphs = {
+  dont_know: '🔍',
+} satisfies Partial<Record<OptionFlag, string>>;
+
+export function withFlagGlyph(flag: OptionFlag, text: string): string {
+  const glyph = (flagGlyphs as Partial<Record<OptionFlag, string>>)[flag];
+
+  return glyph ? `${glyph} ${text}` : text;
+}
 
 const welfareLevelBorders: Record<WelfareLevel, string> = {
   optimal: '#0F5132',

@@ -1,6 +1,7 @@
 import { createTranslator, normalizeLocale } from '../lib/i18n';
 import de from '../locales/de.json';
 import en from '../locales/en.json';
+import { flagGlyphs } from '../components/questions/Badges';
 
 describe('i18n', () => {
   it('normalizes supported device locales', () => {
@@ -30,6 +31,15 @@ describe('i18n', () => {
 
   it('keeps English and German UI catalogs on identical key sets', () => {
     expect(flattenKeys(de)).toEqual(flattenKeys(en));
+  });
+
+  it('keeps the dont_know glyph out of translator-owned UI strings', () => {
+    const glyph = flagGlyphs.dont_know;
+
+    for (const key of flattenKeys(en)) {
+      expect(readCatalogValue(en, key)).not.toContain(glyph);
+      expect(readCatalogValue(de, key)).not.toContain(glyph);
+    }
   });
 
   it('includes non-empty About copy in English and German', () => {
@@ -96,3 +106,4 @@ function readCatalogValue(value: object, path: string): string {
 
   return result;
 }
+

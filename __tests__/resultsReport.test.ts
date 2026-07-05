@@ -1,5 +1,6 @@
 import type { AssessmentResults } from '../lib/results';
 import { buildResultsReportHtml } from '../lib/resultsReport';
+import { flagGlyphs } from '../components/questions/Badges';
 
 describe('buildResultsReportHtml', () => {
   it('renders the welfare overview contents for sharing', () => {
@@ -16,6 +17,8 @@ describe('buildResultsReportHtml', () => {
     expect(html).toContain('Less than weekly');
     expect(html).toContain('Provision of enrichment &amp; exploration');
     expect(html).toContain('I don&#39;t know');
+    expect(html).toContain(`${flagGlyphs.dont_know} Learn more and observe`);
+    expect(html).toContain(`${flagGlyphs.dont_know} Observe`);
     expect(html).toContain(
       'For any concern, consult an avian vet or a certified parrot behaviour consultant.',
     );
@@ -146,3 +149,4 @@ const fixtureResults: AssessmentResults = {
     },
   ],
 };
+

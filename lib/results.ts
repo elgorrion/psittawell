@@ -99,8 +99,8 @@ type ResolvedSelection = {
   flags: OptionFlag[];
 };
 
-const urgentFlagOrder = ['vet_urgent', 'behaviour_urgent', 'vet_concern'] as const;
-const observeFlagOrder = ['dont_know', 'context_dependent'] as const;
+export const urgentFlagOrder = ['vet_urgent', 'behaviour_urgent', 'vet_concern'] as const;
+export const observeFlagOrder = ['dont_know', 'context_dependent'] as const;
 const attentionLevels = new Set<WelfareLevel>([
   'moderate',
   'elevated_risk',

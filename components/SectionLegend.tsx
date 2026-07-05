@@ -5,13 +5,13 @@ import { t } from '../lib/i18n';
 import { colors } from '../lib/theme';
 import { FlagBadge, welfareLevelColors } from './questions/Badges';
 
-const legendFlagOrder: OptionFlag[] = [
+export const legendFlagOrder = [
   'dont_know',
   'vet_concern',
   'vet_urgent',
   'behaviour_urgent',
   'context_dependent',
-];
+] as const satisfies readonly OptionFlag[];
 
 type Props = {
   section: Section;
@@ -41,7 +41,7 @@ export function SectionLegend({ section }: Props) {
       </View>
       <View
         accessible
-        accessibilityLabel={t('assessment.legend.gradientAccessibility')}
+        accessibilityLabel={getWelfareGradientAccessibilityLabel()}
         accessibilityRole="image"
         style={styles.gradientGroup}
       >
@@ -180,6 +180,15 @@ export function getSectionLegendGuidance(interpretation: string): string {
   }
 
   return sentences[sentences.length - 1];
+}
+
+export function getWelfareGradientAccessibilityLabel(): string {
+  const baseLabel = t('assessment.legend.gradientAccessibility').replace(/[.:]\s*$/, '');
+  const levelLabels = welfareLevels
+    .map((level) => t(`assessment.welfareLevelShort.${level}`))
+    .join(', ');
+
+  return `${baseLabel}: ${levelLabels}`;
 }
 
 const styles = StyleSheet.create({

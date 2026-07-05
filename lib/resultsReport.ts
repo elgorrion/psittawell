@@ -1,4 +1,4 @@
-import { welfareLevelColors } from '../components/questions/Badges';
+import { welfareLevelColors, withFlagGlyph } from '../components/questions/Badges';
 import type { OptionFlag, WelfareLevel } from '../content/schema';
 import { t } from './i18n';
 import type {
@@ -143,7 +143,7 @@ function renderObserve(items: readonly ObserveItem[]): string {
   }
 
   return renderSection({
-    title: t('assessment.results.observe.title'),
+    title: withFlagGlyph('dont_know', t('assessment.results.observe.title')),
     description: t('assessment.results.observe.description'),
     body: `<ul style="${textStyles.list}">${items.map(renderObserveItem).join('')}</ul>`,
   });
@@ -259,7 +259,7 @@ function renderReviewedChip(section: ReviewedSection): string {
 }
 
 function flagText(flag: OptionFlag): string {
-  return t(`assessment.flags.${flag}.text`);
+  return withFlagGlyph(flag, t(`assessment.flags.${flag}.text`));
 }
 
 function escapeHtml(value: string | number): string {

@@ -1,4 +1,4 @@
-import type { Assessment } from './assessments';
+import { parseSqliteTimestamp, type Assessment } from './assessments';
 import type { AssessmentResults, ResultIndicator } from './results';
 import type { OptionFlag, WelfareLevel } from '../content/schema';
 
@@ -142,7 +142,7 @@ export function buildParrotTimelineDateLabels(
   const dateFormatter = new Intl.DateTimeFormat(locale, timelineDateFormatOptions);
   const timeFormatter = new Intl.DateTimeFormat(locale, timelineTimeFormatOptions);
   const labels = dates.map((date) => {
-    const completedAt = parseTimelineTimestamp(date.date);
+    const completedAt = parseSqliteTimestamp(date.date);
 
     return {
       assessmentId: date.assessmentId,
@@ -240,10 +240,6 @@ function isConcernIndicator(indicator: ResultIndicator): boolean {
 
 function getTimelineFlags(indicator: ResultIndicator): OptionFlag[] {
   return indicator.flags.filter((flag) => timelineFlagSet.has(flag));
-}
-
-function parseTimelineTimestamp(value: string) {
-  return new Date(`${value.replace(' ', 'T')}Z`);
 }
 
 const timelineDateFormatOptions = {

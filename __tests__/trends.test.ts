@@ -1,4 +1,4 @@
-import type { Assessment } from '../lib/assessments';
+import { parseSqliteTimestamp, type Assessment } from '../lib/assessments';
 import type { OptionFlag, Section, WelfareLevel } from '../content/schema';
 import { buildAssessmentResults } from '../lib/results';
 import { buildParrotTimeline, buildParrotTimelineDateLabels } from '../lib/trends';
@@ -322,16 +322,12 @@ function formatDate(value: string, locale: string) {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
-  }).format(parseTimestamp(value));
+  }).format(parseSqliteTimestamp(value));
 }
 
 function formatTime(value: string, locale: string) {
   return new Intl.DateTimeFormat(locale, {
     hour: '2-digit',
     minute: '2-digit',
-  }).format(parseTimestamp(value));
-}
-
-function parseTimestamp(value: string) {
-  return new Date(`${value.replace(' ', 'T')}Z`);
+  }).format(parseSqliteTimestamp(value));
 }

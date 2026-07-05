@@ -91,7 +91,7 @@
         "empty": "In diesem Bereich werden keine beantworteten Indikatoren aufgeführt."
       },
       "observe": {
-        "title": "🔍 Mehr lernen und beobachten",
+        "title": "Mehr lernen und beobachten",
         "description": "Diese Antworten weisen auf Themen hin, die genauer beobachtet oder im Kontext interpretiert werden sollten."
       },
       "reviewed": {
@@ -177,7 +177,7 @@
         "definition": "Sofortige Abklärung durch eine Verhaltensberatung."
       },
       "dont_know": {
-        "text": "🔍 Beobachten",
+        "text": "Beobachten",
         "accessibilityLabel": "Beobachten: mehr lernen und Ihren Papagei beobachten",
         "definition": "Mehr lernen und Ihren Papagei beobachten."
       },

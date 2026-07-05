@@ -10,7 +10,12 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { FlagBadge, FlagBadges, welfareLevelColors } from '../../../components/questions/Badges';
+import {
+  FlagBadge,
+  FlagBadges,
+  welfareLevelColors,
+  withFlagGlyph,
+} from '../../../components/questions/Badges';
 import { psittawelContentPack } from '../../../content/psittawel';
 import type { WelfareLevel } from '../../../content/schema';
 import {
@@ -268,7 +273,7 @@ export default function AssessmentResultsScreen() {
         {results.observe.length > 0 ? (
           <View style={styles.panel}>
             <Text accessibilityRole="header" aria-level={2} style={styles.panelTitle}>
-              {t('assessment.results.observe.title')}
+              {getObserveResultsTitle()}
             </Text>
             <Text style={styles.panelDescription}>
               {t('assessment.results.observe.description')}
@@ -401,6 +406,10 @@ function ObserveResultItem({ item }: { item: ObserveItem }) {
       <FlagBadge flag={item.flag} />
     </View>
   );
+}
+
+export function getObserveResultsTitle(): string {
+  return withFlagGlyph('dont_know', t('assessment.results.observe.title'));
 }
 
 function ResultItemText({

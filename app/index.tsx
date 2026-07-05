@@ -12,6 +12,7 @@ import {
   deleteAssessment,
   getLatestCompletedAssessment,
   listAssessments,
+  parseSqliteTimestamp,
   type AssessmentSummary,
 } from '../lib/assessments';
 import { getSchemaVersion } from '../lib/db';
@@ -298,10 +299,6 @@ function getDeviceLocale() {
   const [locale] = getLocales();
 
   return locale?.languageTag ?? locale?.languageCode ?? undefined;
-}
-
-function parseSqliteTimestamp(value: string) {
-  return new Date(`${value.replace(' ', 'T')}Z`);
 }
 
 const styles = StyleSheet.create({

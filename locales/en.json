@@ -91,7 +91,7 @@
         "empty": "No answered indicators are listed in this area."
       },
       "observe": {
-        "title": "🔍 Learn more and observe",
+        "title": "Learn more and observe",
         "description": "These answers point to topics to observe more closely or interpret in context."
       },
       "reviewed": {
@@ -177,7 +177,7 @@
         "definition": "Immediate behaviour-consultant attention."
       },
       "dont_know": {
-        "text": "🔍 Observe",
+        "text": "Observe",
         "accessibilityLabel": "Observe: learn more and observe your bird",
         "definition": "Learn more and observe your bird."
       },

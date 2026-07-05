@@ -52,6 +52,10 @@ export type SectionAnswerProgress = {
   total: number;
 };
 
+export function parseSqliteTimestamp(value: string): Date {
+  return new Date(`${value.replace(' ', 'T')}Z`);
+}
+
 export function getMatrixRowAnswerQuestionId(matrixQuestionId: string, rowId: string): string {
   return `${matrixQuestionId}::${rowId}`;
 }
