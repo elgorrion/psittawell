@@ -60,6 +60,26 @@ describe('i18n', () => {
     }
   });
 
+  it('uses the reworked About app keys and removes the retired monetisation key', () => {
+    expect(hasCatalogPath(en, 'about.app.notMonetised')).toBe(false);
+    expect(hasCatalogPath(de, 'about.app.notMonetised')).toBe(false);
+    expect(readCatalogValue(en, 'about.app.credits.mariiaKarmanova.role')).toBe(
+      'Scientific inspiration',
+    );
+    expect(readCatalogValue(de, 'about.app.credits.mariiaKarmanova.role')).toBe(
+      'Wissenschaftliche Inspiration',
+    );
+    expect(readCatalogValue(en, 'about.app.credits.nikolaiVorobev.role')).toBe('Developer');
+    expect(readCatalogValue(de, 'about.app.credits.nikolaiVorobev.role')).toBe('Entwicklung');
+    expect(readCatalogValue(en, 'about.app.sourceCodeLabel')).toBe('Source code on GitHub');
+    expect(readCatalogValue(de, 'about.app.sourceCodeLabel')).toBe('Quellcode auf GitHub');
+  });
+
+  it('keeps retired self-promotional monetisation phrasing out of UI catalogs', () => {
+    expect(JSON.stringify(en)).not.toMatch(/not monetised|not monetized|non-commercial/i);
+    expect(JSON.stringify(de)).not.toMatch(/nicht monetarisiert|nicht kommerziell/i);
+  });
+
   it('keeps About author and collaborator names identical across locales', () => {
     const names = [
       'Andrea Piseddu',
@@ -94,6 +114,20 @@ function flattenKeys(value: object, prefix = ''): string[] {
       return nextPrefix;
     })
     .sort();
+}
+
+function hasCatalogPath(value: object, path: string): boolean {
+  const result = path
+    .split('.')
+    .reduce<unknown>((current, key) => {
+      if (current === null || typeof current !== 'object') {
+        return undefined;
+      }
+
+      return (current as Record<string, unknown>)[key];
+    }, value);
+
+  return result !== undefined;
 }
 
 function readCatalogValue(value: object, path: string): string {

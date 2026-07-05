@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { getAboutInstrumentSource } from '../lib/about';
+import { aboutAppCredits, getAboutInstrumentSource, sourceCodeUrl } from '../lib/about';
 import { t } from '../lib/i18n';
 import { colors } from '../lib/theme';
 import { HomeHeaderUpButton, navigateUpToHome } from '../components/AssessmentNavigation';
@@ -48,7 +48,10 @@ export default function AboutScreen() {
         </AboutPanel>
 
         <AboutPanel title={t('about.permission.title')}>
-          <Text style={styles.paragraph}>{source.contentLicence}</Text>
+          <View style={styles.noticeBlock}>
+            <Text style={styles.noticeCaption}>{t('about.permission.usageNoticeCaption')}</Text>
+            <Text style={styles.noticeText}>{source.usageNotice}</Text>
+          </View>
           <Text style={styles.paragraph}>{t('about.permission.releaseGate')}</Text>
         </AboutPanel>
 
@@ -58,7 +61,19 @@ export default function AboutScreen() {
 
         <AboutPanel title={t('about.app.title')}>
           <Text style={styles.paragraph}>{t('about.app.body')}</Text>
-          <Text style={styles.paragraph}>{t('about.app.notMonetised')}</Text>
+          <View style={styles.creditsList}>
+            {aboutAppCredits.map((credit) => (
+              <View key={credit.id} style={styles.creditRow}>
+                <Text style={styles.creditName}>{credit.name}</Text>
+                <Text style={styles.creditRole}>{t(credit.roleKey)}</Text>
+              </View>
+            ))}
+          </View>
+          <ExternalLink
+            accessibilityLabel={t('about.app.sourceCodeAccessibility')}
+            label={t('about.app.sourceCodeLabel')}
+            url={sourceCodeUrl}
+          />
         </AboutPanel>
 
         <AboutPanel title={t('about.privacy.title')}>
@@ -159,6 +174,46 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     lineHeight: 18,
     textTransform: 'uppercase',
+  },
+  noticeBlock: {
+    backgroundColor: colors.mintSoft,
+    borderColor: colors.line,
+    borderRadius: 8,
+    borderWidth: 1,
+    gap: 6,
+    padding: 12,
+  },
+  noticeCaption: {
+    color: colors.textMuted,
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 0,
+    lineHeight: 16,
+  },
+  noticeText: {
+    color: colors.textMuted,
+    fontSize: 12,
+    lineHeight: 17,
+  },
+  creditsList: {
+    gap: 8,
+  },
+  creditRow: {
+    borderColor: colors.line,
+    borderLeftWidth: 3,
+    gap: 2,
+    paddingLeft: 10,
+  },
+  creditName: {
+    color: colors.text,
+    fontSize: 15,
+    fontWeight: '800',
+    lineHeight: 20,
+  },
+  creditRole: {
+    color: colors.textMuted,
+    fontSize: 13,
+    lineHeight: 18,
   },
   linkButton: {
     alignSelf: 'flex-start',

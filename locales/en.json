@@ -207,11 +207,11 @@
     "linkLabel": "About & credits",
     "homeLinkAccessibility": "Open About and credits",
     "title": "About & credits",
-    "description": "Attribution, permission, licensing, and privacy.",
+    "description": "Attribution, licensing, and privacy.",
     "backHome": "Back to home",
     "what": {
       "title": "What this is",
-      "body": "A free, offline help tool that digitises the peer-reviewed PsittaWel companion-parrot welfare assessment. It is a companion to the instrument, not a replacement for professional advice.",
+      "body": "An offline help tool that digitises the peer-reviewed PsittaWel companion-parrot welfare assessment. It is a companion to the instrument, not a replacement for professional advice.",
       "notDiagnostic": "Not a diagnostic tool. %{consultNote}"
     },
     "instrument": {
@@ -223,8 +223,9 @@
       "toolUrlAccessibility": "Open the PsittaWel tool website"
     },
     "permission": {
-      "title": "Used with permission",
-      "releaseGate": "The instrument content is used with permission. Public release is gated on the authors' approval."
+      "title": "Instrument licence",
+      "usageNoticeCaption": "Usage notice from the original instrument (verbatim)",
+      "releaseGate": "The app reproduces the instrument under the notice above; public release of the app is coordinated with the instrument's authors."
     },
     "imagery": {
       "title": "Imagery",
@@ -233,7 +234,16 @@
     "app": {
       "title": "This app",
       "body": "Built by KarmaNova Animal Technologies. The application code is open source (MIT/Apache-2.0).",
-      "notMonetised": "Not monetised: no ads, subscriptions, or data sale."
+      "credits": {
+        "mariiaKarmanova": {
+          "role": "Scientific inspiration"
+        },
+        "nikolaiVorobev": {
+          "role": "Developer"
+        }
+      },
+      "sourceCodeLabel": "Source code on GitHub",
+      "sourceCodeAccessibility": "Open source code on GitHub"
     },
     "privacy": {
       "title": "Privacy",

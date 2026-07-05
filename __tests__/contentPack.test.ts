@@ -9,6 +9,9 @@ import {
   validateContentPack,
 } from '../content/schema';
 
+const psittawelUsageNotice =
+  '© Andrea Piseddu, Yvonne van Zeeland and Jean-Loup Rault, 2026. All rights reserved. This document may be used for non-commercial purposes only. Any commercial use requires prior written permission. As an exception, professionals such as veterinarians and behavioural consultants may use the tool in the course of their professional practice and may charge for consultation and interpretation of results, provided that the tool itself is not sold, licensed, or otherwise commercially exploited.';
+
 describe('content pack', () => {
   it('parses and validates PsittaWel version 1', () => {
     expect(() => validateContentPack(psittawelContentPack)).not.toThrow();
@@ -24,6 +27,14 @@ describe('content pack', () => {
     expect(psittawelContentPack.sections[6].questions).toHaveLength(10);
     expect(psittawelContentPack.sections[7].questions).toHaveLength(3);
     expect(psittawelContentPack.sections.flatMap((section) => section.questions)).toHaveLength(75);
+  });
+
+  it('keeps the source usage notice verbatim and the content licence factual', () => {
+    expect(psittawelContentPack.source.usage_notice).toBe(psittawelUsageNotice);
+    expect(psittawelContentPack.source.content_licence).toBe(
+      '© Piseddu, van Zeeland & Rault 2026. All rights reserved, non-commercial use only. Not covered by the code licence.',
+    );
+    expect(psittawelContentPack.source.content_licence).not.toContain('Used with permission');
   });
 
   it('keeps Section 1 authored order and welfare mappings', () => {

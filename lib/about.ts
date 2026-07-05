@@ -9,7 +9,23 @@ export type AboutInstrumentSource = {
   doiUrl: string;
   toolUrl: string;
   contentLicence: string;
+  usageNotice: string;
 };
+
+export const sourceCodeUrl = 'https://github.com/elgorrion/psittawell';
+
+export const aboutAppCredits = [
+  {
+    id: 'mariiaKarmanova',
+    name: 'Mariia Karmanova',
+    roleKey: 'about.app.credits.mariiaKarmanova.role',
+  },
+  {
+    id: 'nikolaiVorobev',
+    name: 'Nikolai "ElGorrion" Vorobev',
+    roleKey: 'about.app.credits.nikolaiVorobev.role',
+  },
+] as const;
 
 export function getAboutInstrumentSource(
   source: InstrumentSource = psittawelContentPack.source,
@@ -20,6 +36,7 @@ export function getAboutInstrumentSource(
     doiUrl: buildDoiUrl(source.doi),
     toolUrl: source.url,
     contentLicence: source.content_licence,
+    usageNotice: source.usage_notice,
   };
 }
 

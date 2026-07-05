@@ -207,11 +207,11 @@
     "linkLabel": "Über diese App & Credits",
     "homeLinkAccessibility": "Über diese App und Credits öffnen",
     "title": "Über diese App & Credits",
-    "description": "Zuschreibung, Genehmigung, Lizenzierung und Datenschutz.",
+    "description": "Zuschreibung, Lizenzierung und Datenschutz.",
     "backHome": "Zur Startseite",
     "what": {
       "title": "Was das ist",
-      "body": "Ein kostenloses Offline-Hilfswerkzeug, das das peer-reviewte PsittaWel-Assessment für das Wohlbefinden von Begleitpapageien digitalisiert. Es begleitet das Instrument, ersetzt aber keine professionelle Beratung.",
+      "body": "Ein Offline-Hilfswerkzeug, das das peer-reviewte PsittaWel-Assessment für das Wohlbefinden von Begleitpapageien digitalisiert. Es begleitet das Instrument, ersetzt aber keine professionelle Beratung.",
       "notDiagnostic": "Kein Diagnosewerkzeug. %{consultNote}"
     },
     "instrument": {
@@ -223,8 +223,9 @@
       "toolUrlAccessibility": "Website des PsittaWel-Tools öffnen"
     },
     "permission": {
-      "title": "Mit Genehmigung verwendet",
-      "releaseGate": "Der Instrumenteninhalt wird mit Genehmigung verwendet. Die öffentliche Veröffentlichung ist an die Zustimmung der Autorinnen und Autoren gebunden."
+      "title": "Lizenz des Instruments",
+      "usageNoticeCaption": "Nutzungshinweis aus dem Originalinstrument (wörtlich)",
+      "releaseGate": "Die App reproduziert das Instrument unter dem oben genannten Hinweis; die öffentliche Veröffentlichung der App wird mit den Autorinnen und Autoren des Instruments koordiniert."
     },
     "imagery": {
       "title": "Bildmaterial",
@@ -233,7 +234,16 @@
     "app": {
       "title": "Diese App",
       "body": "Entwickelt von KarmaNova Animal Technologies. Der Anwendungscode ist Open Source (MIT/Apache-2.0).",
-      "notMonetised": "Nicht monetarisiert: keine Werbung, keine Abonnements und kein Datenverkauf."
+      "credits": {
+        "mariiaKarmanova": {
+          "role": "Wissenschaftliche Inspiration"
+        },
+        "nikolaiVorobev": {
+          "role": "Entwicklung"
+        }
+      },
+      "sourceCodeLabel": "Quellcode auf GitHub",
+      "sourceCodeAccessibility": "Quellcode auf GitHub öffnen"
     },
     "privacy": {
       "title": "Datenschutz",

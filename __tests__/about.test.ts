@@ -1,5 +1,5 @@
 import { psittawelContentPack } from '../content/psittawel';
-import { buildDoiUrl, getAboutInstrumentSource } from '../lib/about';
+import { aboutAppCredits, buildDoiUrl, getAboutInstrumentSource, sourceCodeUrl } from '../lib/about';
 
 describe('about metadata', () => {
   it('uses the content-pack source as the attribution source of truth', () => {
@@ -9,7 +9,20 @@ describe('about metadata', () => {
     expect(source.doi).toBe(psittawelContentPack.source.doi);
     expect(source.toolUrl).toBe(psittawelContentPack.source.url);
     expect(source.contentLicence).toBe(psittawelContentPack.source.content_licence);
+    expect(source.usageNotice).toBe(psittawelContentPack.source.usage_notice);
     expect(source.doiUrl).toBe(buildDoiUrl(psittawelContentPack.source.doi));
+  });
+
+  it('keeps app credit names and repository URL in one place', () => {
+    expect(aboutAppCredits.map((credit) => credit.name)).toEqual([
+      'Mariia Karmanova',
+      'Nikolai "ElGorrion" Vorobev',
+    ]);
+    expect(aboutAppCredits.map((credit) => credit.roleKey)).toEqual([
+      'about.app.credits.mariiaKarmanova.role',
+      'about.app.credits.nikolaiVorobev.role',
+    ]);
+    expect(sourceCodeUrl).toBe('https://github.com/elgorrion/psittawell');
   });
 
   it('builds DOI links from the supplied DOI value', () => {

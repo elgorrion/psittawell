@@ -1,19 +1,21 @@
 # Licensing
 
-This project builds a digital, non-commercial companion app for a published welfare-assessment instrument. **Two different licences apply, and they must not be conflated.**
+This project builds a digital companion app for a published welfare-assessment instrument. **Two different licences apply, and they must not be conflated.**
 
 ## 1. Application code
 
 The application source code written for this project is released under a permissive open-source licence (**MIT or Apache-2.0** — to be finalised). The code is our own work.
 
-## 2. Instrument content — used with permission, not open-licensed
+## 2. Instrument content — not open-licensed
 
 The questionnaire content (questions, answer options, welfare gradients, section structure) is derived from:
 
 > Piseddu A, van Zeeland Y, Hemsworth L, Rault J-L (2026). PsittaWel: A welfare assessment tool for companion parrots. Animal Welfare 35, e34. DOI [10.1017/awf.2026.10089](https://doi.org/10.1017/awf.2026.10089). Original tool: <https://www.vetmeduni.ac.at/psittawel>
 
 - The **journal article** is Open Access under **CC BY 4.0** (Cambridge University Press on behalf of UFAW); its text may be reused with attribution.
-- The **standalone tool** carries a distinct notice: *"© Piseddu, van Zeeland & Rault 2026. All rights reserved. This document may be used for non-commercial purposes only. Any commercial use requires prior written permission."*
+- The **standalone tool** carries a distinct notice:
+
+> © Andrea Piseddu, Yvonne van Zeeland and Jean-Loup Rault, 2026. All rights reserved. This document may be used for non-commercial purposes only. Any commercial use requires prior written permission. As an exception, professionals such as veterinarians and behavioural consultants may use the tool in the course of their professional practice and may charge for consultation and interpretation of results, provided that the tool itself is not sold, licensed, or otherwise commercially exploited.
 
 Reproducing the instrument content in an application and distributing that application therefore **requires the authors' explicit written permission**, which gates public release. The instrument content in this repository is **not** covered by the code licence and must not carry an open-source licence.
 
@@ -29,6 +31,6 @@ During private, non-commercial development and evaluation, the application can d
 
 ## 5. Commitments
 
-- This project is **not monetised**.
+- The application is distributed free of charge.
 - Full attribution to the original authors appears in the application and in this repository.
 - Public distribution waits for the original authors' approval, coordinated by KarmaNova Animal Technologies with the authors.

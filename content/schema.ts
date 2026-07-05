@@ -32,6 +32,7 @@ export type ContentPack = {
     doi: string;
     url: string;
     content_licence: string;
+    usage_notice: string;
   };
   sections: Section[];
 };
