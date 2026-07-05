@@ -26,6 +26,7 @@ import {
 } from '../../../lib/results';
 import { buildResultsReportHtml } from '../../../lib/resultsReport';
 import { colors } from '../../../lib/theme';
+import { AssessmentHeaderUpButton, navigateUpToAssessmentOverview } from '../../../components/AssessmentNavigation';
 
 type ResultsState =
   | { status: 'loading' }
@@ -115,10 +116,19 @@ export default function AssessmentResultsScreen() {
   if (resultsState.status !== 'ready') {
     return (
       <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
-        <Stack.Screen options={{ title: t('assessment.results.headerTitle') }} />
+        <Stack.Screen
+          options={{
+            title: t('assessment.results.headerTitle'),
+            headerLeft: ({ tintColor }: { tintColor?: import('react-native').ColorValue }) => (
+              <AssessmentHeaderUpButton assessmentId={assessmentId} tintColor={tintColor} />
+            ),
+          }}
+        />
         <View style={styles.emptyState}>
           <Text accessibilityRole="header" style={styles.emptyTitle}>
-            {t('assessment.results.unavailableTitle')}
+            {resultsState.status === 'loading'
+              ? t('assessment.results.headerTitle')
+              : t('assessment.results.unavailableTitle')}
           </Text>
           <Text style={styles.statusText}>
             {resultsState.status === 'loading'
@@ -153,7 +163,7 @@ export default function AssessmentResultsScreen() {
         parrotName,
         results,
       });
-      const outcome = await shareResultsReport(html);
+      const outcome = await shareResultsReport(html, { parrotName });
 
       if (outcome === 'unavailable') {
         setIsReportShareAvailable(false);
@@ -169,7 +179,14 @@ export default function AssessmentResultsScreen() {
 
   return (
     <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
-      <Stack.Screen options={{ title: t('assessment.results.headerTitle') }} />
+      <Stack.Screen
+        options={{
+          title: t('assessment.results.headerTitle'),
+          headerLeft: ({ tintColor }: { tintColor?: import('react-native').ColorValue }) => (
+            <AssessmentHeaderUpButton assessmentId={assessmentId} tintColor={tintColor} />
+          ),
+        }}
+      />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.introPanel}>
           <Text accessibilityRole="header" style={styles.introTitle}>
@@ -252,13 +269,17 @@ export default function AssessmentResultsScreen() {
           <Text style={styles.reviewedDescription}>
             {t('assessment.results.reviewed.description')}
           </Text>
-          <View style={styles.reviewedList}>
-            {results.sectionsReviewed.map((section) => (
-              <View key={section.sectionId} style={styles.reviewedChip}>
-                <Text style={styles.reviewedChipText}>{section.sectionTitle}</Text>
-              </View>
-            ))}
-          </View>
+          {results.sectionsReviewed.length > 0 ? (
+            <View style={styles.reviewedList}>
+              {results.sectionsReviewed.map((section) => (
+                <View key={section.sectionId} style={styles.reviewedChip}>
+                  <Text style={styles.reviewedChipText}>{section.sectionTitle}</Text>
+                </View>
+              ))}
+            </View>
+          ) : (
+            <Text style={styles.emptyText}>{t('assessment.results.reviewed.empty')}</Text>
+          )}
         </View>
 
         <View style={styles.notePanel}>
@@ -424,12 +445,7 @@ function BackToOverviewButton({ assessmentId }: { assessmentId: number }) {
     <Pressable
       accessibilityLabel={t('assessment.backToOverview')}
       accessibilityRole="button"
-      onPress={() =>
-        router.push({
-          pathname: '/assessment/[id]',
-          params: { id: String(assessmentId) },
-        })
-      }
+      onPress={() => navigateUpToAssessmentOverview(assessmentId)}
       style={styles.backButton}
     >
       <Text style={styles.backButtonText}>{t('assessment.backToOverview')}</Text>

@@ -87,6 +87,7 @@ describe('buildResultsReportHtml', () => {
 
     expect(html).toContain('<!doctype html>');
     expect(html).toContain('This is a general overview of the answers');
+    expect(html).toContain('No sections had answered questions in this assessment.');
     expect(html).toContain(
       'For any concern, consult an avian vet or a certified parrot behaviour consultant.',
     );

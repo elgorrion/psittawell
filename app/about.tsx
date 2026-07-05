@@ -1,5 +1,5 @@
 import { openURL } from 'expo-linking';
-import { router, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import type { ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,13 +7,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { getAboutInstrumentSource } from '../lib/about';
 import { t } from '../lib/i18n';
 import { colors } from '../lib/theme';
+import { HomeHeaderUpButton, navigateUpToHome } from '../components/AssessmentNavigation';
 
 const source = getAboutInstrumentSource();
+
+const headerLeft = ({ tintColor }: { tintColor?: import('react-native').ColorValue }) => (
+  <HomeHeaderUpButton tintColor={tintColor} />
+);
 
 export default function AboutScreen() {
   return (
     <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
-      <Stack.Screen options={{ title: t('about.title') }} />
+      <Stack.Screen options={{ title: t('about.title'), headerLeft }} />
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.introText}>{t('about.description')}</Text>
 
@@ -63,7 +68,7 @@ export default function AboutScreen() {
         <Pressable
           accessibilityLabel={t('about.backHome')}
           accessibilityRole="button"
-          onPress={() => router.push('/')}
+          onPress={navigateUpToHome}
           style={styles.backButton}
         >
           <Text style={styles.backButtonText}>{t('about.backHome')}</Text>

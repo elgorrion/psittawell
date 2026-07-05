@@ -150,10 +150,17 @@ function renderObserve(items: readonly ObserveItem[]): string {
 }
 
 function renderReviewed(sections: readonly ReviewedSection[]): string {
+  const body =
+    sections.length > 0
+      ? `<div style="${textStyles.chips}">${sections.map(renderReviewedChip).join('')}</div>`
+      : `<p style="${textStyles.paragraph}">${escapeHtml(
+          t('assessment.results.reviewed.empty'),
+        )}</p>`;
+
   return renderSection({
     title: t('assessment.results.reviewed.title'),
     description: t('assessment.results.reviewed.description'),
-    body: `<div style="${textStyles.chips}">${sections.map(renderReviewedChip).join('')}</div>`,
+    body,
   });
 }
 

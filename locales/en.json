@@ -11,6 +11,7 @@
     "unnamedAssessment": "Unnamed",
     "startedDate": "Started %{date}",
     "assessmentRowAccessibility": "Open %{name}, %{status}, started %{date}",
+    "backToHome": "Back to home",
     "deleteAssessment": "Delete",
     "deleteAssessmentAccessibility": "Delete %{name}, %{status}",
     "deleteDraftTitle": "Delete this draft?",
@@ -29,7 +30,9 @@
     "sectionTitle": "Section %{number}: %{title}",
     "questionProgress": "Question %{current} of %{total}",
     "consultNote": "For any concern, consult an avian vet or a certified parrot behaviour consultant.",
+    "previousSection": "Previous section",
     "nextSection": "Next section",
+    "finishAssessment": "Complete assessment",
     "backToOverview": "Back to overview",
     "loading": "Opening this assessment...",
     "readOnlyNotice": "This completed assessment is read-only.",
@@ -91,7 +94,8 @@
       },
       "reviewed": {
         "title": "Sections reviewed",
-        "description": "The overview was built across the assessment sections below."
+        "description": "The overview was built across the assessment sections below.",
+        "empty": "No sections had answered questions in this assessment."
       },
       "monthlyNote": "You can repeat the assessment monthly to monitor changes over time."
     },

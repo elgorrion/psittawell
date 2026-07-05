@@ -151,6 +151,25 @@ describe('buildAssessmentResults', () => {
     );
   });
 
+  it('lists only sections with at least one answered visible question as reviewed', () => {
+    const hiddenOnlyResults = buildAssessmentResults(fixtureSections, [
+      answer('q_hidden', ['opt_hidden_high']),
+    ]);
+
+    expect(hiddenOnlyResults.sectionsReviewed).toEqual([]);
+
+    const results = buildAssessmentResults(fixtureSections, [
+      answer('q_good_only', ['opt_good_only']),
+    ]);
+
+    expect(results.sectionsReviewed).toEqual([
+      {
+        sectionId: 's_empty',
+        sectionTitle: 'No highlighted items',
+      },
+    ]);
+  });
+
   it('resolves composite matrix and grid answers to row and option labels with flags', () => {
     const matrixAnswerId = getMatrixRowAnswerQuestionId('q_matrix', 'row_matrix_swelling');
     const gridAnswerId = getGridGroupAnswerQuestionId(
@@ -226,10 +245,7 @@ describe('buildAssessmentResults', () => {
       attention: [],
       observe: [],
       indicators: [],
-      sectionsReviewed: fixtureSections.map((section) => ({
-        sectionId: section.id,
-        sectionTitle: section.title,
-      })),
+      sectionsReviewed: [],
     });
 
     expect(() =>

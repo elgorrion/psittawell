@@ -1,5 +1,5 @@
 import { getLocales } from 'expo-localization';
-import { router, Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -23,6 +23,7 @@ import {
   type ParrotTimelineIndicator,
 } from '../../../lib/trends';
 import { colors } from '../../../lib/theme';
+import { AssessmentHeaderUpButton, navigateUpToAssessmentOverview } from '../../../components/AssessmentNavigation';
 
 type TrendsState =
   | { status: 'loading' }
@@ -111,7 +112,14 @@ export default function AssessmentTrendsScreen() {
   if (trendsState.status !== 'ready') {
     return (
       <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
-        <Stack.Screen options={{ title: t('assessment.trends.headerTitle') }} />
+        <Stack.Screen
+          options={{
+            title: t('assessment.trends.headerTitle'),
+            headerLeft: ({ tintColor }: { tintColor?: import('react-native').ColorValue }) => (
+              <AssessmentHeaderUpButton assessmentId={assessmentId} tintColor={tintColor} />
+            ),
+          }}
+        />
         <View style={styles.emptyState}>
           <Text accessibilityRole="header" style={styles.emptyTitle}>
             {t('assessment.trends.unavailableTitle')}
@@ -136,7 +144,14 @@ export default function AssessmentTrendsScreen() {
 
   return (
     <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
-      <Stack.Screen options={{ title: t('assessment.trends.headerTitle') }} />
+      <Stack.Screen
+        options={{
+          title: t('assessment.trends.headerTitle'),
+          headerLeft: ({ tintColor }: { tintColor?: import('react-native').ColorValue }) => (
+            <AssessmentHeaderUpButton assessmentId={assessmentId} tintColor={tintColor} />
+          ),
+        }}
+      />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.introPanel}>
           <Text accessibilityRole="header" style={styles.introTitle}>
@@ -288,12 +303,7 @@ function BackToOverviewButton({ assessmentId }: { assessmentId: number }) {
     <Pressable
       accessibilityLabel={t('assessment.backToOverview')}
       accessibilityRole="button"
-      onPress={() =>
-        router.push({
-          pathname: '/assessment/[id]',
-          params: { id: String(assessmentId) },
-        })
-      }
+      onPress={() => navigateUpToAssessmentOverview(assessmentId)}
       style={styles.backButton}
     >
       <Text style={styles.backButtonText}>{t('assessment.backToOverview')}</Text>

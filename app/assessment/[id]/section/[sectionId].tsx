@@ -1,6 +1,6 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { SectionLegend } from '../../../../components/SectionLegend';
@@ -23,6 +23,8 @@ import type {
 import {
   type Assessment,
   buildWelfareSnapshot,
+  completeAssessment,
+  countUnansweredVisibleQuestions,
   getAssessment,
   getGridGroupAnswerQuestionId,
   getGridRowAnswerQuestionId,
@@ -34,6 +36,13 @@ import {
 import { isQuestionVisible } from '../../../../lib/conditionals';
 import { t } from '../../../../lib/i18n';
 import { colors } from '../../../../lib/theme';
+import { getCompleteConfirmMessage } from '../../../../lib/completion';
+import {
+  AssessmentHeaderUpButton,
+  assessmentResultsRoute,
+  assessmentSectionRoute,
+} from '../../../../components/AssessmentNavigation';
+import { getSectionFooterState } from '../../../../lib/sectionNavigation';
 
 type LocalAnswer = {
   optionIds: string[];
@@ -52,17 +61,6 @@ export default function AssessmentSectionScreen() {
   const [loadedAssessmentId, setLoadedAssessmentId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isUnavailable, setIsUnavailable] = useState(false);
-  const nextSection = useMemo(() => {
-    if (!section) {
-      return null;
-    }
-
-    const sectionIndex = psittawelContentPack.sections.findIndex(
-      (candidate) => candidate.id === section.id,
-    );
-
-    return psittawelContentPack.sections[sectionIndex + 1] ?? null;
-  }, [section]);
 
   useEffect(() => {
     let isMounted = true;
@@ -124,6 +122,13 @@ export default function AssessmentSectionScreen() {
     return section.questions.filter((question) => isQuestionVisible(question, answers));
   }, [answers, section]);
 
+  const screenOptions = {
+    title,
+    headerLeft: ({ tintColor }: { tintColor?: import('react-native').ColorValue }) => (
+      <AssessmentHeaderUpButton assessmentId={assessmentId} tintColor={tintColor} />
+    ),
+  };
+
   if (
     !section ||
     !Number.isFinite(assessmentId) ||
@@ -134,7 +139,7 @@ export default function AssessmentSectionScreen() {
   ) {
     return (
       <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
-        <Stack.Screen options={{ title }} />
+        <Stack.Screen options={screenOptions} />
         <View style={styles.emptyState}>
           <Text style={styles.statusText}>
             {isLoading ? t('assessment.loading') : t('assessment.unavailable')}
@@ -145,6 +150,40 @@ export default function AssessmentSectionScreen() {
   }
 
   const isReadOnly = assessment.status === 'completed';
+  const footerState = getSectionFooterState(
+    psittawelContentPack.sections,
+    section.id,
+    assessment.status,
+  );
+
+  function handleFinishAssessment() {
+    const unansweredCount = countUnansweredVisibleQuestions(
+      psittawelContentPack.sections,
+      answers,
+    );
+
+    Alert.alert(
+      t('assessment.overview.confirmTitle'),
+      getCompleteConfirmMessage(unansweredCount),
+      [
+        {
+          text: t('assessment.overview.confirmCancel'),
+          style: 'cancel',
+        },
+        {
+          text: t('assessment.overview.confirmComplete'),
+          onPress() {
+            try {
+              completeAssessment(assessmentId);
+              router.replace(assessmentResultsRoute(assessmentId));
+            } catch {
+              setIsUnavailable(true);
+            }
+          },
+        },
+      ],
+    );
+  }
 
   function handleFreeTextChange(question: FreeTextContent, value: string) {
     if (isReadOnly) {
@@ -336,7 +375,7 @@ export default function AssessmentSectionScreen() {
 
   return (
     <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
-      <Stack.Screen options={{ title }} />
+      <Stack.Screen options={screenOptions} />
       <ScrollView contentContainerStyle={styles.content}>
         <SectionLegend section={section} />
         {isReadOnly ? (
@@ -438,55 +477,70 @@ export default function AssessmentSectionScreen() {
           );
         })}
       </ScrollView>
-      <Footer assessmentId={assessmentId} nextSectionId={nextSection?.id ?? null} />
+      <Footer
+        assessmentId={assessmentId}
+        forwardAction={footerState.forwardAction}
+        onFinishAssessment={handleFinishAssessment}
+        previousSectionId={footerState.previousSectionId}
+      />
     </SafeAreaView>
   );
 }
 
 type FooterProps = {
   assessmentId?: number;
-  nextSectionId?: string | null;
+  forwardAction: ReturnType<typeof getSectionFooterState>['forwardAction'];
+  onFinishAssessment: () => void;
+  previousSectionId: string | null;
 };
 
-function Footer({ assessmentId, nextSectionId = null }: FooterProps) {
+function Footer({
+  assessmentId,
+  forwardAction,
+  onFinishAssessment,
+  previousSectionId,
+}: FooterProps) {
   if (assessmentId === undefined) {
     return null;
   }
 
-  const backToOverview = () =>
-    router.push({
-      pathname: '/assessment/[id]',
-      params: { id: String(assessmentId) },
-    });
-
   return (
     <View style={styles.footer}>
       <Text style={styles.consultNote}>{t('assessment.consultNote')}</Text>
-      {nextSectionId ? (
+      {previousSectionId ? (
+        <Pressable
+          accessibilityLabel={t('assessment.previousSection')}
+          accessibilityRole="button"
+          onPress={() =>
+            router.replace(assessmentSectionRoute(assessmentId, previousSectionId))
+          }
+          style={styles.secondaryButton}
+        >
+          <Text style={styles.secondaryButtonText}>{t('assessment.previousSection')}</Text>
+        </Pressable>
+      ) : null}
+      {forwardAction.kind === 'next' ? (
         <Pressable
           accessibilityLabel={t('assessment.nextSection')}
           accessibilityRole="button"
           onPress={() =>
-            router.push({
-              pathname: '/assessment/[id]/section/[sectionId]',
-              params: { id: String(assessmentId), sectionId: nextSectionId },
-            })
+            router.replace(assessmentSectionRoute(assessmentId, forwardAction.sectionId))
           }
-          style={styles.nextButton}
+          style={styles.primaryButton}
         >
-          <Text style={styles.nextButtonText}>{t('assessment.nextSection')}</Text>
+          <Text style={styles.primaryButtonText}>{t('assessment.nextSection')}</Text>
         </Pressable>
       ) : null}
-      <Pressable
-        accessibilityLabel={t('assessment.backToOverview')}
-        accessibilityRole="button"
-        onPress={backToOverview}
-        style={nextSectionId ? styles.overviewButton : styles.nextButton}
-      >
-        <Text style={nextSectionId ? styles.overviewButtonText : styles.nextButtonText}>
-          {t('assessment.backToOverview')}
-        </Text>
-      </Pressable>
+      {forwardAction.kind === 'finish' ? (
+        <Pressable
+          accessibilityLabel={t('assessment.finishAssessment')}
+          accessibilityRole="button"
+          onPress={onFinishAssessment}
+          style={styles.primaryButton}
+        >
+          <Text style={styles.primaryButtonText}>{t('assessment.finishAssessment')}</Text>
+        </Pressable>
+      ) : null}
     </View>
   );
 }
@@ -566,7 +620,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-  nextButton: {
+  primaryButton: {
     alignItems: 'center',
     backgroundColor: colors.spruce,
     borderRadius: 8,
@@ -574,13 +628,13 @@ const styles = StyleSheet.create({
     minHeight: 48,
     paddingHorizontal: 18,
   },
-  nextButtonText: {
+  primaryButtonText: {
     color: colors.paper,
     fontSize: 16,
     fontWeight: '800',
     lineHeight: 22,
   },
-  overviewButton: {
+  secondaryButton: {
     alignItems: 'center',
     backgroundColor: colors.paper,
     borderColor: colors.spruce,
@@ -590,7 +644,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 18,
   },
-  overviewButtonText: {
+  secondaryButtonText: {
     color: colors.spruceDark,
     fontSize: 16,
     fontWeight: '800',

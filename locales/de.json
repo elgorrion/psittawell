@@ -11,6 +11,7 @@
     "unnamedAssessment": "Ohne Namen",
     "startedDate": "Gestartet %{date}",
     "assessmentRowAccessibility": "%{name} öffnen, %{status}, gestartet %{date}",
+    "backToHome": "Zur Startseite",
     "deleteAssessment": "Löschen",
     "deleteAssessmentAccessibility": "%{name} löschen, %{status}",
     "deleteDraftTitle": "Diesen Entwurf löschen?",
@@ -29,7 +30,9 @@
     "sectionTitle": "Abschnitt %{number}: %{title}",
     "questionProgress": "Frage %{current} von %{total}",
     "consultNote": "Wenden Sie sich bei Bedenken an eine vogelkundige Tierarztpraxis oder eine zertifizierte Beratung für Papageienverhalten.",
+    "previousSection": "Vorheriger Abschnitt",
     "nextSection": "Nächster Abschnitt",
+    "finishAssessment": "Assessment abschließen",
     "backToOverview": "Zur Übersicht",
     "loading": "Dieses Assessment wird geöffnet...",
     "readOnlyNotice": "Dieses abgeschlossene Assessment ist schreibgeschützt.",
@@ -91,7 +94,8 @@
       },
       "reviewed": {
         "title": "Geprüfte Abschnitte",
-        "description": "Die Übersicht wurde über die unten aufgeführten Assessment-Abschnitte aufgebaut."
+        "description": "Die Übersicht wurde über die unten aufgeführten Assessment-Abschnitte aufgebaut.",
+        "empty": "In diesem Assessment enthielt kein Abschnitt beantwortete Fragen."
       },
       "monthlyNote": "Sie können das Assessment monatlich wiederholen, um Veränderungen im Zeitverlauf zu beobachten."
     },

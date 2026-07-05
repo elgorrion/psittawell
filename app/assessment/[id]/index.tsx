@@ -19,6 +19,17 @@ import {
 } from '../../../lib/assessments';
 import { t } from '../../../lib/i18n';
 import { colors } from '../../../lib/theme';
+import { getCompleteConfirmMessage } from '../../../lib/completion';
+import {
+  assessmentOverviewRoute,
+  assessmentResultsRoute,
+  assessmentSectionRoute,
+  HomeHeaderUpButton,
+} from '../../../components/AssessmentNavigation';
+
+const headerLeft = ({ tintColor }: { tintColor?: import('react-native').ColorValue }) => (
+  <HomeHeaderUpButton tintColor={tintColor} />
+);
 
 type OverviewState =
   | { status: 'loading' }
@@ -103,7 +114,7 @@ export default function AssessmentOverviewScreen() {
   if (overviewState.status !== 'ready') {
     return (
       <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
-        <Stack.Screen options={{ title: t('assessment.overview.title') }} />
+        <Stack.Screen options={{ title: t('assessment.overview.title'), headerLeft }} />
         <View style={styles.emptyState}>
           <Text style={styles.statusText}>
             {overviewState.status === 'loading'
@@ -157,6 +168,7 @@ export default function AssessmentOverviewScreen() {
                     }
                   : current,
               );
+              router.push(assessmentResultsRoute(assessmentId));
             } catch {
               setOverviewState({ status: 'unavailable' });
             }
@@ -173,10 +185,7 @@ export default function AssessmentOverviewScreen() {
         psittawelContentPack.sections,
       );
 
-      router.push({
-        pathname: '/assessment/[id]',
-        params: { id: String(followUpAssessmentId) },
-      });
+      router.push(assessmentOverviewRoute(followUpAssessmentId));
     } catch {
       setOverviewState({ status: 'unavailable' });
     }
@@ -184,7 +193,7 @@ export default function AssessmentOverviewScreen() {
 
   return (
     <SafeAreaView edges={['left', 'right', 'bottom']} style={styles.screen}>
-      <Stack.Screen options={{ title }} />
+      <Stack.Screen options={{ title, headerLeft }} />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.introPanel}>
           {isCompleted ? (
@@ -208,10 +217,7 @@ export default function AssessmentOverviewScreen() {
                 accessibilityLabel={t('assessment.results.viewButton')}
                 accessibilityRole="button"
                 onPress={() =>
-                  router.push({
-                    pathname: '/assessment/[id]/results',
-                    params: { id: String(assessment.id) },
-                  })
+                  router.push(assessmentResultsRoute(assessment.id))
                 }
                 style={styles.resultsButton}
               >
@@ -260,13 +266,7 @@ export default function AssessmentOverviewScreen() {
               accessibilityRole="button"
               key={section.sectionId}
               onPress={() =>
-                router.push({
-                  pathname: '/assessment/[id]/section/[sectionId]',
-                  params: {
-                    id: String(assessment.id),
-                    sectionId: section.sectionId,
-                  },
-                })
+                router.push(assessmentSectionRoute(assessment.id, section.sectionId))
               }
               style={styles.sectionCard}
             >
@@ -321,19 +321,6 @@ function getSectionStatusLabel(progress: SectionAnswerProgress, completed: boole
   }
 
   return t('assessment.overview.status.inProgress');
-}
-
-function getCompleteConfirmMessage(unansweredCount: number) {
-  if (unansweredCount <= 0) {
-    return t('assessment.overview.confirmMessage');
-  }
-
-  return t(
-    unansweredCount === 1
-      ? 'assessment.overview.confirmMessageWithUnansweredOne'
-      : 'assessment.overview.confirmMessageWithUnansweredOther',
-    { count: unansweredCount },
-  );
 }
 
 const styles = StyleSheet.create({

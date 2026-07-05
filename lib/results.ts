@@ -14,6 +14,7 @@ import type {
   WelfareLevel,
 } from '../content/schema';
 import {
+  countAnsweredVisibleQuestions,
   getGridGroupAnswerQuestionId,
   getGridRowAnswerQuestionId,
   getMatrixRowAnswerQuestionId,
@@ -191,10 +192,12 @@ export function buildAssessmentResults(
     attention,
     observe: orderByFlag(observe, observeFlagOrder),
     indicators,
-    sectionsReviewed: sections.map((section) => ({
-      sectionId: section.id,
-      sectionTitle: section.title,
-    })),
+    sectionsReviewed: sections
+      .filter((section) => countAnsweredVisibleQuestions(section, answersByQuestion).answered > 0)
+      .map((section) => ({
+        sectionId: section.id,
+        sectionTitle: section.title,
+      })),
   };
 }
 
